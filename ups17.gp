@@ -54,8 +54,9 @@ Xw_max = X_max + utc_offset - epoch_compensate
 # stats for Y-axis
 stats ifnamew using 7 name "Yw" nooutput
 
-Ymax = max(max(Yd_max, Yh_max), Yw_max) +1
-Ymin = min(min(Yd_min, Yh_min), Yw_min) -1
+R10 = (Ymax - Ymin) * 0.1
+Ymax = max(max(Yd_max, Yh_max), Yw_max) + R10
+Ymin = min(min(Yd_min, Yh_min), Yw_min) - R10
 
 set multiplot layout 1, 3 title "Beschikbaarheid ".strftime("( %Y-%m-%dT%H:%M:%S )", time(0)+utc_offset)
 

@@ -76,7 +76,7 @@ set xrange [ Xw_min : Xw_max ]
 
 # ***************************************************************** Y-axis *****
 set ylabel "Belasting [%]"
-set yrange [ 0 : Ymax ]
+set yrange [ Ymin : Ymax ]
 
 # ***************************************************************** Legend *****
 set key inside top left horizontal box
@@ -117,7 +117,7 @@ set xrange [ Xd_min : Xd_max ]
 # ***************************************************************** Y-axis *****
 set ylabel " "
 set ytics format " "
-set yrange [ 0 : Ymax ]
+set yrange [ Ymin : Ymax ]
 
 # ***************************************************************** Legend *****
 unset key
@@ -148,7 +148,7 @@ set xtics textcolor rgb "red"
 # ***************************************************************** Y-axis *****
 set ylabel " "
 set ytics format " "
-set yrange [ 0 : Ymax ]
+set yrange [ Ymin : Ymax ]
 
 # ***************************************************************** Legend *****
 unset key

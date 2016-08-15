@@ -114,7 +114,7 @@ def write_lftp(script):
     f.write('# lftp script\n\n')
     f.write('set cmd:fail-exit yes;\n')
     f.write('open hendrixnet.nl;\n')
-    f.write('cd 05.stream/;\n')
+    f.write('cd 06.ups/;\n')
     f.write('set cmd:fail-exit no;\n')
     f.write('mirror --reverse --delete --verbose=3 -c /tmp/' + MYAPP + '/site/ . ;\n')
     f.write('\n')

@@ -4,10 +4,12 @@
 
 import configparser
 import os
+import math
 import re
 import serial
 import sys
 import syslog
+import subprocess
 import time
 import traceback
 
@@ -58,10 +60,8 @@ class MyDaemon(Daemon):
           # somma       = list(map(sum, zip(*data)))
           somma = [sum(d) for d in zip(*data)]
           # not all entries should be float
-          # ['3088596', '3030401', '270', '0', '0', '0', '1', '1']
-          # averages    = [format(sm / len(data), '.2f') for sm in somma]
-          averages = data[len(data)-1]
-          averages[2]  = int(somma[2] / len(data))
+          # ['234.000', '13.700', '100.000', '20.000', '1447.000']
+          averages = [float(format(d / len(data), '.3f') for d in somma]
           syslog_trace("Averages : {0}".format(averages),  False, DEBUG)
           do_report(averages, flock, fdata)
 
@@ -69,10 +69,7 @@ class MyDaemon(Daemon):
         if (waitTime > 0):
           syslog_trace("Waiting  : {0}s".format(waitTime), False, DEBUG)
           syslog_trace("................................", False, DEBUG)
-          # no need to wait for the next cycles
-          # the meter will pace the meaurements
-          # any required waiting will be inside gettelegram()
-          # time.sleep(waitTime)
+          time.sleep(waitTime)
         else:
           syslog_trace("Behind   : {0}s".format(waitTime), False, DEBUG)
           syslog_trace("................................", False, DEBUG)
@@ -80,66 +77,6 @@ class MyDaemon(Daemon):
         syslog_trace("Unexpected error in run()", syslog.LOG_CRIT, DEBUG)
         syslog_trace(traceback.format_exc(), syslog.LOG_CRIT, DEBUG)
         raise
-/*
-# #!/usr/bin/env python
-#
-# # Based on previous work by
-# # Charles Menguy (see: http://stackoverflow.com/questions/10217067/implementing-a-full-python-unix-style-daemon-process)
-# # and Sander Marechal (see: http://www.jejik.com/articles/2007/02/a_simple_unix_linux_daemon_in_python/)
-#
-# # Adapted by M.Hendrix [2015]
-#
-# # ups32.py reports various UPS variables.
-# # uses moving averages
-#
-# import syslog, traceback
-# import os, sys, time, math, subprocess
-# from libdaemon import Daemon
-#
-# DEBUG = False
-# IS_SYSTEMD = os.path.isfile('/bin/journalctl')
-#
-# class MyDaemon(Daemon):
-#   def run(self):
-#     reportTime = 60                                 # time [s] between reports
-#     cycles = 3                                      # number of cycles to aggregate
-#     samplesperCycle = 5                             # total number of samples in each cycle
-#     samples = samplesperCycle * cycles              # total number of samples averaged
-#     sampleTime = reportTime/samplesperCycle         # time [s] between samples
-#     cycleTime = samples * sampleTime                # time [s] per cycle
-#
-#     data = []                                       # array for holding sampledata
-#
-#     while True:
-#       try:
-#         startTime = time.time()
-#
-#         result = do_work().split(',')
-#         if DEBUG:print "result:",result
-#
-#         data.append(map(float, result))
-#         if (len(data) > samples):data.pop(0)
-#
-#         # report sample average
-#         if (startTime % reportTime < sampleTime):
-#           if DEBUG:print "data:",data
-#           somma = map(sum,zip(*data))
-#           averages = [format(s / len(data), '.3f') for s in somma]
-#           if DEBUG:print "averages:",averages
-#           do_report(averages)
-#
-#         waitTime = sampleTime - (time.time() - startTime) - (startTime%sampleTime)
-#         if (waitTime > 0):
-#           if DEBUG:print "Waiting {0} s".format(waitTime)
-#           time.sleep(waitTime)
-#       except Exception as e:
-#         if DEBUG:
-#           print "Unexpected error:"
-#           print e.message
-#         syslog.syslog(syslog.LOG_ALERT,e.__doc__)
-#         syslog_trace(traceback.format_exc())
-#         raise
-*/
 
 def do_work():
   # 5 datapoints gathered here

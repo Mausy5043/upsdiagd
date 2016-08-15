@@ -80,13 +80,10 @@ class MyDaemon(Daemon):
 def do_work():
   # 5 datapoints gathered here
   try:
-    upsc = subprocess.check_output(["upsc", "ups@localhost"]).splitlines()
-  except Exception as e:
-    if DEBUG:
-      print("Unexpected error:")
-      print(e.message)
-    # syslog.syslog(syslog.LOG_ALERT, e.__str__)
-    syslog_trace(traceback.format_exc())
+    upsc = str(subprocess.check_output(["upsc", "ups@localhost"]), 'utf-8').splitlines()
+  except Exception:
+    syslog_trace("Unexpected error in do_work()", syslog.LOG_CRIT, DEBUG)
+    syslog_trace(traceback.format_exc(), syslog.LOG_CRIT, DEBUG)
     syslog.syslog(syslog.LOG_ALERT, "Waiting 10s ...")
     time.sleep(10)    # wait to let the driver crash properly
     syslog.syslog(syslog.LOG_ALERT, "*** RESTARTING nut-driver.service ***")

@@ -6,7 +6,6 @@ import configparser
 import os
 import math
 import re
-import serial
 import sys
 import syslog
 import subprocess
@@ -73,10 +72,9 @@ class MyDaemon(Daemon):
         else:
           syslog_trace("Behind   : {0}s".format(waitTime), False, DEBUG)
           syslog_trace("................................", False, DEBUG)
-      except Exception as e:
+      except Exception:
         syslog_trace("Unexpected error in run()", syslog.LOG_CRIT, DEBUG)
         syslog_trace(traceback.format_exc(), syslog.LOG_CRIT, DEBUG)
-        print(e.message)
         raise
 
 def do_work():

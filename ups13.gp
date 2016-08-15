@@ -33,7 +33,7 @@ Xh_min = X_min + utc_offset - epoch_compensate
 Xh_max = X_max + utc_offset - epoch_compensate
 
 # stats to be calculated here for Y-axes
-stats ifnameh using 3 name "Yh" nooutput
+#stats ifnameh using 3 name "Yh" nooutput
 
 # ********************************************************* Statistics (M) *****
 # stats to be calculated here of column 2 (UX-epoch)
@@ -43,7 +43,7 @@ Xd_min = X_min + utc_offset - epoch_compensate
 Xd_max = X_max + utc_offset - epoch_compensate
 
 # stats to be calculated here for Y-axes
-stats ifnamed using 3 name "Yd" nooutput
+#stats ifnamed using 3 name "Yd" nooutput
 
 # ********************************************************* Statistics (L) *****
 # stats to be calculated here of column 2 (UX-epoch)
@@ -52,10 +52,10 @@ Xw_min = X_min + utc_offset - epoch_compensate
 Xw_max = X_max + utc_offset - epoch_compensate
 
 # stats for Y-axis
-stats ifnamew using 3 name "Yw" nooutput
+#stats ifnamew using 3 name "Yw" nooutput
 
-Ymax = max(max(Yd_max, Yh_max), Yw_max) +1
-Ymin = min(min(Yd_min, Yh_min), Yw_min) -1
+Ymax = 260   # max(max(Yd_max, Yh_max), Yw_max) +1
+Ymin = 180   # min(min(Yd_min, Yh_min), Yw_min) -1
 
 set multiplot layout 1, 3 title "Actuele spanning ".strftime("( %Y-%m-%dT%H:%M:%S )", time(0)+utc_offset)
 

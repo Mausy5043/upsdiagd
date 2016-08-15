@@ -61,7 +61,7 @@ class MyDaemon(Daemon):
           somma = [sum(d) for d in zip(*data)]
           # not all entries should be float
           # ['234.000', '13.700', '100.000', '20.000', '1447.000']
-          averages = [float(format(d / len(data), '.3f') for d in somma]
+          averages = [float(format(d / len(data), '.3f')) for d in somma]
           syslog_trace("Averages : {0}".format(averages),  False, DEBUG)
           do_report(averages, flock, fdata)
 
@@ -73,9 +73,10 @@ class MyDaemon(Daemon):
         else:
           syslog_trace("Behind   : {0}s".format(waitTime), False, DEBUG)
           syslog_trace("................................", False, DEBUG)
-      except Exception:
+      except Exception as e:
         syslog_trace("Unexpected error in run()", syslog.LOG_CRIT, DEBUG)
         syslog_trace(traceback.format_exc(), syslog.LOG_CRIT, DEBUG)
+        print(e.message)
         raise
 
 def do_work():
@@ -84,8 +85,8 @@ def do_work():
     upsc = subprocess.check_output(["upsc", "ups@localhost"]).splitlines()
   except Exception as e:
     if DEBUG:
-      print "Unexpected error:"
-      print e.message
+      print("Unexpected error:")
+      print(e.message)
     # syslog.syslog(syslog.LOG_ALERT, e.__str__)
     syslog_trace(traceback.format_exc())
     syslog.syslog(syslog.LOG_ALERT, "Waiting 10s ...")
@@ -93,7 +94,7 @@ def do_work():
     syslog.syslog(syslog.LOG_ALERT, "*** RESTARTING nut-driver.service ***")
     r = subprocess.check_output(["sudo", "systemctl", "restart",  "nut-driver.service"]).splitlines()
     if DEBUG:
-      print r
+      print(r)
     time.sleep(15)
     syslog.syslog(syslog.LOG_ALERT, "!!! Retrying communication with UPS !!!")
     upsc = subprocess.check_output(["upsc", "ups@localhost"]).splitlines()

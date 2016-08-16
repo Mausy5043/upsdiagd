@@ -6,6 +6,7 @@ import configparser
 import os
 import platform
 import shutil
+import subprocess
 import sys
 import syslog
 import time
@@ -80,6 +81,11 @@ def do_markdown(flock, fdata):
 
     # branch
     f.write('!!! upsdiagd   on: ' + upsbranch + '\n\n')
+
+    # upsc ups@localhost 2>/dev/null |grep -v "serial"
+    upsc = str(subprocess.check_output(["upsc", "ups@localhost", "2>/dev/null"]), 'utf-8').splitlines()
+    f.write('## UPS detail information')
+    f.write(upsc + '\n')
 
   unlock(flock)
 

@@ -80,7 +80,7 @@ class MyDaemon(Daemon):
 def do_work():
   # 5 datapoints gathered here
   try:
-    upsc = str(subprocess.check_output(["upsc", "ups@localhost"]), 'utf-8').splitlines()
+    upsc = str(subprocess.check_output(["upsc", "ups@localhost", "2>/dev/null"]), 'utf-8').splitlines()
   except Exception:
     syslog_trace("Unexpected error in do_work()", syslog.LOG_CRIT, DEBUG)
     syslog_trace(traceback.format_exc(), syslog.LOG_CRIT, DEBUG)

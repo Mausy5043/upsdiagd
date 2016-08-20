@@ -86,7 +86,7 @@ def do_markdown(flock, fdata):
     upsc = str(subprocess.check_output(["upsc", "ups@localhost"]), 'utf-8').splitlines()
     f.write('## UPS detail information')
     for u in upsc:
-      f.write(upsc + '\n')
+      f.write(u + '\n')
 
   unlock(flock)
 

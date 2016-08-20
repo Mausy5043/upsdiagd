@@ -80,7 +80,7 @@ class MyDaemon(Daemon):
 def do_work():
   # 5 datapoints gathered here
   try:
-    upsc = str(subprocess.check_output(['upsc', 'ups@localhost', '2>/dev/null']), 'utf-8').splitlines()
+    upsc = str(subprocess.check_output(['upsc', 'ups@localhost']), 'utf-8').splitlines()
   except Exception:
     syslog_trace("Unexpected error in do_work()", syslog.LOG_CRIT, DEBUG)
     syslog_trace(traceback.format_exc(), syslog.LOG_CRIT, DEBUG)
@@ -88,12 +88,12 @@ def do_work():
 
     time.sleep(10)    # wait to let the driver crash properly
     syslog_trace("*** RESTARTING nut-driver.service ***", syslog.LOG_CRIT, DEBUG)
-    r = subprocess.check_output(['sudo', 'systemctl', 'restart',  'nut-driver.service'], 'utf-8').splitlines()
+    r = str(subprocess.check_output(['sudo', 'systemctl', 'restart',  'nut-driver.service']), 'utf-8').splitlines()
     syslog_trace("Returned : {0}".format(r), False, DEBUG)
 
     time.sleep(15)
     syslog_trace("!!! Retrying communication with UPS !!!", syslog.LOG_CRIT, DEBUG)
-    upsc = str(subprocess.check_output(['upsc', 'ups@localhost', '2>/dev/null']), 'utf-8').splitlines()
+    upsc = str(subprocess.check_output(['upsc', 'ups@localhost']), 'utf-8').splitlines()
     pass
 
   for element in range(0, len(upsc) - 1):

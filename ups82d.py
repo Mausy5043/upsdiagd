@@ -84,9 +84,9 @@ def do_markdown(flock, fdata):
 
     # upsc ups@localhost 2>/dev/null |grep -v "serial"
     upsc = str(subprocess.check_output(["upsc", "ups@localhost"]), 'utf-8').splitlines()
-    f.write('## UPS detail information')
+    f.write('### UPS detail information\n\n')
     for u in upsc:
-      f.write(u + '\n')
+      f.write(u + '  \n')
 
   unlock(flock)
 

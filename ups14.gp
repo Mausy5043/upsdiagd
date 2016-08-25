@@ -59,7 +59,7 @@ Ymin = min(min(Yd_min, Yh_min), Yw_min)
 R10 = (Ymax - Ymin) * 0.1
 Ymax = Ymax + R10
 # Ymin = Ymin - R10
-Ymin = 0
+Ymin = 8
 
 set multiplot layout 1, 3 title "Batterij spanning ".strftime("( %Y-%m-%dT%H:%M:%S )", time(0)+utc_offset)
 

@@ -54,11 +54,8 @@ Xw_max = X_max + utc_offset - epoch_compensate
 # stats for Y-axis
 stats ifnamew using 4 name "Yw" nooutput
 
-Ymax = max(max(Yd_max, Yh_max), Yw_max)
-Ymin = min(min(Yd_min, Yh_min), Yw_min)
-R10 = (Ymax - Ymin) * 0.1
-Ymax = Ymax + R10
-Ymin = Ymin - R10
+Ymax = max(max(Yd_max, Yh_max), Yw_max) + 0.5
+Ymin = min(min(Yd_min, Yh_min), Yw_min) - 0.5
 
 set multiplot layout 1, 3 title "Batterij spanning ".strftime("( %Y-%m-%dT%H:%M:%S )", time(0)+utc_offset)
 

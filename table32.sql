@@ -13,5 +13,6 @@ CREATE TABLE `ups` (
   `charge_bat`    float(6,3),
   `load_ups`      float(5,3),
   `runtime_bat`   float(5,1),
-  PRIMARY KEY (`sample_time`)
+  PRIMARY KEY (`sample_time`),
+  INDEX (`sample_epoch`)
   ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ;

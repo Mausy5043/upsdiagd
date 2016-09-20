@@ -77,7 +77,7 @@ def do_markdown(flock, fdata):
 
     # System ID
     f.write('!!! ')
-    f.write(uname[0] + ' ' + uname[1] + ' ' + uname[2] + ' ' + uname[3] + ' ' + uname[4] + ' ' + platform.platform() + '  \n')
+    f.write(uname[0] + ' ' + uname[2] + ' ' + uname[3] + ' ' + uname[4] + ' ' + platform.platform() + '  \n')
 
     # branch
     f.write('!!! upsdiagd   on: ' + upsbranch + '\n\n')

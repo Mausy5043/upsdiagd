@@ -82,7 +82,7 @@ def do_mv_data(flock, homedir, script):
       cmnd = subprocess.check_output(cmnd, timeout=20)
       syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
   except subprocess.TimeoutExpired:
-    syslog_trace("***TIMEOUT***:  {0}".format(cmnd), syslog.LOG_CRIT, DEBUG)
+    syslog_trace("***TIMEOUT***:  {0}".format(cmnd), syslog.LOG_ERR, DEBUG)
     pass
   except subprocess.CalledProcessError:
     syslog_trace("*** ERROR ***:  {0}".format(cmnd), syslog.LOG_CRIT, DEBUG)

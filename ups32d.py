@@ -4,8 +4,6 @@
 
 import configparser
 import os
-import math
-import re
 import sys
 import syslog
 import subprocess
@@ -81,18 +79,18 @@ def do_work():
   # 5 datapoints gathered here
   try:
     upsc = str(subprocess.check_output(['upsc', 'ups@localhost']), 'utf-8').splitlines()
-  except Exception:
-    syslog_trace("Unexpected error in do_work()", syslog.LOG_CRIT, DEBUG)
-    syslog_trace(traceback.format_exc(), syslog.LOG_CRIT, DEBUG)
+  except subprocess.CalledProcessError:
+    # syslog_trace("Unexpected error in do_work()", syslog.LOG_CRIT, DEBUG)
+    # syslog_trace(traceback.format_exc(), syslog.LOG_CRIT, DEBUG)
     syslog.syslog(syslog.LOG_ALERT, "Waiting 10s ...")
 
     time.sleep(10)    # wait to let the driver crash properly
-    syslog_trace("*** RESTARTING nut-driver.service ***", syslog.LOG_CRIT, DEBUG)
+    syslog_trace("*** RESTARTING nut-driver.service ***", syslog.LOG_ALERT, DEBUG)
     r = str(subprocess.check_output(['sudo', 'systemctl', 'restart',  'nut-driver.service']), 'utf-8').splitlines()
     syslog_trace("Returned : {0}".format(r), False, DEBUG)
 
     time.sleep(15)
-    syslog_trace("!!! Retrying communication with UPS !!!", syslog.LOG_CRIT, DEBUG)
+    syslog_trace("!!! Retrying communication with UPS !!!", syslog.LOG_ALERT, DEBUG)
     upsc = str(subprocess.check_output(['upsc', 'ups@localhost']), 'utf-8').splitlines()
     pass
 

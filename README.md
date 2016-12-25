@@ -13,6 +13,8 @@ cd upsdiagd
 
 ## Hardware:
 Raspberry Pi 1B connected to a UPS via USB cable.
+Known to work with:
+- APC Back-UPS 700 (BE-700GR)
 
 ## Attribution
 The python code for the daemons is based on previous work by

@@ -22,7 +22,8 @@ if [ ! -d /tmp/upsdiagd/mysql ]; then
   chmod -R 755 /tmp/upsdiagd
 fi
 
-pushd "$HOME/upsdiagd"
+pushd "$HOME/upsdiagd" || exit 1
+  # shellcheck disable=SC1091
   source ./includes
   git fetch origin
   # Check which files have changed

@@ -8,7 +8,8 @@ HOSTNAME=$(cat /etc/hostname)
 
 echo -n "Started UNinstalling UPSDIAGd on "; date
 
-pushd "$HOME/upsdiagd"
+pushd "$HOME/upsdiagd" || exit 1
+  # shellcheck disable=SC1091
  source ./includes
 
   # prevent restarts of daemons while the script is still running

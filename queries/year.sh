@@ -10,9 +10,10 @@ pushd "$HOME/upsdiagd" >/dev/null || exit 1
   "USE domotica;                                \
   SELECT *                                      \
   FROM ups                                      \
-  WHERE (sample_time >= NOW() - ${W_INTERVAL})  \
-    AND (sample_time <= NOW() - ${WD_INTERVAL}) \
-  GROUP BY (sample_epoch DIV ${W_DIVIDER})      \
+  WHERE (sample_time >= NOW() - ${Y_INTERVAL})  \
+    AND (sample_time <= NOW() - ${W_INTERVAL})  \
+  GROUP BY YEAR(sample_time),                   \
+           WEEK(sample_time, 3)                 \
   ;"                                            \
   | sed 's/\t/;/g;s/\n//g' > "${DATASTORE}/upsd.csv"
 popd >/dev/null

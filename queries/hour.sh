@@ -1,19 +1,17 @@
 #!/bin/bash
 
-# Pull data from MySQL server and graph them.
+# Pull data from MySQL server.
 
-datastore="/tmp/upsdiagd/mysql"
+pushd "$HOME/upsdiagd" >/dev/null || exit 1
+  # shellcheck disable=SC1091
+  source ./sql-includes || exit
 
-if [ ! -d "$datastore" ]; then
-  mkdir -p "$datastore"
-fi
-
-interval="INTERVAL 70 MINUTE "
-# host=$(hostname)
-
-pushd "$HOME/upsdiagd" >/dev/null
-  mysql -h sql.lan --skip-column-names -e "USE domotica; SELECT * FROM ups where (sample_time >=NOW() - $interval);" | sed 's/\t/;/g;s/\n//g' > "$datastore/upsh.csv"
-
-  #http://www.sitepoint.com/understanding-sql-joins-mysql-database/
-  #mysql -h sql.lan --skip-column-names -e "USE domotica; SELECT ds18.sample_time, ds18.sample_epoch, ds18.temperature, wind.speed FROM ds18 INNER JOIN wind ON ds18.sample_epoch = wind.sample_epoch WHERE (ds18.sample_time) >=NOW() - INTERVAL 1 MINUTE;" | sed 's/\t/;/g;s/\n//g' > $datastore/sql2c.csv
+  time mysql -h sql.lan --skip-column-names -e \
+  "USE domotica;                               \
+  SELECT *                                     \
+  FROM ups                                     \
+  WHERE (sample_time >= NOW() - ${H_INTERVAL}) \
+  GROUP BY (sample_epoch DIV ${H_DIVIDER})     \
+  ;"                                           \
+  | sed 's/\t/;/g;s/\n//g' > "${DATASTORE}/upsh.csv"
 popd >/dev/null

@@ -6,6 +6,7 @@
 ifnameh = "/tmp/upsdiagd/mysql/upsh.csv"
 ifnamed = "/tmp/upsdiagd/mysql/upsd.csv"
 ifnamew = "/tmp/upsdiagd/mysql/upsw.csv"
+ifnamey = "/tmp/upsdiagd/mysql/upsy.csv"
 set output "/tmp/upsdiagd/site/img/ups13.png"
 
 # ******************************************************* General settings *****

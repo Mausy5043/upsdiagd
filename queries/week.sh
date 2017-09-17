@@ -6,7 +6,7 @@ pushd "$HOME/upsdiagd" >/dev/null || exit 1
   # shellcheck disable=SC1091
   source ./sql-includes || exit
 
-  mysql -h sql.lan --skip-column-names -e       \
+  time mysql -h sql.lan --skip-column-names -e  \
   "USE domotica;                                \
   SELECT *                                      \
   FROM ups                                      \
@@ -14,5 +14,5 @@ pushd "$HOME/upsdiagd" >/dev/null || exit 1
     AND (sample_time <= NOW() - ${WD_INTERVAL}) \
   GROUP BY (sample_epoch DIV ${W_DIVIDER})      \
   ;"                                            \
-  | sed 's/\t/;/g;s/\n//g' > "${DATASTORE}/upsd.csv"
+  | sed 's/\t/;/g;s/\n//g' > "${DATASTORE}/upsw.csv"
 popd >/dev/null

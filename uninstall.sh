@@ -17,13 +17,13 @@ pushd "$HOME/upsdiagd" || exit 1
 
   echo "  Stopping all diagnostic daemons"
   for daemon in $upslist; do
-    echo "Stopping "$daemon
-    eval "./ups"$daemon"d.py stop"
+    echo "Stopping ${daemon}"
+    eval "./ups${daemon}d.py stop"
   done
   echo "  Stopping all service daemons"
   for daemon in $srvclist; do
-    echo "Stopping "$daemon
-    eval "./ups"$daemon"d.py stop"
+    echo "Stopping ${daemon}"
+    eval "./ups${daemon}d.py stop"
   done
 popd
 

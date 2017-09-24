@@ -28,12 +28,12 @@ pushd "$HOME/upsdiagd" || exit 1
         logger -p user.err -t upsdiagd-restarter "  * Stale daemon ${daemon} pid-file found."
         rm "/tmp/upsdiagd/${daemon}.pid"
           echo "  * Start DIAG ${daemon}"
-        eval "./daemons/lnxdiag${daemon}d.py restart"
+        eval "./daemons/ups${daemon}d.py restart"
       fi
     else
       logger -p user.notice -t upsdiagd-restarter "Found daemon ${daemon} not running."
-        echo "  * Start DIAG ${daemon}"
-      eval "./daemons/lnxdiag${daemon}d.py restart"
+        echo "  * Start UPS ${daemon}"
+      eval "./daemons/ups${daemon}d.py restart"
     fi
   done
 
@@ -43,13 +43,13 @@ pushd "$HOME/upsdiagd" || exit 1
       if ! kill -0 $(cat "/tmp/upsdiagd/${daemon}.pid")  > /dev/null 2>&1; then
         logger -p user.err -t upsdiagd-restarter "* Stale daemon ${daemon} pid-file found."
         rm "/tmp/upsdiagd/${daemon}.pid"
-          echo "  * Start SVC ${daemon}"
-        eval "./daemons/lnxsvc${daemon}d.py restart"
+          echo "  * Start UPSVC ${daemon}"
+        eval "./daemons/ups${daemon}d.py restart"
       fi
     else
       logger -p user.notice -t upsdiagd-restarter "Found daemon ${daemon} not running."
-        echo "  * Start SVC ${daemon}"
-      eval "./daemons/lnxsvc${daemon}d.py restart"
+        echo "  * Start UPSVC ${daemon}"
+      eval "./daemons/ups${daemon}d.py restart"
     fi
   done
 popd

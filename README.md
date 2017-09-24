@@ -1,4 +1,4 @@
-# UPSDIAGDd
+# UPSDIAGD
 
 ## Installing
 

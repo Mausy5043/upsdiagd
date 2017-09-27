@@ -101,12 +101,13 @@ def do_work():
     pass
 
   ups0 = -1.0
+  ups1 = 0.0
   for element in range(0, len(upsc) - 1):
     var = upsc[element].split(': ')
-    if (var[0] == 'input.voltage'):
-      ups0 = float(var[1])
-    # if (var[0] == 'battery.voltage'):
+    # if (var[0] == 'input.voltage'):
     if (var[0] == 'output.voltage'):
+      ups0 = float(var[1])
+    if (var[0] == 'battery.voltage'):
       ups1 = float(var[1])
     if (var[0] == 'battery.charge'):
       ups2 = float(var[1])

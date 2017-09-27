@@ -100,23 +100,23 @@ def getsqldata(homedir, nu):
   nowur = int(time.strftime('%H'))
   # data of last hour is updated every 3 minutes
   if ((minit % 3) == 0):
-    cmnd = homedir + '/' + MYAPP + '/hour.sh'
+    cmnd = homedir + '/' + MYAPP + '/queries/hour.sh'
     mf.syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
     cmnd = subprocess.call(cmnd)
     mf.syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
   # data of the last day is updated every 30 minutes
   if nu or ((minit % 30) == (SQLMNT % 30)):
-    cmnd = homedir + '/' + MYAPP + '/day.sh'
+    cmnd = homedir + '/' + MYAPP + '/queries/day.sh'
     mf.syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
     cmnd = subprocess.call(cmnd)
     mf.syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
   # dat of the last week is updated every 4 hours
   if nu or ((nowur % 4) == (SQLHR % 4) and (minit == SQLHRM)):
-    cmnd = homedir + '/' + MYAPP + '/week.sh'
+    cmnd = homedir + '/' + MYAPP + '/queries/week.sh'
     mf.syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
     cmnd = subprocess.call(cmnd)
     mf.syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
-    cmnd = homedir + '/' + MYAPP + '/year.sh'
+    cmnd = homedir + '/' + MYAPP + '/queries/year.sh'
     mf.syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
     cmnd = subprocess.call(cmnd)
     mf.syslog_trace("...:  {0}".format(cmnd), False, DEBUG)

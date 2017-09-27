@@ -51,12 +51,12 @@ pushd "$HOME/upsdiagd" || exit 1
       echo "  o Restarting all ups daemons"
       for daemon in $upslist; do
         echo "  +- Restart ups$daemon"
-        eval "./ups${daemon}d.py restart"
+        eval "./daemons/ups${daemon}d.py restart"
       done
       echo "  o Restarting all service daemons"
       for daemon in $srvclist; do
         echo "  +- Restart ups$daemon"
-        eval "./ups${daemon}d.py restart"
+        eval "./daemons/ups${daemon}d.py restart"
       done
     fi
   done
@@ -68,12 +68,12 @@ pushd "$HOME/upsdiagd" || exit 1
         logger -p user.err -t upsdiagd "  * Stale daemon ${daemon} pid-file found."
         rm "/tmp/upsdiagd/${daemon}.pid"
           echo "  * Start DIAG ${daemon}"
-        eval "./ups${daemon}d.py start"
+        eval "./daemons/ups${daemon}d.py start"
       fi
     else
       logger -p user.warn -t upsdiagd "Found ups${daemon} not running."
         echo "  * Start ups${daemon}"
-      eval "./ups${daemon}d.py start"
+      eval "./daemons/ups${daemon}d.py start"
     fi
   done
 
@@ -84,12 +84,12 @@ pushd "$HOME/upsdiagd" || exit 1
         logger -p user.err -t upsdiagd "  * Stale daemon ${daemon} pid-file found."
         rm "/tmp/upsdiagd/${daemon}.pid"
           echo "  * Start ups${daemon}"
-        eval "./ups${daemon}d.py start"
+        eval "./daemons/ups${daemon}d.py start"
       fi
     else
       logger -p user.warn -t upsdiagd "Found ups${daemon} not running."
         echo "  * Start ups${daemon}"
-      eval "./ups${daemon}d.py start"
+      eval "./daemons/ups${daemon}d.py start"
     fi
   done
 popd

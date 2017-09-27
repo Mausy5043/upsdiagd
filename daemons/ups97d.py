@@ -29,7 +29,7 @@ class MyDaemon(Daemon):
   @staticmethod
   def run():
     try:                 # Initialise MySQLdb
-      consql    = mdb.connect(host='sql.lan', db='domotica', read_default_file='~/.my.cnf')
+      consql    = mdb.connect(host='sql', db='domotica', read_default_file='~/.my.cnf')
       if consql.open:    # dB initialised succesfully -> get a cursor on the dB.
         cursql  = consql.cursor()
         cursql.execute("SELECT VERSION()")

@@ -22,7 +22,7 @@ pushd "$HOME/upsdiagd" || exit 1
   source ./includes
 
   # Check if DIAG daemons are running
-  for daemon in $diaglist; do
+  for daemon in $upslist; do
     if [ -e "/tmp/upsdiagd/${daemon}.pid" ]; then
       if ! kill -0 $(cat "/tmp/upsdiagd/${daemon}.pid")  > /dev/null 2>&1; then
         logger -p user.err -t upsdiagd-restarter "  * Stale daemon ${daemon} pid-file found."

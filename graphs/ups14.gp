@@ -28,32 +28,32 @@ max(x,y) = (x > y) ? x : y
 
 # ********************************************************* Statistics (R) *****
 # stats to be calculated here of column 2 (UX-epoch)
-stats ifnameh using 2 name "X" nooutput
+stats ifnameh using 1 name "X" nooutput
 
 Xh_min = X_min + utc_offset - epoch_compensate
 Xh_max = X_max + utc_offset - epoch_compensate
 
 # stats to be calculated here for Y-axes
-stats ifnameh using 4 name "Yh" nooutput
+stats ifnameh using 3 name "Yh" nooutput
 
 # ********************************************************* Statistics (M) *****
 # stats to be calculated here of column 2 (UX-epoch)
-stats ifnamed using 2 name "X" nooutput
+stats ifnamed using 1 name "X" nooutput
 
 Xd_min = X_min + utc_offset - epoch_compensate
 Xd_max = X_max + utc_offset - epoch_compensate
 
 # stats to be calculated here for Y-axes
-stats ifnamed using 4 name "Yd" nooutput
+stats ifnamed using 3 name "Yd" nooutput
 
 # ********************************************************* Statistics (L) *****
 # stats to be calculated here of column 2 (UX-epoch)
-stats ifnamew using 2 name "X" nooutput
+stats ifnamew using 1 name "X" nooutput
 Xw_min = X_min + utc_offset - epoch_compensate
 Xw_max = X_max + utc_offset - epoch_compensate
 
 # stats for Y-axis
-stats ifnamew using 4 name "Yw" nooutput
+stats ifnamew using 3 name "Yw" nooutput
 
 Ymax = max(max(Yd_max, Yh_max), Yw_max) + 0.5
 Ymin = min(min(Yd_min, Yh_min), Yw_min) - 0.5
@@ -97,7 +97,7 @@ set rmargin at screen LMPOS
 
 # ***** PLOT *****
 plot ifnamew \
-      using ($2+utc_offset):4 title " Spanning [V]" with lines lw 0.1 fc rgb "#ccbb0000"
+      using ($1+utc_offset):3 title " Spanning [V]" with lines lw 0.1 fc rgb "#ccbb0000"
       # with points pt 5 ps 0.2 fc rgb "#ccbb0000" \
 
 
@@ -129,7 +129,7 @@ set rmargin at screen MRPOS
 
 # ***** PLOT *****
 plot ifnamed \
-      using ($2+utc_offset):4 with lines lw 0.1 fc rgb "#ccbb0000"
+      using ($1+utc_offset):3 with lines lw 0.1 fc rgb "#ccbb0000"
       # with points pt 5 ps 0.2 fc rgb "#ccbb0000" \
 
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -160,7 +160,7 @@ set rmargin at screen RMARG
 
 # ***** PLOT *****
 plot ifnameh \
-      using ($2+utc_offset):4 with lines lw 0.1 fc rgb "#ccbb0000"
+      using ($1+utc_offset):3 with lines lw 0.1 fc rgb "#ccbb0000"
       # with points pt 5 ps 0.2 fc rgb "#ccbb0000" \
 
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

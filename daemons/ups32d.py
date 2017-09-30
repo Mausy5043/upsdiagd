@@ -114,7 +114,7 @@ def do_work():
     if (var[0] == 'battery.charge'):
       ups2 = float(var[1])
     if (var[0] == 'ups.load'):
-      ups3 = float(var[1])
+      ups3 = float(var[1])*100
     if (var[0] == 'battery.runtime'):
       ups4 = float(var[1])
 

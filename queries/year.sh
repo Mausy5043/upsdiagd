@@ -11,9 +11,9 @@ pushd "$HOME/upsdiagd/queries" >/dev/null || exit 1
   SELECT MIN(sample_epoch),                     \
     AVG(volt_in),                               \
     AVG(volt_bat),                              \
-    AVG(charge_bat),                            \
-    AVG(load_ups),                              \
-    AVG(runtime_bat)                            \
+    MIN(charge_bat),                            \
+    MIN(load_ups),                              \
+    MIN(runtime_bat)                            \
   FROM ups                                      \
   WHERE (sample_time >= NOW() - ${Y_INTERVAL})  \
     AND (sample_time <= NOW() - ${W_INTERVAL})  \

@@ -100,8 +100,10 @@ def do_work():
     upsc = str(subprocess.check_output(['upsc', 'ups@localhost']), 'utf-8').splitlines()
     pass
 
+  # ups0 and ups1 are disabled, because the current UPS (EATON) does not supply
+  # usable data for these graphs
   ups0 = -1.0
-  ups1 = 0.0
+  ups1 = -1.0
   for element in range(0, len(upsc) - 1):
     var = upsc[element].split(': ')
     # if (var[0] == 'input.voltage'):

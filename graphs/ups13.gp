@@ -38,7 +38,7 @@ Xh_min = X_min + utc_offset - epoch_compensate
 Xh_max = X_max + utc_offset - epoch_compensate
 
 # stats to be calculated here for Y-axes
-#stats ifnameh using 2 name "Yh" nooutput
+#stats ifnameh using 3 name "Yh" nooutput
 
 # ********************************************************* Statistics (M) *****
 # stats to be calculated here of column 2 (UX-epoch)
@@ -48,7 +48,7 @@ Xd_min = X_min + utc_offset - epoch_compensate
 Xd_max = X_max + utc_offset - epoch_compensate
 
 # stats to be calculated here for Y-axes
-#stats ifnamed using 2 name "Yd" nooutput
+#stats ifnamed using 3 name "Yd" nooutput
 
 # ********************************************************* Statistics (L) *****
 # stats to be calculated here of column 2 (UX-epoch)
@@ -100,7 +100,7 @@ set key reverse Left
 
 # ***** PLOT *****
 plot ifnamey \
-      using ($1+utc_offset):2 title " Spanning [V]" with lines lw 0.1 lc rgb "#ccbb0000"
+      using ($1+utc_offset):3 title " Spanning [V]" with lines lw 0.1 lc rgb "#ccbb0000"
 
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -131,7 +131,7 @@ unset key
 
 # ***** PLOT *****
 plot ifnamew \
-      using ($1+utc_offset):2 title " Spanning [V]" with lines lw 0.1 lc rgb "#ccbb0000"
+      using ($1+utc_offset):3 title " Spanning [V]" with lines lw 0.1 lc rgb "#ccbb0000"
       # with points pt 5 ps 0.2 fc rgb "#ccbb0000" \
 
 
@@ -163,7 +163,7 @@ set rmargin at screen MRPOS
 
 # ***** PLOT *****
 plot ifnamed \
-      using ($1+utc_offset):2 with lines lw 0.1 lc rgb "#ccbb0000"
+      using ($1+utc_offset):3 with lines lw 0.1 lc rgb "#ccbb0000"
       # with points pt 5 ps 0.2 fc rgb "#ccbb0000" \
 
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -194,7 +194,7 @@ set rmargin at screen RMARG
 
 # ***** PLOT *****
 plot ifnameh \
-      using ($1+utc_offset):2 with lines lw 0.1 lc rgb "#ccbb0000"
+      using ($1+utc_offset):3 with lines lw 0.1 lc rgb "#ccbb0000"
       # with points pt 5 ps 0.2 fc rgb "#ccbb0000" \
 
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

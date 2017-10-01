@@ -10,7 +10,7 @@ ifnamey = "/tmp/upsdiagd/mysql/upsy.csv"
 set output "/tmp/upsdiagd/site/img/ups13.png"
 
 # ******************************************************* General settings *****
-set terminal png enhanced font "Vera,9" size 1280,320
+set terminal png enhanced font "Vera,9" size 1280,480
 set datafile separator ';'
 set datafile missing "NaN"    # Ignore missing values
 set grid
@@ -81,7 +81,7 @@ set lmargin at screen LMARG
 set rmargin at screen RMARG
 
 # ***************************************************************** X-axis *****
-set xlabel "past year"       # X-axis label
+unset xlabel                 # X-axis label
 set xdata time               # Data on X-axis should be interpreted as time
 set timefmt "%s"             # Time in log-file is given in Unix format
 set format x "%b"            # Display time in 24 hour notation on the X axis

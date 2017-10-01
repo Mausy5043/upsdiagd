@@ -9,11 +9,21 @@ pushd "$HOME/upsdiagd/queries" >/dev/null || exit 1
   time mysql -h sql --skip-column-names -e  \
   "USE domotica;                                \
   SELECT MIN(sample_epoch),                     \
+    MIN(volt_in),                               \
     AVG(volt_in),                               \
+    MAX(volt_in),                               \
+    MIN(volt_bat),                              \
     AVG(volt_bat),                              \
+    MAX(volt_bat),                              \
+    MIN(charge_bat),                            \
     AVG(charge_bat),                            \
+    MAX(charge_bat),                            \
+    MIN(load_ups),                              \
     AVG(load_ups),                              \
-    AVG(runtime_bat)                            \
+    MAX(load_ups),                              \
+    MIN(runtime_bat),                           \
+    AVG(runtime_bat),                           \
+    MAX(runtime_bat)                            \
   FROM ups                                      \
   WHERE (sample_time >= NOW() - ${D_INTERVAL})  \
     AND (sample_time <= NOW() - ${DH_INTERVAL}) \

@@ -17,10 +17,10 @@ pushd "$HOME/upsdiagd" >/dev/null || exit 1
     #echo -n "UPS14"
     #time gnuplot -e "utc_offset='${UTCOFFSET}'" ./graphs/ups14.gp
     echo -n "UPS15"
-    time gnuplot -e "utc_offset='${UTCOFFSET}'" ./graphs/ups15.gp
+    time timeout 120s gnuplot -e "utc_offset='${UTCOFFSET}'" ./graphs/ups15.gp
     echo -n "UPS16"
-    time gnuplot -e "utc_offset='${UTCOFFSET}'" ./graphs/ups16.gp
+    time timeout 120s gnuplot -e "utc_offset='${UTCOFFSET}'" ./graphs/ups16.gp
     echo -n "UPS17"
-    time gnuplot -e "utc_offset='${UTCOFFSET}'" ./graphs/ups17.gp
+    time timeout 120s gnuplot -e "utc_offset='${UTCOFFSET}'" ./graphs/ups17.gp
   fi
 popd >/dev/null

@@ -91,8 +91,10 @@ def do_work():
     syslog.syslog(syslog.LOG_ALERT, "Waiting 10s ...")
 
     time.sleep(10)    # wait to let the driver crash properly
-    mf.syslog_trace("*** RESTARTING nut-driver.service ***", syslog.LOG_ALERT, DEBUG)
-    r = str(subprocess.check_output(['sudo', 'systemctl', 'restart',  'nut-driver.service']), 'utf-8').splitlines()
+    # mf.syslog_trace("*** RESTARTING nut-driver.service ***", syslog.LOG_ALERT, DEBUG)
+    # r = str(subprocess.check_output(['sudo', 'systemctl', 'restart',  'nut-driver.service']), 'utf-8').splitlines()
+    mf.syslog_trace("*** RESTARTING nut-server.service ***", syslog.LOG_ALERT, DEBUG)
+    r = str(subprocess.check_output(['sudo', 'systemctl', 'restart',  'nut-server.service']), 'utf-8').splitlines()
     mf.syslog_trace("Returned : {0}".format(r), False, DEBUG)
 
     time.sleep(15)

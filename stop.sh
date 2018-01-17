@@ -10,7 +10,7 @@ pushd "$HOME/upsdiagd" || exit 1
   # Check if DIAG daemons are running
   for daemon in $upslist; do
     # command the daemon to stop regardless if it is running or not.
-    eval "./ups${daemon}d.py stop"
+    eval "./daemons/ups${daemon}d.py stop"
     # kill off any rogue daemons by the same name (it happens sometimes)
     if [   $(pgrep -fc "ups${daemon}d.py") -ne 0 ]; then
       kill $(pgrep -f  "ups${daemon}d.py")
@@ -24,7 +24,7 @@ pushd "$HOME/upsdiagd" || exit 1
   # Check if SVC daemons are running
   for daemon in $srvclist; do
     # command the daemon to stop regardless if it is running or not.
-    eval "./ups${daemon}d.py stop"
+    eval "./daemons/ups${daemon}d.py stop"
     # kill off any rogue daemons by the same name (it happens sometimes)
     if [   $(pgrep -fc "ups${daemon}d.py") -ne 0 ]; then
       kill $(pgrep -f  "ups${daemon}d.py")

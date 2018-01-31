@@ -6,6 +6,7 @@
 
 HOSTNAME=$(cat /etc/hostname)
 BRANCH=$(cat "$HOME/.upsdiagd.branch")
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Wait for the daemons to finish their job. Prevents stale locks when restarting.
 #echo "Waiting 30s..."
@@ -22,7 +23,7 @@ if [ ! -d /tmp/upsdiagd/mysql ]; then
   chmod -R 755 /tmp/upsdiagd
 fi
 
-pushd "$HOME/upsdiagd" || exit 1
+pushd "${SCRIPT_DIR}/upsdiagd" || exit 1
   # shellcheck disable=SC1091
   source ./includes
   git fetch origin

@@ -20,9 +20,11 @@ cd upsdiagd
 
 ## Hardware:
 Raspberry Pi 1B connected to a UPS via USB cable.
+
 Known to work with:
 - APC Back-UPS 700 (BE-700GR)
 - EATON ProtectionStation 650
+
 (probably all UPSes that support the `usbhid-ups` driver)
 
 ## Attribution

@@ -9,7 +9,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 echo -n "Started UNinstalling UPSDIAGd on "; date
 
-pushd "$SCRIPT_DIR" || exit 1
+pushd "${SCRIPT_DIR}" || exit 1
   # shellcheck disable=SC1091
  source ./includes
 

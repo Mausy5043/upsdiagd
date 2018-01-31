@@ -1,5 +1,12 @@
 # UPSDIAGD
 
+Scripts are supplied that allow you to 
+* interogate a `usbhid-ups` compliant UPS
+* store specific data in a MySQL database (server not included; you'll need to set-up your own)
+* query the (not included) MySQL database for interesting data
+* plot some graphs
+* push graphs to a website (webserver not included; you'll need to set-up your own)
+
 ## Installing
 
 ```

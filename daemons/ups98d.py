@@ -20,6 +20,7 @@ DEBUG       = False
 IS_JOURNALD = os.path.isfile('/bin/journalctl')
 MYID        = "".join(list(filter(str.isdigit, os.path.realpath(__file__).split('/')[-1])))
 MYAPP       = os.path.realpath(__file__).split('/')[-3]
+MYAPPDIR    = "/".join(list(filter(str, os.path.realpath(__file__).split('/')[:-2])))
 NODE        = os.uname()[1]
 SQLMNT      = rnd(0, 59)
 SQLHR       = rnd(0, 23)
@@ -34,8 +35,7 @@ class MyDaemon(Daemon):
   def run():
     iniconf         = configparser.ConfigParser()
     inisection      = MYID
-    home            = os.path.expanduser('~')
-    s               = iniconf.read(home + '/' + MYAPP + '/config.ini')
+    s               = iniconf.read('/' + MYAPPDIR + '/config.ini')
     mf.syslog_trace("Config file   : {0}".format(s), False, DEBUG)
     mf.syslog_trace("Options       : {0}".format(iniconf.items(inisection)), False, DEBUG)
     mf.syslog_trace("getsqlday.sh  runs every 30 minutes starting at minute {0}".format(SQLMNT), syslog.LOG_DEBUG, DEBUG)
@@ -52,7 +52,7 @@ class MyDaemon(Daemon):
       try:
         starttime   = time.time()
 
-        do_mv_data(flock, home, scriptname)
+        do_mv_data(flock, "", scriptname)
 
         waittime    = sampletime - (time.time() - starttime) - (starttime % sampletime)
         if (waittime > 0):
@@ -75,7 +75,7 @@ def do_mv_data(flock, homedir, script):
 
   # Create the graphs based on the MySQL data every 3rd minute
   if ((minit % 3) == 0):
-    cmnd = homedir + '/' + MYAPP + '/mkgraphs.sh'
+    cmnd = '/' + MYAPPDIR + '/mkgraphs.sh'
     mf.syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
     cmnd = subprocess.call(cmnd)
     mf.syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
@@ -100,23 +100,23 @@ def getsqldata(homedir, nu):
   nowur = int(time.strftime('%H'))
   # data of last hour is updated every 3 minutes
   if ((minit % 3) == 0):
-    cmnd = homedir + '/' + MYAPP + '/queries/hour.sh'
+    cmnd = '/' + MYAPPDIR + '/queries/hour.sh'
     mf.syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
     cmnd = subprocess.call(cmnd)
     mf.syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
   # data of the last day is updated every 30 minutes
   if nu or ((minit % 30) == (SQLMNT % 30)):
-    cmnd = homedir + '/' + MYAPP + '/queries/day.sh'
+    cmnd = '/' + MYAPPDIR + '/queries/day.sh'
     mf.syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
     cmnd = subprocess.call(cmnd)
     mf.syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
   # dat of the last week is updated every 4 hours
   if nu or ((nowur % 4) == (SQLHR % 4) and (minit == SQLHRM)):
-    cmnd = homedir + '/' + MYAPP + '/queries/week.sh'
+    cmnd = '/' + MYAPPDIR + '/queries/week.sh'
     mf.syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
     cmnd = subprocess.call(cmnd)
     mf.syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
-    cmnd = homedir + '/' + MYAPP + '/queries/year.sh'
+    cmnd = '/' + MYAPPDIR + '/queries/year.sh'
     mf.syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
     cmnd = subprocess.call(cmnd)
     mf.syslog_trace("...:  {0}".format(cmnd), False, DEBUG)

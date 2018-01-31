@@ -20,6 +20,7 @@ DEBUG       = False
 IS_JOURNALD = os.path.isfile('/bin/journalctl')
 MYID        = "".join(list(filter(str.isdigit, os.path.realpath(__file__).split('/')[-1])))
 MYAPP       = os.path.realpath(__file__).split('/')[-3]
+MYAPPDIR    = "/".join(list(filter(str, os.path.realpath(__file__).split('/')[:-2])))
 NODE        = os.uname()[1]
 
 # initialise logging
@@ -31,8 +32,7 @@ class MyDaemon(Daemon):
   def run():
     iniconf         = configparser.ConfigParser()
     inisection      = MYID
-    home            = os.path.expanduser('~')
-    s               = iniconf.read(home + '/' + MYAPP + '/config.ini')
+    s               = iniconf.read('/' + MYAPPDIR + '/config.ini')
     mf.syslog_trace("Config file   : {0}".format(s), False, DEBUG)
     mf.syslog_trace("Options       : {0}".format(iniconf.items(inisection)), False, DEBUG)
     reporttime      = iniconf.getint(inisection, "reporttime")
@@ -70,7 +70,7 @@ def do_markdown(flock, fdata):
     upsbranch  = f.read().strip('\n')
 
   mf.lock(flock)
-  shutil.copyfile(home + '/' + MYAPP + '/default.md', fdata)
+  shutil.copyfile('/' + MYAPPDIR + '/default.md', fdata)
 
   with open(fdata, 'a') as f:
     mf.syslog_trace("writing {0}".format(fdata), False, DEBUG)

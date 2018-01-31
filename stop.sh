@@ -2,8 +2,9 @@
 
 # Use stop.sh to stop all daemons in one go
 # You can use update.sh to get everything started ups.
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-pushd "$HOME/upsdiagd" || exit 1
+pushd "${SCRIPT_DIR}" || exit 1
   # shellcheck disable=SC1091
   source ./includes
 

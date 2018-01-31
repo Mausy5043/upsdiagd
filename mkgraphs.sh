@@ -8,7 +8,9 @@ UTC=$(date -u -d "$LOCAL" +"%Y-%m-%d %H:%M:%S")  #remove timezone reference
 UTCSECONDS=$(date -d "$UTC" +%s)
 UTCOFFSET=$((LOCALSECONDS - UTCSECONDS))
 
-pushd "$HOME/upsdiagd" >/dev/null || exit 1
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+pushd "${SCRIPT_DIR}" >/dev/null || exit 1
   if [ $(wc -l < /tmp/upsdiagd/mysql/upsd.csv) -gt 5 ]; then
     # ups13 and ups14 are disabled, because the current UPS (EATON) does not supply
     # usable data for these graphs

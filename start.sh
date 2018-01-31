@@ -5,6 +5,7 @@
 
 HOSTNAME=$(hostname)
 BRANCH=$(cat "$HOME/.upsdiagd.branch")
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # make sure working tree exists
 if [ ! -d /tmp/upsdiagd/site/img ]; then
@@ -17,7 +18,7 @@ if [ ! -d /tmp/upsdiagd/mysql ]; then
   chmod -R 755 /tmp/upsdiagd
 fi
 
-pushd "$HOME/upsdiagd" || exit 1
+pushd "${SCRIPT_DIR}" || exit 1
   # shellcheck disable=SC1091
   source ./includes
 

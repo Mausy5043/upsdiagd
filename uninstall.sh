@@ -4,7 +4,7 @@
 # a `*boot` repo.
 
 # The hostname is in /etc/hostname prior to running `install.sh` here!
-HOSTNAME=$(cat /etc/hostname)
+HOSTNAME=$(hostname)
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 echo -n "Started UNinstalling UPSDIAGd on "; date

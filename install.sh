@@ -3,6 +3,8 @@
 # this repo gets installed either manually by the user or automatically by
 # a `*boot` repo.
 
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 ME=$(whoami)
 required_commonlibversion="0.4.2"
 commonlibbranch="v0_4"
@@ -67,7 +69,7 @@ if [ "${commonlibversion}" != "${required_commonlibversion}" ]; then
   echo
 fi
 
-pushd "$HOME/upsdiagd"
+pushd "${SCRIPT_DIR}"
   # To suppress git detecting changes by chmod:
   git config core.fileMode false
   # set the branch
@@ -79,9 +81,9 @@ pushd "$HOME/upsdiagd"
   sudo mkdir -p /etc/cron.d
   # Set up some cronjobs
   echo "# m h dom mon dow user  command" | sudo tee /etc/cron.d/upsdiagd
-  echo "$minit  * *   *   *   $ME    $HOME/upsdiagd/update.sh 2>&1 | logger -p info -t upsdiagd" | sudo tee --append /etc/cron.d/upsdiagd
+  echo "$minit  * *   *   *   $ME    $SCRIPT_DIR/update.sh 2>&1 | logger -p info -t upsdiagd" | sudo tee --append /etc/cron.d/upsdiagd
   # @reboot we allow for 10s for the network to come up:
-  echo "@reboot               $ME    sleep 10; $HOME/upsdiagd/update.sh 2>&1 | logger -p info -t upsdiagd" | sudo tee --append /etc/cron.d/upsdiagd
+  echo "@reboot               $ME    sleep 10; $SCRIPT_DIR/update.sh 2>&1 | logger -p info -t upsdiagd" | sudo tee --append /etc/cron.d/upsdiagd
 popd
 
 echo -n "Finished installation of upsdiagd on "; date

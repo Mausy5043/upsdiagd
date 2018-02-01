@@ -47,12 +47,12 @@ class MyDaemon(Daemon):
     scriptname      = iniconf.get(inisection, "lftpscript")
 
     sampletime      = reporttime/samplespercycle         # time [s] between samples
-    getsqldata(home, True)
+    getsqldata(True)
     while True:
       try:
         starttime   = time.time()
 
-        do_mv_data(flock, "", scriptname)
+        do_mv_data(flock, scriptname)
 
         waittime    = sampletime - (time.time() - starttime) - (starttime % sampletime)
         if (waittime > 0):
@@ -64,14 +64,14 @@ class MyDaemon(Daemon):
         mf.syslog_trace(traceback.format_exc(), syslog.LOG_CRIT, DEBUG)
         raise
 
-def do_mv_data(flock, homedir, script):
+def do_mv_data(flock, script):
   # wait 4 seconds for processes to finish
   # unlock(flock)  # remove stale lock
   time.sleep(4)
   minit = int(time.strftime('%M'))
 
   # Retrieve data from MySQL database
-  getsqldata(homedir, False)
+  getsqldata(False)
 
   # Create the graphs based on the MySQL data every 3rd minute
   if ((minit % 3) == 0):
@@ -95,7 +95,7 @@ def do_mv_data(flock, homedir, script):
     mf.syslog_trace("*** ERROR ***:  {0}".format(cmnd), syslog.LOG_CRIT, DEBUG)
     pass
 
-def getsqldata(homedir, nu):
+def getsqldata(nu):
   minit = int(time.strftime('%M'))
   nowur = int(time.strftime('%H'))
   # data of last hour is updated every 3 minutes

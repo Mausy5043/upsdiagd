@@ -18,6 +18,10 @@ cd upsdiagd
 ./update.sh
 ```
 
+## Additional software:
+This repo assumes you have already installed and configured `nut`
+For an example of the, please refer to [these files](https://github.com/Mausy5043/raspboot/tree/master/rbups)
+
 ## Hardware:
 Raspberry Pi 1B connected to a UPS via USB cable.
 

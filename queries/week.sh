@@ -3,7 +3,7 @@
 # Pull data from MySQL server.
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-pushd "${SCRIPT_DIR}/queries" >/dev/null || exit 1
+pushd "${SCRIPT_DIR}" >/dev/null || exit 1
   # shellcheck disable=SC1091
   source ./sql-includes || exit
 

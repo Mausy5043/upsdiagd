@@ -48,8 +48,9 @@ install_package "gnuplot-nox"
 
 # MySQL support (python3)
 install_package "mysql-client"
-install_package "libmysqlclient-dev"
-# install_package "python-mysqldb"  # only required by python 2
+# install_package "libmysqlclient-dev"  # not available in stretch
+install_package "libmariadbclient-dev"
+# install_package "python-mysqldb"      # only required by python 2
 sudo pip3 install mysqlclient
 
 commonlibversion=$(pip3 freeze |grep mausy5043 |cut -c 26-)

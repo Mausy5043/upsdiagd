@@ -143,11 +143,11 @@ class Graph(object):
   def draw(self, cmnd):
     """Draw the graphs"""
     mf.syslog_trace("...:  {0}".format(cmnd), False, DEBUG)
-    result = subprocess.call(cmnd)
-    return result
+    return subprocess.call(cmnd)
 
   def make(self):
     t0 = time.time()
+    result = 1
     if t0 >= self.timer:
       result = self.draw(self.command)
       t1 = time.time()

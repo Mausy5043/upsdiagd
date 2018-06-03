@@ -88,7 +88,7 @@ def do_markdown(flock, fdata):
     f.write(uname[0] + ' ' + uname[2] + ' ' + uname[3] + ' ' + uname[4] + ' ' + platform.platform() + '  \n')
 
     # branch
-    f.write('!!! upsdiagd   on: ' + upsbranch + '\n')
+    f.write('!!! upsdiagd   on: ' + upsbranch + '  \n')
     f.write('!!! ' + time.strftime("%Y.%m.%d %H:%M") + '\n\n')
 
     # upsc ups@localhost 2>/dev/null |grep -v "serial"

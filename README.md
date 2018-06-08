@@ -12,7 +12,7 @@ Scripts are supplied that allow you to
 ```
 sudo su -
 cd /path/to/where/you/want/store/upsdiagd
-git clone https://github.com/Mausy5043/upsdiagd.git
+git clone https://gitlab.com/mausy5043-diagnostics/upsdiagd.git
 cd upsdiagd
 ./install.sh
 ./update.sh
@@ -20,7 +20,7 @@ cd upsdiagd
 
 ## Additional software:
 This repo assumes you have already installed and configured `nut`.  
-For an example of the, please refer to [these files](https://github.com/Mausy5043/raspboot/tree/master/rbups)
+For an example of the, please refer to [these files](https://gitlab.com/mausy5043-installer/raspboot/tree/master/rbups)
 
 ## Hardware:
 Raspberry Pi 1B connected to a UPS via USB cable.

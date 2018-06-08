@@ -58,7 +58,7 @@ if [ "${commonlibversion}" != "${required_commonlibversion}" ]; then
   echo "Install common python functions..."
   sudo pip3 uninstall -y mausy5043-common-python
   pushd /tmp || exit 1
-    git clone -b "${commonlibbranch}" https://github.com/Mausy5043/mausy5043-common-python.git
+    git clone -b "${commonlibbranch}" https://gitlab.com/mausy5043-installer/mausy5043-common-python.git
     pushd /tmp/mausy5043-common-python || exit 1
       sudo ./setup.py install
     popd

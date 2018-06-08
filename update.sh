@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # update.sh is run periodically by a cronjob.
-# * It synchronises the local copy of upsdiagd with the current github BRANCH
+# * It synchronises the local copy of upsdiagd with the current GitLab BRANCH
 # * It checks the state of and (re-)starts daemons if they are not (yet) running.
 
 HOSTNAME=$(cat /etc/hostname)

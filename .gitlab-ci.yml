@@ -21,9 +21,10 @@ build_main:
   stage: build
   script:
     - echo "*** BUILD START ***"
-    - git fetch https://gitlab.com/mausy5043-installer/mausy5043-common-python.git
+    - git clone https://gitlab.com/mausy5043-installer/mausy5043-common-python.git
+    - pwd
+    - ls -al .
     - mausy5043-common-python/setup.py install
-    - ls -al /
     - tree -dL 2 /
     - echo "*** BUILD COMPLETE ***"
 

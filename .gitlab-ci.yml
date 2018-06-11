@@ -11,7 +11,7 @@ before_script:
   - apt-get update  -qqy >/dev/null
   - apt-get upgrade -qqy >/dev/null
   - apt-get install -qqy apt-utils
-  - apt-get install -qqy tree procps psmisc rsyslog mysql-client libmariadbclient-dev >/dev/null
+  - apt-get install -qqy tree procps psmisc rsyslog mysql-client libmariadbclient-dev git >/dev/null
   - apt-get install -qqy python3 build-essential python3-dev python3-pip >/dev/null
   - pip3 install -r requirements.txt
   - service rsyslog start
@@ -21,6 +21,8 @@ build_main:
   stage: build
   script:
     - echo "*** BUILD START ***"
+    - git fetch https://gitlab.com/mausy5043-installer/mausy5043-common-python.git
+    - mausy5043-common-python/setup.py install
     - ls -al /
     - tree -dL 2 /
     - echo "*** BUILD COMPLETE ***"

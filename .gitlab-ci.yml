@@ -2,8 +2,8 @@ image: debian:latest
 
 stages:
   - build
-  - lint
   - test
+  - lint
 
 before_script:
   - echo "vvv BEFORE vvv"
@@ -26,7 +26,7 @@ build_main:
     - cd mausy5043-common-python
     - ./setup.py install
     - cd ../upsdiagd
-    - tree -dL 2 ../..
+    - tree -dL 3 ../..
     - echo "*** BUILD COMPLETE ***"
 
 lint_pylama:
@@ -51,6 +51,12 @@ lint_shellcheck-queries:
 test_daemon-start-re-stop:
   stage: test
   script:
+   - cd ..
+   - git clone https://gitlab.com/mausy5043-installer/mausy5043-common-python.git
+   - cd mausy5043-common-python
+   - ./setup.py install
+   - cd ../upsdiagd
+   - tree -dL 3 ../..
    - daemons/ups32d.py start
    - daemons/ups32d.py restart
    - ps aux; sleep 60

@@ -63,14 +63,14 @@ test_daemon-start-re-stop:
    - daemons/ups32d.py stop
    - cat /var/log/syslog
 
-#test_daemon-test:
-#  stage: test
-#  script:
-#  - tests/testd.py test & tail -f /var/log/syslog
+test_daemon-test:
+  stage: test
+  script:
+  - tests/testd.py test & tail -f /var/log/syslog
 
-#test_smart:
-#  stage: test
-#  script:
-#  - tests/smartinfo.sh
-#  - tests/testsmart.py
-#  - cat /var/log/syslog
+test_smart:
+  stage: test
+  script:
+  - tests/smartinfo.sh
+  - tests/testsmart.py
+  - cat /var/log/syslog

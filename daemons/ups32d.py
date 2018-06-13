@@ -24,6 +24,7 @@ NODE        = os.uname()[1]
 # initialise logging
 syslog.openlog(ident=MYAPP, facility=syslog.LOG_LOCAL0)
 
+
 class MyDaemon(Daemon):
   """Definition of daemon."""
   @staticmethod
@@ -81,6 +82,7 @@ class MyDaemon(Daemon):
         mf.syslog_trace(traceback.format_exc(), syslog.LOG_CRIT, DEBUG)
         raise
 
+
 def do_work():
   # 5 datapoints gathered here
   try:
@@ -121,6 +123,7 @@ def do_work():
       ups4 = float(var[1])
 
   return '{0}, {1}, {2}, {3} ,{4}'.format(ups0, ups1, ups2, ups3, ups4)
+
 
 def do_report(result, flock, fdata):
   # Get the time and date in human-readable form and UN*X-epoch...

@@ -30,6 +30,7 @@ SQL_UPDATE_YEAR   = 8   # in hours
 # initialise logging
 syslog.openlog(ident=MYAPP, facility=syslog.LOG_LOCAL0)
 
+
 class MyDaemon(Daemon):
   """Definition of daemon."""
   @staticmethod
@@ -66,6 +67,7 @@ class MyDaemon(Daemon):
         mf.syslog_trace("Unexpected error in run()", syslog.LOG_CRIT, DEBUG)
         mf.syslog_trace(traceback.format_exc(), syslog.LOG_CRIT, DEBUG)
         raise
+
 
 class SqlDataFetch(object):
   """
@@ -131,6 +133,7 @@ class SqlDataFetch(object):
       # dt = t1 - t0  # determine query duration
     return time.time() - ts
 
+
 class Graph(object):
   """docstring for Graph."""
   def __init__(self, updatetime):
@@ -154,6 +157,7 @@ class Graph(object):
       self.timer = t1 + self.updatetime + rnd(-60, 60)
     return result
 
+
 def do_stuff(flock, script):
   # wait 4 seconds for processes to finish
   # unlock(flock)  # remove stale lock
@@ -168,6 +172,7 @@ def do_stuff(flock, script):
   mf.syslog_trace("...trendgrph:  {0}".format(result), False, DEBUG)
   if (result == 0):
     upload_page(script)
+
 
 def upload_page(script):
   try:
@@ -186,6 +191,7 @@ def upload_page(script):
     mf.syslog_trace("***ERROR***:    {0}".format(cmnd), syslog.LOG_ERR, DEBUG)
     time.sleep(17*60)             # wait 17 minutes for the router to restart.
     pass
+
 
 def write_lftp(script):
   with open(script, 'w') as f:

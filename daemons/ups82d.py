@@ -26,6 +26,7 @@ NODE        = os.uname()[1]
 # initialise logging
 syslog.openlog(ident=MYAPP, facility=syslog.LOG_LOCAL0)
 
+
 class MyDaemon(Daemon):
   """Definition of daemon."""
   @staticmethod
@@ -60,6 +61,7 @@ class MyDaemon(Daemon):
         mf.syslog_trace("Unexpected error in run()", syslog.LOG_CRIT, DEBUG)
         mf.syslog_trace(traceback.format_exc(), syslog.LOG_CRIT, DEBUG)
         raise
+
 
 def do_markdown(flock, fdata):
   home              = os.path.expanduser('~')

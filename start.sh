@@ -24,7 +24,7 @@ pushd "${SCRIPT_DIR}" || exit 1
   # Check if DIAG daemons are running
   for daemon in $upslist; do
     if [ -e "/tmp/upsdiagd/${daemon}.pid" ]; then
-      if ! kill -0 $(cat "/tmp/upsdiagd/${daemon}.pid")  > /dev/null 2>&1; then
+      if ! kill -0 "$(cat "/tmp/upsdiagd/${daemon}.pid")"  > /dev/null 2>&1; then
         logger -p user.err -t upsdiagd-restarter "  * Stale daemon ${daemon} pid-file found."
         rm "/tmp/upsdiagd/${daemon}.pid"
           echo "  * Start DIAG ${daemon}"
@@ -40,7 +40,7 @@ pushd "${SCRIPT_DIR}" || exit 1
   # Check if SVC daemons are running
   for daemon in $srvclist; do
     if [ -e "/tmp/upsdiagd/${daemon}.pid" ]; then
-      if ! kill -0 $(cat "/tmp/upsdiagd/${daemon}.pid")  > /dev/null 2>&1; then
+      if ! kill -0 "$(cat "/tmp/upsdiagd/${daemon}.pid")"  > /dev/null 2>&1; then
         logger -p user.err -t upsdiagd-restarter "* Stale daemon ${daemon} pid-file found."
         rm "/tmp/upsdiagd/${daemon}.pid"
           echo "  * Start UPSVC ${daemon}"

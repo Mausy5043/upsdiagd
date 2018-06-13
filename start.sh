@@ -4,7 +4,6 @@
 # It checks the state of and (re-)starts daemons if they are not (yet) running.
 
 HOSTNAME=$(hostname)
-BRANCH=$(cat "$HOME/.upsdiagd.branch")
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # make sure working tree exists

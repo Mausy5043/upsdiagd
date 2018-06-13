@@ -160,7 +160,7 @@ if __name__ == "__main__":
       daemon.stop()
     elif 'restart' == sys.argv[1]:
       daemon.restart()
-    elif 'foreground' == sys.argv[1]:
+    elif 'debug' == sys.argv[1]:
       # assist with debugging.
       print("Debug-mode started. Use <Ctrl>+C to stop.")
       DEBUG = True

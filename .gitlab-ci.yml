@@ -56,21 +56,9 @@ test_daemon-start-re-stop:
    - cd mausy5043-common-python
    - ./setup.py install
    - cd ../upsdiagd
-   - tree -dL 3 ../..
    - daemons/ups32d.py start
+   - ps aux; sleep 60
    - daemons/ups32d.py restart
    - ps aux; sleep 60
    - daemons/ups32d.py stop
-   - cat /var/log/syslog
-
-test_daemon-test:
-  stage: test
-  script:
-  - tests/testd.py test & tail -f /var/log/syslog
-
-test_smart:
-  stage: test
-  script:
-  - tests/smartinfo.sh
-  - tests/testsmart.py
-  - cat /var/log/syslog
+   - tail -n 100 /var/log/syslog

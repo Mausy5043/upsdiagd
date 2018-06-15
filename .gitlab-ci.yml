@@ -47,18 +47,3 @@ lint_shellcheck-queries:
   script:
     - apt-get install -qqy shellcheck >/dev/null
     - shellcheck --format=gcc --external-sources queries/*.sh
-
-test_daemon-start-re-stop:
-  stage: test
-  script:
-   - cd ..
-   - git clone https://gitlab.com/mausy5043-installer/mausy5043-common-python.git
-   - cd mausy5043-common-python
-   - ./setup.py install
-   - cd ../upsdiagd
-   - daemons/ups32d.py start
-   - ps aux; sleep 60
-   - daemons/ups32d.py restart
-   - ps aux; sleep 60
-   - daemons/ups32d.py stop
-   - tail -n 100 /var/log/syslog

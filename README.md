@@ -1,4 +1,4 @@
-# UPSDIAGD
+# UPSDIAGD [![pipeline status](https://gitlab.com/mausy5043-diagnostics/upsdiagd/badges/v2/pipeline.svg)](https://gitlab.com/mausy5043-diagnostics/upsdiagd/commits/v2)
 
 Scripts are supplied that allow you to 
 * interrogate a `usbhid-ups` compliant UPS

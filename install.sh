@@ -75,7 +75,7 @@ pushd "${SCRIPT_DIR}"
   git config core.fileMode false
   # set the branch
   if [ ! -e "$HOME/.upsdiagd.branch" ]; then
-    echo "v2" > "$HOME/.upsdiagd.branch"
+    echo "v3" > "$HOME/.upsdiagd.branch"
   fi
 
   # Create the /etc/cron.d directory if it doesn't exist

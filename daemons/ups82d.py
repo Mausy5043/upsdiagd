@@ -41,10 +41,7 @@ class MyDaemon(Daemon):
     samplespercycle = iniconf.getint(inisection, "samplespercycle")
     flock           = iniconf.get(inisection, "lockfile")
     fdata           = iniconf.get(inisection, "markdown")
-
-    # samples         = samplesperCycle * cycles          # total number of samples averaged
-    sampletime      = reporttime/samplespercycle        # time [s] between samples
-    # cycleTime       = samples * sampleTime              # time [s] per cycle
+    sampletime      = reporttime / samplespercycle        # time [s] between samples
 
     while True:
       try:

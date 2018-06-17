@@ -56,10 +56,7 @@ class MyDaemon(Daemon):
     # cycles          = iniconf.getint(inisection, "cycles")
     samplespercycle = iniconf.getint(inisection, "samplespercycle")
     flock           = iniconf.get(inisection, "lockfile")
-
-    # samples         = samplesperCycle * cycles              # total number of samples averaged
-    sampletime      = reporttime/samplespercycle         # time [s] between samples
-    # cycleTime       = samples * sampleTime                # time [s] per cycle
+    sampletime      = reporttime / samplespercycle         # time [s] between samples
 
     while True:
       try:
@@ -92,7 +89,7 @@ def do_writesample(cnsql, cmd, sample):
     cnsql.commit()
     cursql.close()
   except mdb.IntegrityError as e:
-    mf.syslog_trace("DB error : {0}".format(e.__str__), syslog.LOG_ERR,  DEBUG)
+    mf.syslog_trace("DB error : {0}".format(e.__str__), syslog.LOG_ERR, DEBUG)
     if cursql:
       cursql.close()
       mf.syslog_trace(" *** Closed MySQL connection in do_writesample() ***", syslog.LOG_ERR, DEBUG)

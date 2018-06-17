@@ -39,7 +39,6 @@ class MyDaemon(Daemon):
     samplespercycle = iniconf.getint(inisection, "samplespercycle")
     flock           = iniconf.get(inisection, "lockfile")
     fdata           = iniconf.get(inisection, "resultfile")
-
     samples         = samplespercycle * cycles           # total number of samples averaged
     sampletime      = reporttime / samplespercycle         # time [s] between samples
 
@@ -56,7 +55,7 @@ class MyDaemon(Daemon):
         data.append([float(d) for d in result])
         if (len(data) > samples):
           data.pop(0)
-        mf.syslog_trace("Data     : {0}".format(data),   False, DEBUG)
+        mf.syslog_trace("Data     : {0}".format(data), False, DEBUG)
 
         # report sample average
         if (starttime % reporttime < sampletime):
@@ -65,7 +64,7 @@ class MyDaemon(Daemon):
           # not all entries should be float
           # ['234.000', '13.700', '100.000', '20.000', '1447.000']
           averages = [float(format(d / len(data), '.3f')) for d in somma]
-          mf.syslog_trace("Averages : {0}".format(averages),  False, DEBUG)
+          mf.syslog_trace("Averages : {0}".format(averages), False, DEBUG)
           do_report(averages, flock, fdata)
 
         waittime    = sampletime - (time.time() - starttime) - (starttime % sampletime)
@@ -95,7 +94,7 @@ def do_work():
     # mf.syslog_trace("*** RESTARTING nut-driver.service ***", syslog.LOG_ALERT, DEBUG)
     # r = str(subprocess.check_output(['sudo', 'systemctl', 'restart',  'nut-driver.service']), 'utf-8').splitlines()
     mf.syslog_trace("*** RESTARTING nut-server.service ***", syslog.LOG_ALERT, DEBUG)
-    r = str(subprocess.check_output(['sudo', 'systemctl', 'restart',  'nut-server.service']), 'utf-8').splitlines()
+    r = str(subprocess.check_output(['sudo', 'systemctl', 'restart', 'nut-server.service']), 'utf-8').splitlines()
     mf.syslog_trace("Returned : {0}".format(r), False, DEBUG)
 
     time.sleep(15)
@@ -117,7 +116,7 @@ def do_work():
     if (var[0] == 'battery.charge'):
       ups2 = float(var[1])
     if (var[0] == 'ups.load'):
-      ups3 = float(var[1])*10
+      ups3 = float(var[1]) * 10
     if (var[0] == 'battery.runtime'):
       ups4 = float(var[1])
 

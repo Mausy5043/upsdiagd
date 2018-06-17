@@ -36,7 +36,7 @@ lint_python:
     - pip3 install pylama pylint pycodestyle pydocstyle
     - pylama --skip="build/*" --ignore=E111,E221,E114,E501,C901
     - pycodestyle --ignore=E111,E221,E114,E501,C901 .
-    - pylint --rcfile=.pylintrc *
+    - pylint --rcfile=.pylintrc *.py
     - pydocstyle *
 
 lint_shellcheck-main:
@@ -44,7 +44,6 @@ lint_shellcheck-main:
   script:
     - apt-get install -qqy shellcheck >/dev/null
     - shellcheck --format=gcc --external-sources *.sh
-
 
 lint_shellcheck-queries:
   stage: lint

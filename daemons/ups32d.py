@@ -41,10 +41,9 @@ class MyDaemon(Daemon):
     fdata           = iniconf.get(inisection, "resultfile")
 
     samples         = samplespercycle * cycles           # total number of samples averaged
-    sampletime      = reporttime/samplespercycle         # time [s] between samples
+    sampletime      = reporttime / samplespercycle         # time [s] between samples
 
     data            = []                                 # array for holding sampledata
-    # raw             = [0] * 8                            # array for holding previous
 
     while True:
       try:
@@ -126,6 +125,7 @@ def do_work():
 
 
 def do_report(result, flock, fdata):
+  """Push the results out to a file."""
   # Get the time and date in human-readable form and UN*X-epoch...
   outdate  = time.strftime('%Y-%m-%dT%H:%M:%S')
   outepoch = int(time.strftime('%s'))

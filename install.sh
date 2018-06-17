@@ -6,8 +6,8 @@
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 ME=$(whoami)
-required_commonlibversion="0.4.2"
-commonlibbranch="v0_4"
+required_commonlibversion="0.5.4"
+commonlibbranch="v0_5"
 
 echo -n "Started installing UPSDIAGd on "; date
 minit=$(echo $RANDOM/555 |bc)

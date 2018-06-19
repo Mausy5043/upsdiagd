@@ -34,8 +34,8 @@ lint_python:
   stage: lint
   script:
     - pip3 install pylama pylint pycodestyle pydocstyle
-    - pylama --skip="build/*" --ignore=C901,E111,E114,E121,E123,E126,E133,E221,E226,E241,E242,E501,E704,W503,W504,W505
-    - pycodestyle --ignore=E111,E221,E114,E501,C901 .
+    - pylama --skip="build/*" --ignore=C901,E111,E114,E221,E501
+    - pycodestyle --ignore=C901,E111,E114,E121,E123,E126,E133,E221,E226,E241,E242,E501,E704,W503,W504,W505 .
     - pylint --rcfile=.pylintrc *.py
     - pydocstyle *
 

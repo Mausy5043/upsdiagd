@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Communicates with the UPS.
+"""Communicate with the UPS and gather data."""
 
 import configparser
 import os
@@ -26,7 +26,6 @@ syslog.openlog(ident=MYAPP, facility=syslog.LOG_LOCAL0)
 
 
 class MyDaemon(Daemon):
-  """Definition of daemon."""
   @staticmethod
   def run():
     iniconf         = configparser.ConfigParser()

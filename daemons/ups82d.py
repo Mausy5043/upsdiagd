@@ -28,7 +28,6 @@ syslog.openlog(ident=MYAPP, facility=syslog.LOG_LOCAL0)
 
 
 class MyDaemon(Daemon):
-  """Definition of daemon."""
   @staticmethod
   def run():
     iniconf         = configparser.ConfigParser()

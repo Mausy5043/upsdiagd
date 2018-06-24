@@ -26,38 +26,35 @@ syslog.openlog(ident=MYAPP, facility=syslog.LOG_LOCAL0)
 
 
 class MyDaemon(Daemon):
+  """Override Daemon-class run() function."""
+
   @staticmethod
   def run():
-    iniconf         = configparser.ConfigParser()
-    inisection      = MYID
-    s               = iniconf.read('/' + MYAPPDIR + '/config.ini')
-    mf.syslog_trace("Config file   : {0}".format(s), False, DEBUG)
-    mf.syslog_trace("Options       : {0}".format(iniconf.items(inisection)), False, DEBUG)
-    reporttime      = iniconf.getint(inisection, "reporttime")
-    cycles          = iniconf.getint(inisection, "cycles")
-    samplespercycle = iniconf.getint(inisection, "samplespercycle")
-    flock           = iniconf.get(inisection, "lockfile")
-    fdata           = iniconf.get(inisection, "resultfile")
-    samples         = samplespercycle * cycles           # total number of samples averaged
-    sampletime      = reporttime / samplespercycle         # time [s] between samples
+    """Execute main loop."""
+    iniconf          = configparser.ConfigParser()
+    iniconf.read('/' + MYAPPDIR + '/config.ini')
+    report_time      = iniconf.getint(MYID, "reporttime")
+    flock            = iniconf.get(MYID, "lockfile")
+    fdata            = iniconf.get(MYID, "resultfile")
+    samples_averaged = iniconf.getint(MYID, "samplespercycle") * iniconf.getint(MYID, "cycles")
+    sample_time      = report_time / iniconf.getint(MYID, "samplespercycle")
 
     data            = []                                 # array for holding sampledata
 
     while True:
       try:
-        starttime     = time.time()
-
-        result        = do_work()
-        result        = result.split(',')
+        start_time = time.time()
+        result = do_work()
+        result = result.split(',')
         mf.syslog_trace("Result   : {0}".format(result), False, DEBUG)
         # data.append(list(map(int, result)))
         data.append([float(d) for d in result])
-        if (len(data) > samples):
+        if len(data) > samples_averaged:
           data.pop(0)
         mf.syslog_trace("Data     : {0}".format(data), False, DEBUG)
 
         # report sample average
-        if (starttime % reporttime < sampletime):
+        if start_time % report_time < sample_time:
           # somma       = list(map(sum, zip(*data)))
           somma = [sum(d) for d in zip(*data)]
           # not all entries should be float
@@ -66,13 +63,15 @@ class MyDaemon(Daemon):
           mf.syslog_trace("Averages : {0}".format(averages), False, DEBUG)
           do_report(averages, flock, fdata)
 
-        waittime    = sampletime - (time.time() - starttime) - (starttime % sampletime)
-        if (waittime > 0):
-          mf.syslog_trace("Waiting  : {0}s".format(waittime), False, DEBUG)
+        pause_time    = (sample_time
+                         - (time.time() - start_time)
+                         - (start_time % sample_time))
+        if pause_time > 0:
+          mf.syslog_trace("Waiting  : {0}s".format(pause_time), False, DEBUG)
           mf.syslog_trace("................................", False, DEBUG)
-          time.sleep(waittime)
+          time.sleep(pause_time)
         else:
-          mf.syslog_trace("Behind   : {0}s".format(waittime), False, DEBUG)
+          mf.syslog_trace("Behind   : {0}s".format(pause_time), False, DEBUG)
           mf.syslog_trace("................................", False, DEBUG)
       except Exception:
         mf.syslog_trace("Unexpected error in run()", syslog.LOG_CRIT, DEBUG)
@@ -81,42 +80,38 @@ class MyDaemon(Daemon):
 
 
 def do_work():
+  """Do stuff."""
   # 5 datapoints gathered here
   try:
     upsc = str(subprocess.check_output(['upsc', 'ups@localhost']), 'utf-8').splitlines()
   except subprocess.CalledProcessError:
-    # mf.syslog_trace("Unexpected error in do_work()", syslog.LOG_CRIT, DEBUG)
-    # mf.syslog_trace(traceback.format_exc(), syslog.LOG_CRIT, DEBUG)
     syslog.syslog(syslog.LOG_ALERT, "Waiting 10s ...")
 
     time.sleep(10)    # wait to let the driver crash properly
-    # mf.syslog_trace("*** RESTARTING nut-driver.service ***", syslog.LOG_ALERT, DEBUG)
-    # r = str(subprocess.check_output(['sudo', 'systemctl', 'restart',  'nut-driver.service']), 'utf-8').splitlines()
     mf.syslog_trace("*** RESTARTING nut-server.service ***", syslog.LOG_ALERT, DEBUG)
-    r = str(subprocess.check_output(['sudo', 'systemctl', 'restart', 'nut-server.service']), 'utf-8').splitlines()
-    mf.syslog_trace("Returned : {0}".format(r), False, DEBUG)
+    redo = str(subprocess.check_output(['sudo', 'systemctl', 'restart', 'nut-server.service']), 'utf-8').splitlines()
+    mf.syslog_trace("Returned : {0}".format(redo), False, DEBUG)
 
     time.sleep(15)
     mf.syslog_trace("!!! Retrying communication with UPS !!!", syslog.LOG_ALERT, DEBUG)
     upsc = str(subprocess.check_output(['upsc', 'ups@localhost']), 'utf-8').splitlines()
-    pass
 
   # ups0 and ups1 are disabled, because the current UPS (EATON) does not supply
   # usable data for these graphs
   ups0 = -1.0
   ups1 = -1.0
-  for element in range(0, len(upsc) - 1):
-    var = upsc[element].split(': ')
-    # if (var[0] == 'input.voltage'):
-    if (var[0] == 'output.voltage'):
+  for element in upsc:
+    var = element.split(': ')
+    # if var[0] == 'input.voltage':
+    if var[0] == 'output.voltage':
       ups0 = float(var[1])
-    if (var[0] == 'battery.voltage'):
+    if var[0] == 'battery.voltage':
       ups1 = float(var[1])
-    if (var[0] == 'battery.charge'):
+    if var[0] == 'battery.charge':
       ups2 = float(var[1])
-    if (var[0] == 'ups.load'):
+    if var[0] == 'ups.load':
       ups3 = float(var[1]) * 10
-    if (var[0] == 'battery.runtime'):
+    if var[0] == 'battery.runtime':
       ups4 = float(var[1])
 
   return '{0}, {1}, {2}, {3} ,{4}'.format(ups0, ups1, ups2, ups3, ups4)
@@ -125,27 +120,27 @@ def do_work():
 def do_report(result, flock, fdata):
   """Push the results out to a file."""
   # Get the time and date in human-readable form and UN*X-epoch...
-  outdate  = time.strftime('%Y-%m-%dT%H:%M:%S')
-  outepoch = int(time.strftime('%s'))
+  out_date  = time.strftime('%Y-%m-%dT%H:%M:%S')
+  out_epoch = int(time.strftime('%s'))
   # round to current minute to ease database JOINs
   # outEpoch = outEpoch - (outEpoch % 60)
   result   = ', '.join(map(str, result))
   mf.lock(flock)
-  with open(fdata, 'a') as f:
-    f.write('{0}, {1}, {2}\n'.format(outdate, outepoch, result))
+  with open(fdata, 'a') as result_file:
+    result_file.write('{0}, {1}, {2}\n'.format(out_date, out_epoch, result))
   mf.unlock(flock)
 
 
 if __name__ == "__main__":
-  daemon = MyDaemon('/tmp/' + MYAPP + '/' + MYID + '.pid')
+  daemon = MyDaemon('/tmp/' + MYAPP + '/' + MYID + '.pid')  # pylint: disable=C0103
   if len(sys.argv) == 2:
-    if 'start' == sys.argv[1]:
+    if sys.argv[1] == 'start':
       daemon.start()
-    elif 'stop' == sys.argv[1]:
+    elif sys.argv[1] == 'stop':
       daemon.stop()
-    elif 'restart' == sys.argv[1]:
+    elif sys.argv[1] == 'restart':
       daemon.restart()
-    elif 'debug' == sys.argv[1]:
+    elif sys.argv[1] == 'debug':
       # assist with debugging.
       print("Debug-mode started. Use <Ctrl>+C to stop.")
       DEBUG = True

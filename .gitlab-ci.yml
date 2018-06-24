@@ -33,11 +33,19 @@ build_main:
 lint_python:
   stage: lint
   script:
+    - pushd ..
+    - git clone https://gitlab.com/mausy5043-installer/mausy5043-common-python.git
+    - pushd mausy5043-common-python
+    - ./setup.py install
+    - popd
+    - popd
     - pip3 install pylama pylint pycodestyle pydocstyle
+    - pushd daemons
     - pylama --skip="build/*" --ignore=C901,E111,E114,E221,E501
     - pycodestyle --ignore=C901,E111,E114,E121,E123,E126,E133,E221,E226,E241,E242,E501,E704,W503,W504,W505 .
-    - pylint --rcfile=.pylintrc *.py
-    - pydocstyle *
+    - pylint --rcfile=../.pylintrc *.py
+    - pydocstyle --ignore=D100,D107,D203,D212,D213,D214,D215,D404,D405,D406,D407,D408,D409,D410,D411 *
+    - popd
 
 lint_shellcheck-main:
   stage: lint

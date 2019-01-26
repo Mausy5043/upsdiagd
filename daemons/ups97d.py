@@ -35,7 +35,7 @@ class MyDaemon(Daemon):
   def run():
     """Execute main loop."""
     try:                 # Initialise MySQLdb
-      consql    = mdb.connect(host='sql', db='domotica', read_default_file='~/.my.ups.cnf')
+      consql    = mdb.connect(host='boson', db='domotica', read_default_file='~/.my.ups.cnf')
       if consql.open:    # dB initialised succesfully -> get a cursor on the dB.
         cursql  = consql.cursor()
         cursql.execute("SELECT VERSION()")

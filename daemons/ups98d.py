@@ -22,9 +22,9 @@ MYID        = "".join(list(filter(str.isdigit, os.path.realpath(__file__).split(
 MYAPP       = os.path.realpath(__file__).split('/')[-3]
 MYAPPDIR    = "/".join(list(filter(str, os.path.realpath(__file__).split('/')[:-2])))
 NODE        = os.uname()[1]
-GRAPH_UPDATE    = 30   # in minutes
+GRAPH_UPDATE    = 3    # in minutes
 SQL_UPDATE_HOUR = GRAPH_UPDATE  # in minutes (shouldn't be shorter than GRAPH_UPDATE)
-SQL_UPDATE_DAY  = 60  # in minutes
+SQL_UPDATE_DAY  = 27  # in minutes
 SQL_UPDATE_WEEK = 4   # in hours
 SQL_UPDATE_YEAR = 8   # in hours
 

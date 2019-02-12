@@ -31,6 +31,7 @@ pushd "${SCRIPT_DIR}" >/dev/null || exit 1
     AND (sample_time <= NOW() - ${W_INTERVAL})  \
   GROUP BY YEAR(sample_time),                   \
            WEEK(sample_time, 3)                 \
+  ORDER BY sample_epoch                         \
   ;"                                            \
   | sed 's/\t/;/g;s/\n//g' > "${DATASTORE}/upsy.csv"
 popd >/dev/null

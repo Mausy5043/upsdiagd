@@ -73,8 +73,8 @@ def do_markdown(flock, fdata):
     # usable data for these graphs
     # file_handle.write('![A GNUplot image should be here: ups13.png](img/ups13.png)\n')
     # file_handle.write('![A GNUplot image should be here: ups14.png](img/ups14.png)\n')
-    file_handle.write('![A GNUplot image should be here: ups15.png](img/ups15.png)\n')
     file_handle.write('![A GNUplot image should be here: ups16.png](img/ups16.png)\n')
+    file_handle.write('![A GNUplot image should be here: ups15.png](img/ups15.png)\n')
     file_handle.write('![A GNUplot image should be here: ups17.png](img/ups17.png)\n')
 
     # System ID

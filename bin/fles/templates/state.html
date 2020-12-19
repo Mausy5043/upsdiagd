@@ -29,16 +29,16 @@
 
         <div class="row">
             <div class="col">
-                <h3>{{ temperature }}</h3>
+                <h3>{{ volt_in }}</h3>
                 Temperatuur
             </div>
             <div class="col">
-                <h4>{{ humidity }}</h4>
+                <h4>{{ load_ups }}</h4>
                 <h4>{{ moisture }}</h4>
                 Vochtigheid
             </div>
             <div class="col">
-                <h3>{{ pressure }}</h3>
+                <h3>{{ charge_bat }}</h3>
                 Luchtdruk
             </div>
             <div class="col">
@@ -55,10 +55,10 @@
 
 <div class="container">
     <div class="jumbotron">
-        <img src="{{ temperature_img }}" class="img-fluid">
+        <img src="{{ volt_in_img }}" class="img-fluid">
         <img src="{{ freq_img }}" class="img-fluid">
         <img src="{{ moisture_img }}" class="img-fluid">
-        <img src="{{ pressure_img }}" class="img-fluid">
+        <img src="{{ charge_bat_img }}" class="img-fluid">
         <img src="{{ co2_img }}" class="img-fluid">
         <img src="{{ voc_img }}" class="img-fluid">
     </div>

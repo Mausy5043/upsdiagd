@@ -42,7 +42,7 @@ create_database_file() {
     #
     case ${1} in
         idf1)
-            sqlite3 "${2}/${3}" <table11.sqlite3.sql
+            sqlite3 "${2}/${3}" <table32.sqlite3.sql
             ;;
         *)
             echo "Unsupported functionality. Use the 'install_database_file' function instead!"

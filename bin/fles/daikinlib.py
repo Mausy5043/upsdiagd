@@ -33,10 +33,10 @@ Example usage:
  'en_ipw_sep': '1', 'en_mompow': '0', 'hmlmt_l': '10.0', 'notice_ip_int': '3600', 'notice_sync_int': '60'
 }
 
-#>>> API.target_temperature
+#>>> API.target_volt_in
 22.0
-#>>> API.target_temperature =  22.5
-#>>> API.target_temperature
+#>>> API.target_volt_in =  22.5
+#>>> API.target_volt_in
 22.5
 
 ref:
@@ -73,8 +73,8 @@ class Daikin:
 
     ATTRIBUTES = [
         "power",
-        "target_temperature",
-        "target_humidity",
+        "target_volt_in",
+        "target_load_ups",
         "mode",
         "fan_rate",
         "fan_direction",
@@ -87,8 +87,8 @@ class Daikin:
         "current_month_power_consumption",
         "price_int",
         "compressor_frequency",
-        "inside_temperature",
-        "outside_temperature",
+        "inside_volt_in",
+        "outside_volt_in",
     ]
 
     _host = None
@@ -233,18 +233,18 @@ class Daikin:
         return int(self._get_control()["pow"])
 
     @property
-    def target_temperature(self):
+    def target_volt_in(self):
         """
-        target temperature
+        target volt_in
         range of accepted values determined by mode: AUTO:18-31, HOT:10-31, COLD:18-33
         :return: degrees centigrade
         """
         return float(self._get_control()["stemp"])
 
     @property
-    def target_humidity(self):
+    def target_load_ups(self):
         """
-        target humidity
+        target load_ups
         :return: 0
         """
         return float(self._get_control()["shum"])
@@ -280,12 +280,12 @@ class Daikin:
     def power(self, value):
         self._control_set("pow", value)
 
-    @target_temperature.setter
-    def target_temperature(self, value):
+    @target_volt_in.setter
+    def target_volt_in(self, value):
         self._control_set("stemp", value)
 
-    @target_humidity.setter
-    def target_humidity(self, value):
+    @target_load_ups.setter
+    def target_load_ups(self, value):
         self._control_set("shum", value)
 
     @mode.setter
@@ -386,17 +386,17 @@ class Daikin:
         return int(self._get_sensor()["cmpfreq"])
 
     @property
-    def inside_temperature(self):
+    def inside_volt_in(self):
         """
-        inside current temperature
+        inside current volt_in
         :return: degrees centigrade
         """
         return float(self._get_sensor()["htemp"])
 
     @property
-    def outside_temperature(self):
+    def outside_volt_in(self):
         """
-        outside current temperature
+        outside current volt_in
         :return: degrees centigrade
         """
         return float(self._get_sensor()["otemp"])

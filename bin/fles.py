@@ -2,4 +2,4 @@
 
 """Launches the Flask app"""
 
-from fles import app    # noqa
+from fles import app  # noqa

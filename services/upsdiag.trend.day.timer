@@ -1,11 +1,11 @@
 # This timer is for triggering the trending of past day(s) data
 
 [Unit]
-Description=hourly trending UPS data from past day (timer)
+Description=hourly trending UPS data from past hours (timer)
 
 [Timer]
-OnCalendar=*-*-* *:01,11,21,31,41,51
-RandomizedDelaySec=1m
+OnCalendar=*-*-* *:06
+RandomizedDelaySec=10m
 
 [Install]
 WantedBy=timers.target

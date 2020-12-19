@@ -50,11 +50,13 @@ pushd "${SCRIPT_DIR}" || exit 1
     if [[ "$fname" == "config.ini" ]]; then
       echo "  ! Configuration file changed"
       echo "  o Restarting all ups daemons"
+      # shellcheck disable=SC2154
       for daemon in $upslist; do
         echo "  +- Restart ups$daemon"
         eval "./daemons/ups${daemon}d.py restart"
       done
       echo "  o Restarting all service daemons"
+      # shellcheck disable=SC2154
       for daemon in $srvclist; do
         echo "  +- Restart ups$daemon"
         eval "./daemons/ups${daemon}d.py restart"
@@ -93,4 +95,5 @@ pushd "${SCRIPT_DIR}" || exit 1
       eval "./daemons/ups${daemon}d.py start"
     fi
   done
+# shellcheck disable=SC2164
 popd

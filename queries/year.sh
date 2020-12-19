@@ -34,4 +34,5 @@ pushd "${SCRIPT_DIR}" >/dev/null || exit 1
   ORDER BY sample_epoch                         \
   ;"                                            \
   | sed 's/\t/;/g;s/\n//g' > "${DATASTORE}/upsy.csv"
+# shellcheck disable=SC2164
 popd >/dev/null

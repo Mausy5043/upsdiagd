@@ -31,4 +31,5 @@ pushd "${SCRIPT_DIR}" >/dev/null || exit 1
   GROUP BY (sample_epoch DIV ${W_DIVIDER})      \
   ;"                                            \
   | sed 's/\t/;/g;s/\n//g' > "${DATASTORE}/upsw.csv"
+# shellcheck disable=SC2164
 popd >/dev/null

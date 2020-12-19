@@ -22,6 +22,7 @@ pushd "${SCRIPT_DIR}" || exit 1
   source ./includes
 
   # Check if DIAG daemons are running
+  # shellcheck disable=SC2154
   for daemon in $upslist; do
     if [ -e "/tmp/upsdiagd/${daemon}.pid" ]; then
       if ! kill -0 "$(< "/tmp/upsdiagd/${daemon}.pid")"  > /dev/null 2>&1; then
@@ -38,6 +39,7 @@ pushd "${SCRIPT_DIR}" || exit 1
   done
 
   # Check if SVC daemons are running
+  # shellcheck disable=SC2154
   for daemon in $srvclist; do
     if [ -e "/tmp/upsdiagd/${daemon}.pid" ]; then
       if ! kill -0 "$(< "/tmp/upsdiagd/${daemon}.pid")"  > /dev/null 2>&1; then
@@ -52,4 +54,5 @@ pushd "${SCRIPT_DIR}" || exit 1
       eval "./daemons/ups${daemon}d.py restart"
     fi
   done
+# shellcheck disable=SC2164
 popd

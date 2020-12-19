@@ -9,6 +9,7 @@ pushd "${SCRIPT_DIR}" || exit 1
   source ./includes
 
   # Check if DIAG daemons are running
+  # shellcheck disable=SC2154
   for daemon in $upslist; do
     # command the daemon to stop regardless if it is running or not.
     eval "./daemons/ups${daemon}d.py stop"
@@ -23,6 +24,7 @@ pushd "${SCRIPT_DIR}" || exit 1
   done
 
   # Check if SVC daemons are running
+  # shellcheck disable=SC2154
   for daemon in $srvclist; do
     # command the daemon to stop regardless if it is running or not.
     eval "./daemons/ups${daemon}d.py stop"
@@ -35,6 +37,7 @@ pushd "${SCRIPT_DIR}" || exit 1
     # force rm the .pid file
     rm -f "/tmp/upsdiagd/${daemon}.pid"
   done
+# shellcheck disable=SC2164
 popd
 
 echo

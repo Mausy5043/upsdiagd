@@ -1,34 +1,33 @@
 #!/bin/bash
 
-# this repo gets installed either manually by the user or automatically by
-# a `*boot` repo.
+HERE=$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)
 
-# The hostname is in /etc/hostname prior to running `install.sh` here!
-HOSTNAME=$(hostname)
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+pushd "${HERE}" || exit 1
+    # shellcheck disable=SC1091
+    source ./includes
 
-echo -n "Started UNinstalling UPSDIAGd on "; date
+    echo
+    echo -n "Started UNinstalling ${app_name} on "
+    date
+    echo
 
-pushd "${SCRIPT_DIR}" || exit 1
-  # shellcheck disable=SC1091
- source ./includes
+    # allow user to abort
+    sleep 10
 
-  # prevent restarts of daemons while the script is still running
-  sudo rm /etc/cron.d/upsdiagd
+    ./stop.sh
 
-  echo "  Stopping all diagnostic daemons"
-  # shellcheck disable=SC2154
-  for daemon in $upslist; do
-    echo "Stopping ${daemon}"
-    eval "./ups${daemon}d.py stop"
-  done
-  echo "  Stopping all service daemons"
-  # shellcheck disable=SC2154
-  for daemon in $srvclist; do
-    echo "Stopping ${daemon}"
-    eval "./ups${daemon}d.py stop"
-  done
-# shellcheck disable=SC2164
-popd
+    sudo systemctl disable upsdiag.fles.service &
+    sudo systemctl disable upsdiag.ups.service &
 
-echo -n "Finished UNinstallation of upsdiagd on "; date
+    sudo systemctl disable upsdiag.backupdb.timer &
+    sudo systemctl disable upsdiag.trend.day.timer &
+    sudo systemctl disable upsdiag.update.timer &
+    wait
+
+popd || exit
+
+echo
+echo "*********************************************************"
+echo -n "Finished UNinstallation of ${app_name} on "
+date
+echo

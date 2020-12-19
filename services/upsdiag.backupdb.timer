@@ -1,0 +1,11 @@
+# This timer is for triggering backups of the database
+
+[Unit]
+Description=hourly upsdata database backup timer
+
+[Timer]
+OnCalendar=*-*-* *:56
+RandomizedDelaySec=3m
+
+[Install]
+WantedBy=timers.target

@@ -1,4 +1,4 @@
-# UPSDIAGD [![pipeline status](https://gitlab.com/mausy5043-diagnostics/upsdiagd/badges/v3/pipeline.svg)](https://gitlab.com/mausy5043-diagnostics/upsdiagd/commits/v3)
+# UPSDIAGD
 
 Scripts are supplied that allow you to 
 * interrogate a `usbhid-ups` compliant UPS
@@ -20,18 +20,13 @@ cd upsdiagd
 
 ## Additional software:
 This repo assumes you have already installed and configured `nut`.  
-For an example of the, please refer to [these files](https://gitlab.com/mausy5043-installer/raspboot/tree/master/rbups)
+For an example of that, please refer to [these files](https://gitlab.com/mausy5043-installer/raspboot/tree/master/rbups)
 
 ## Hardware:
-Raspberry Pi 1B connected to a UPS via USB cable.
+Raspberry Pi 1B or better, connected to a UPS via USB cable.
 
 Known to work with:
 - APC Back-UPS 700 (BE-700GR)
 - EATON ProtectionStation 650
 
 (probably all UPSes that support the `usbhid-ups` driver)
-
-## Attribution
-The python code for the daemons is based on previous work by
-- [Charles Menguy](http://stackoverflow.com/questions/10217067/implementing-a-full-python-unix-style-daemon-process)
-- [Sander Marechal](http://www.jejik.com/articles/2007/02/a_simple_unix_linux_daemon_in_python/)

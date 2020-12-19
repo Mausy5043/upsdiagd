@@ -3,7 +3,8 @@
 
 USE domotica;
 
-DROP TABLE IF EXISTS ups;
+# Uncomment the following line for testing purposes
+#DROP TABLE IF EXISTS ups;
 
 CREATE TABLE `ups` (
   `sample_time`   datetime NOT NULL DEFAULT '2000-01-01 00:00:01',

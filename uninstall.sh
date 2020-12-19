@@ -17,15 +17,18 @@ pushd "${SCRIPT_DIR}" || exit 1
   sudo rm /etc/cron.d/upsdiagd
 
   echo "  Stopping all diagnostic daemons"
+  # shellcheck disable=SC2154
   for daemon in $upslist; do
     echo "Stopping ${daemon}"
     eval "./ups${daemon}d.py stop"
   done
   echo "  Stopping all service daemons"
+  # shellcheck disable=SC2154
   for daemon in $srvclist; do
     echo "Stopping ${daemon}"
     eval "./ups${daemon}d.py stop"
   done
+# shellcheck disable=SC2164
 popd
 
 echo -n "Finished UNinstallation of upsdiagd on "; date

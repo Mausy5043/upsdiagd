@@ -51,7 +51,7 @@ def fetch_last_month(days_to_fetch):
     ...
     """
     global DATABASE
-    config = alib.add_time_line({'grouping': '%m-%d',
+    config = glib.add_time_line({'grouping': '%m-%d',
                                  'period': days_to_fetch,
                                  'timeframe': 'day',
                                  'database': DATABASE,

@@ -86,21 +86,18 @@ def plot_graph(output_file, data_tuple, plot_title):
     volt_bat_min = data_tuple[5][:, 1]
     volt_bat_max = data_tuple[5][:, 2]
 
-
     """
     --- Start debugging:
     np.set_printoptions(precision=3)
     print("data_lbls   : ", np.size(data_lbls), data_lbls[-5:])
     print(" ")
-    print("temperatuur : ", np.size(volt_in), volt_in[-5:])
-    print("vochtigheid : ", np.size(load_ups), load_ups[-5:])
-    print("vochtgehalte: ", np.size(moist), moist[-5:])
+    print("Line    [V] : ", np.size(volt_in), volt_in[-5:])
+    print("Batt.   [V] : ", np.size(volt_bat), volt_bat[-5:])
     print(" ")
-    print("luchtdruk   : ", np.size(charge_bat), charge_bat[-5:])
+    print("Load    [%] : ", np.size(load_ups), load_ups[-5:])
+    print("Charge  [%] : ", np.size(charge_bat), charge_bat[-5:])
     print(" ")
-    print("Total VOC   : ", np.size(tvoc), tvoc[-5:])
-    print("CO2 concen. : ", np.size(co2c), co2c[-5:])
-    print("Compressor  : ", np.size(cmp_freq), cmp_freq[-5:])
+    print("Runtime ['] : ", np.size(runtime_bat), runtime_bat[-5:])
     --- End debugging.
     """
     # Set the bar width
@@ -149,17 +146,11 @@ def plot_graph(output_file, data_tuple, plot_title):
     ax2.errorbar(tick_pos, volt_in,
                  yerr=[volt_in - volt_in_min, volt_in_max - volt_in],
                  elinewidth=5,
-                 label='Line In',
+                 label='Line',
                  alpha=ahpla,
                  color='red',
                  marker='o'
                  )
-    ax2.plot(tick_pos, volt_bat,
-             label='Battery',
-             alpha=ahpla,
-             color='black',
-             marker='.'
-             )
     ax2.set_ylabel("[V]")
     ax2.legend(loc='upper right', framealpha=0.2)
     # y_lo = min(int(min(volt_in)) - 1, int(min(volt_bat)) - 1)
@@ -168,9 +159,9 @@ def plot_graph(output_file, data_tuple, plot_title):
     #     y_lo = 19
     # if y_hi < 22:
     #     y_hi = 22
-    # ax2.set_ylim([y_lo, y_hi])
+    ax2.set_ylim([200, 250])
 
-    # Fit every nicely
+    # Fit everything nicely
     plt.title(f'{plot_title}')
     plt.xlim([min(tick_pos) - bar_width, max(tick_pos) + bar_width])
     plt.tight_layout()

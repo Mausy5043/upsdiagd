@@ -92,7 +92,56 @@ def main():
 
 
 def do_work():
-    """Do the thing."""
+    """Do the thing.
+    Example:
+    *2*  battery.charge: 100
+        battery.charge.low: 20
+    *4*  battery.runtime: 1875
+        battery.type: PbAc
+        device.mfr: EATON
+        device.model: Protection Station 650
+        device.serial: AN2E49008
+        device.type: ups
+        driver.name: usbhid-ups
+        driver.parameter.pollfreq: 30
+        driver.parameter.pollinterval: 2
+        driver.parameter.port: auto
+        driver.parameter.synchronous: no
+        driver.version: 2.7.4
+        driver.version.data: MGE HID 1.39
+        driver.version.internal: 0.41
+        input.transfer.high: 264
+        input.transfer.low: 184
+        outlet.1.desc: PowerShare Outlet 1
+        outlet.1.id: 2
+        outlet.1.status: on
+        outlet.1.switchable: no
+        outlet.2.desc: PowerShare Outlet 2
+        outlet.2.id: 3
+        outlet.2.status: on
+        outlet.2.switchable: no
+        outlet.desc: Main Outlet
+        outlet.id: 1
+        outlet.power: 25
+        outlet.switchable: no
+        output.frequency.nominal: 50
+    *0*  output.voltage: 230.0
+        output.voltage.nominal: 230
+        ups.beeper.status: enabled
+        ups.delay.shutdown: 20
+        ups.delay.start: 30
+        ups.firmware: 1.13
+    *3*  ups.load: 2
+        ups.mfr: EATON
+        ups.model: Protection Station 650
+        ups.power.nominal: 650
+        ups.productid: ffff
+        ups.serial: AN2E49008
+        ups.status: OL
+        ups.timer.shutdown: -1
+        ups.timer.start: -1
+        ups.vendorid: 0463
+    """
     # 5 datapoints gathered here
     try:
         upsc = str(subprocess.check_output(['upsc', 'ups@localhost'],
@@ -119,7 +168,7 @@ def do_work():
         # if var[0] == 'input.voltage':
         if var[0] == 'output.voltage':
             ups_data[0] = float(var[1])
-        if var[0] == 'battery.voltage':
+        if var[0] == 'battery.voltage':  # not available on Eaton Protection Station
             ups_data[1] = float(var[1])
         if var[0] == 'battery.charge':
             ups_data[2] = float(var[1])

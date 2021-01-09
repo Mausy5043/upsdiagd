@@ -95,7 +95,9 @@ def do_work():
     """Do the thing."""
     # 5 datapoints gathered here
     try:
-        upsc = str(subprocess.check_output(['upsc', 'ups@localhost']), 'utf-8').splitlines()
+        upsc = str(subprocess.check_output(['upsc', 'ups@localhost'],
+                                           stderr=subprocess.STDOUT),
+                   'utf-8').splitlines()
     except subprocess.CalledProcessError:
         syslog.syslog(syslog.LOG_ALERT, "Waiting 10s ...")
 
@@ -107,7 +109,9 @@ def do_work():
 
         time.sleep(15)
         mf.syslog_trace("!!! Retrying communication with UPS !!!", syslog.LOG_ALERT, DEBUG)
-        upsc = str(subprocess.check_output(['upsc', 'ups@localhost']), 'utf-8').splitlines()
+        upsc = str(subprocess.check_output(['upsc', 'ups@localhost'],
+                                           stderr=subprocess.STDOUT),
+                   'utf-8').splitlines()
 
     ups_data = [-1.0, -1.0, -1.0, -1.0, -1.0]
     for element in upsc:
@@ -141,8 +145,9 @@ def do_add_to_database(result, fdatabase, sql_cmd):
     mf.syslog_trace(f"   @: {out_date.strftime(dt_format)}", False, DEBUG)
     mf.syslog_trace(f"    : {results}", False, DEBUG)
 
-    err_flag = True
-    while err_flag:
+    retries = 10
+    while retries:
+        retries -= 1
         try:
             conn = create_db_connection(fdatabase)
             cursor = conn.cursor()
@@ -150,12 +155,14 @@ def do_add_to_database(result, fdatabase, sql_cmd):
             cursor.close()
             conn.commit()
             conn.close()
-            err_flag = False
+            retries = 0
         except sqlite3.OperationalError:
             if cursor:
                 cursor.close()
             if conn:
                 conn.close()
+            if retries:
+                raise
 
 
 def create_db_connection(database_file):
@@ -166,13 +173,6 @@ def create_db_connection(database_file):
     mf.syslog_trace(f"Connecting to: {database_file}", False, DEBUG)
     try:
         consql = sqlite3.connect(database_file, timeout=9000)
-        # if consql:    # dB initialised succesfully -> get a cursor on the dB and run a test.
-        #  cursql = consql.cursor()
-        #  cursql.execute("SELECT sqlite_version()")
-        #  versql = cursql.fetchone()
-        #  cursql.close()
-        #  logtext = f"Attached to SQLite3 server : {versql}"
-        #  syslog.syslog(syslog.LOG_INFO, logtext)
         return consql
     except sqlite3.Error:
         mf.syslog_trace("Unexpected SQLite3 error when connecting to server.", syslog.LOG_CRIT, DEBUG)

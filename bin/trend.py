@@ -7,7 +7,7 @@ import configparser
 import os
 from datetime import datetime as dt
 
-import acgraphlib as alib  # noqa
+import graphlib as glib  # noqa
 import matplotlib.pyplot as plt
 
 # app_name :
@@ -32,17 +32,17 @@ def fetch_last_day(hours_to_fetch):
     ...
     """
     global DATABASE
-    config = alib.add_time_line({'grouping': '%m-%d %Hh',
+    config = glib.add_time_line({'grouping': '%m-%d %Hh',
                                  'period': hours_to_fetch,
                                  'timeframe': 'hour',
                                  'database': DATABASE,
                                  'table': 'ups'
                                  })
-    volt_in, data_lbls = alib.get_historic_data(config, parameter='volt_in')
-    volt_bat, data_lbls = alib.get_historic_data(config, parameter='volt_bat')
-    charge_bat, data_lbls = alib.get_historic_data(config, parameter='charge_bat')
-    load_ups, data_lbls = alib.get_historic_data(config, parameter='load_ups')
-    runtime_bat, data_lbls = alib.get_historic_data(config, parameter='runtime_bat')
+    volt_in, data_lbls = glib.get_historic_data(config, parameter='volt_in')
+    volt_bat, data_lbls = glib.get_historic_data(config, parameter='volt_bat')
+    charge_bat, data_lbls = glib.get_historic_data(config, parameter='charge_bat')
+    load_ups, data_lbls = glib.get_historic_data(config, parameter='load_ups')
+    runtime_bat, data_lbls = glib.get_historic_data(config, parameter='runtime_bat')
     return data_lbls, volt_in, charge_bat, load_ups, runtime_bat, volt_bat
 
 
@@ -57,11 +57,11 @@ def fetch_last_month(days_to_fetch):
                                  'database': DATABASE,
                                  'table': 'ups'
                                  })
-    volt_in, data_lbls = alib.get_historic_data(config, parameter='volt_in')
-    volt_bat, data_lbls = alib.get_historic_data(config, parameter='volt_bat')
-    charge_bat, data_lbls = alib.get_historic_data(config, parameter='charge_bat')
-    load_ups, data_lbls = alib.get_historic_data(config, parameter='load_ups')
-    runtime_bat, data_lbls = alib.get_historic_data(config, parameter='runtime_bat')
+    volt_in, data_lbls = glib.get_historic_data(config, parameter='volt_in')
+    volt_bat, data_lbls = glib.get_historic_data(config, parameter='volt_bat')
+    charge_bat, data_lbls = glib.get_historic_data(config, parameter='charge_bat')
+    load_ups, data_lbls = glib.get_historic_data(config, parameter='load_ups')
+    runtime_bat, data_lbls = glib.get_historic_data(config, parameter='runtime_bat')
     return data_lbls, volt_in, charge_bat, load_ups, runtime_bat, volt_bat
 
 

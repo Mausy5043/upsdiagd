@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Airco.{{ room }} Status</title>
+    <title>UPS Status</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
@@ -24,23 +24,19 @@
         <div class="row">
             <div class="col">
                 <h3>{{ volt_in }}</h3>
-                Temperatuur
+                Line [V]
             </div>
             <div class="col">
                 <h4>{{ load_ups }}</h4>
-                Vochtigheid
+                Load [%]
             </div>
             <div class="col">
                 <h3>{{ charge_bat }}</h3>
-                Luchtdruk
+                Charge [%]
             </div>
             <div class="col">
-                <h3>{{ co2 }}</h3>
-                CO<sub>2</sub> concentratie
-            </div>
-            <div class="col">
-                <h3>{{ voc }}</h3>
-                VOC concentratie
+                <h3>{{ run }}</h3>
+                Runtime [']
             </div>
         </div>
     </div>
@@ -48,12 +44,9 @@
 
 <div class="container">
     <div class="jumbotron">
+        <img src="{{ run_img }}" class="img-fluid">
         <img src="{{ volt_in_img }}" class="img-fluid">
-        <img src="{{ freq_img }}" class="img-fluid">
-        <img src="{{ moisture_img }}" class="img-fluid">
         <img src="{{ charge_bat_img }}" class="img-fluid">
-        <img src="{{ co2_img }}" class="img-fluid">
-        <img src="{{ voc_img }}" class="img-fluid">
     </div>
 </div>
 

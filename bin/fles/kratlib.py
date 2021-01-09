@@ -29,14 +29,6 @@ def initial_state():
         3 : HEAT
         4 : FAN ONLY
     """
-    defstate['OPERATOR'] = -1
-    defstate['Mode_SP'] = -1
-    defstate['Temperature_SP'] = 20.0
-    defstate['Temperature_dSP'] = 0.5
-    defstate['Humidity_SP'] = 50.0
-    defstate['Humidity_dSP'] = 0.5
-    defstate['Fan_SP'] = 1
-    defstate['Fan_dSP'] = 1
     return defstate
 
 
@@ -52,10 +44,9 @@ class Fles:
 
         iniconf = configparser.ConfigParser()
         iniconf.read(f"{self.MYROOT}/{self.MYAPP}/config.ini")
-        DATABASE = iniconf.get('DEFAULT', 'databasefile').replace('__', self.ROOM_ID)
-        self.AIRCO_IP = iniconf.get('DEFAULT', f'ip_airco{self.ROOM_ID}')
+        DATABASE = iniconf.get('DEFAULT', 'databasefile')
         self.DATABASE = f'{self.MYROOT}/{DATABASE}'
-        self.CONFIG = f'{self.MYROOT}/.config/airconf.json'
+        self.CONFIG = f'{self.MYROOT}/.config/upsdata.json'
         self.req_state = dict()
         self.ctrl_state = dict()
         self.load_state()
@@ -65,8 +56,8 @@ class Fles:
         db_con = sqlite3.connect(self.DATABASE)
         with db_con:
             db_cur = db_con.cursor()
-            db_cur.execute(f"SELECT {fields} FROM aircon \
-                             WHERE sample_epoch = (SELECT MAX(sample_epoch) FROM aircon) \
+            db_cur.execute(f"SELECT {fields} FROM ups \
+                             WHERE sample_epoch = (SELECT MAX(sample_epoch) FROM ups) \
                              ;"
                            )
             db_data = db_cur.fetchall()

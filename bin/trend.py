@@ -23,7 +23,7 @@ NODE = os.uname()[1]
 
 iniconf = configparser.ConfigParser()
 iniconf.read(f"{MYROOT}/{MYAPP}/config.ini")
-DATABASE = iniconf.get(MYID, 'databasefile')
+DATABASE = iniconf.get('DEFAULT', 'databasefile')
 DATABASE = f'{MYROOT}/{DATABASE}'
 
 

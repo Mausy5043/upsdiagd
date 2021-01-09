@@ -49,7 +49,7 @@ def main():
     iniconf = configparser.ConfigParser()
     iniconf.read(f'{MYROOT}/{MYAPP}/config.ini')
     report_time = iniconf.getint(MYID, 'reporttime')
-    fdatabase = f"{MYROOT}/{iniconf.get(MYID, 'databasefile')}"
+    fdatabase = f"{MYROOT}/{iniconf.get('DEFAULT', 'databasefile')}"
     sqlcmd = iniconf.get(MYID, 'sqlcmd')
     samples_averaged = iniconf.getint(MYID, 'samplespercycle') * iniconf.getint(MYID, 'cycles')
     sample_time = report_time / iniconf.getint(MYID, 'samplespercycle')

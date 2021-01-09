@@ -86,7 +86,6 @@ def plot_graph(output_file, data_tuple, plot_title):
     volt_bat_min = data_tuple[5][:, 1]
     volt_bat_max = data_tuple[5][:, 2]
 
-    moist = glib.moisture(volt_in, load_ups, charge_bat) * 1000
 
     """
     --- Start debugging:

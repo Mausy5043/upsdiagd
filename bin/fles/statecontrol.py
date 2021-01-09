@@ -2,13 +2,9 @@
 
 import base64
 
-# noinspection PyUnresolvedReferences
 import flask
-import numpy as np
-# noinspection PyUnresolvedReferences
-from fles import app
-# noinspection PyUnresolvedReferences
-from fles import kratlib
+from fles import app        # noqa
+from fles import kratlib    # noqa
 
 KRAT = kratlib.Fles()
 

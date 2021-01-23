@@ -29,7 +29,7 @@ pushd "${HERE}" || exit 1
     git fetch origin
     git checkout "${branch}"
     git reset --hard "origin/${branch}" && git clean -f -d
-
+    chmod -x ./services/*
     changed_config=0
     changed_service=0
     changed_daemon=0

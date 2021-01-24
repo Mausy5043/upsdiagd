@@ -37,7 +37,7 @@ commonlibbranch="v0_7"
 pushd "${HERE}" || exit 1
     # shellcheck disable=SC1091
     source ./includes
-popd || exit
+popd || exit 1
 
 echo
 # shellcheck disable=SC2154
@@ -71,7 +71,9 @@ echo
 echo "*********************************************************"
 echo
 python3 -m pip install --upgrade pip setuptools wheel
-python3 -m pip install -r requirements.txt
+pushd "${HERE}" || exit 1
+  python3 -m pip install -r requirements.txt
+popd || exit 1
 
 commonlibversion=$(python3 -m pip freeze | grep mausy5043 | cut -c 26-)
 if [ "${commonlibversion}" != "${required_commonlibversion}" ]; then

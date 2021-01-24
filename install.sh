@@ -120,7 +120,7 @@ pushd "${HERE}" || exit 1
     sudo systemctl start upsdiag.ups.service
     sudo systemctl start upsdiag.fles.service
 
-popd || exit
+popd || exit 1
 
 echo
 echo "*********************************************************"

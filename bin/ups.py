@@ -173,7 +173,7 @@ def do_work():
         if var[0] == 'battery.charge':
             ups_data[2] = float(var[1])
         if var[0] == 'ups.load':
-            ups_data[3] = float(var[1]) * 10
+            ups_data[3] = float(var[1])
         if var[0] == 'battery.runtime':
             ups_data[4] = float(var[1])
 

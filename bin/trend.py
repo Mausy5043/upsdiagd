@@ -71,6 +71,25 @@ def fetch_last_day(hours_to_fetch):
     return df
 
 
+def y_ax_limits(data_set, accuracy):
+    """Determine proper y-axis scaling
+
+    Args:
+        data_set (a single dataframe row): containing the data
+        accuracy (int): round the y-limit up or down to the closest multiple of this parameter
+
+    Returns:
+        list: [lower limit, upper limit] as calculated
+    """
+    hi_limit = np.ceil(np.nanmax(data_set) / accuracy) * accuracy
+    lo_limit = np.floor(np.nanmin(data_set) / accuracy) * accuracy
+    if np.isnan(lo_limit):
+        lo_limit = 0
+    if np.isnan(hi_limit):
+        hi_limit = lo_limit + accuracy
+    return [lo_limit, hi_limit]
+
+
 def plot_graph(output_file, data_tuple, plot_title):
     """
     Create graphs

@@ -119,6 +119,7 @@ def plot_graph(output_file, data_frame, plot_title):
     ax1.right_ax.legend(loc='upper right', framealpha=0.2, labels=['line'])
     # ax1.set_xlabel("Datetime")
     ax1.grid(which='major', axis='y', color='k', linestyle='--', linewidth=0.5)
+    plt.title(f'{plot_title}')
     # plt.tight_layout()
     plt.savefig(fname=f'{output_file}V.png', format='png')
 

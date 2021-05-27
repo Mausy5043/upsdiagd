@@ -140,7 +140,7 @@ def plot_graph(output_file, data_frame, plot_title):
     for i, l in enumerate(ax1.lines):
         plt.setp(l, alpha=alp[i], linewidth=lws[i])
     ax1.set_ylim(y_ax_limits(data_frame['runtime_bat'], 50))
-    ax1.set_ylabel("[min]")
+    ax1.set_ylabel("[sec]")
     ax1.legend(loc='upper left', framealpha=0.2, labels=['runtime'])
     # ax1.set_xlabel("Datetime")
     ax1.grid(which='major', axis='y', color='k', linestyle='--', linewidth=0.5)

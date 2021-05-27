@@ -41,37 +41,34 @@ def fetch_last_day(hours_to_fetch):
     ...
     """
     global DATABASE
-    config = glib.add_time_line({'grouping': '%m-%d %Hh',
-                                 'period': hours_to_fetch,
-                                 'timeframe': 'hour',
-                                 'database': DATABASE,
-                                 'table': 'ups'
-                                 })
-    volt_in, data_lbls = glib.get_historic_data(config, parameter='volt_in')
-    volt_bat, data_lbls = glib.get_historic_data(config, parameter='volt_bat')
-    charge_bat, data_lbls = glib.get_historic_data(config, parameter='charge_bat')
-    load_ups, data_lbls = glib.get_historic_data(config, parameter='load_ups')
-    runtime_bat, data_lbls = glib.get_historic_data(config, parameter='runtime_bat')
-    return data_lbls, volt_in, charge_bat, load_ups, runtime_bat, volt_bat
-
-
-def fetch_last_month(days_to_fetch):
-    """
-    ...
-    """
-    global DATABASE
-    config = glib.add_time_line({'grouping': '%m-%d',
-                                 'period': days_to_fetch,
-                                 'timeframe': 'day',
-                                 'database': DATABASE,
-                                 'table': 'ups'
-                                 })
-    volt_in, data_lbls = glib.get_historic_data(config, parameter='volt_in')
-    volt_bat, data_lbls = glib.get_historic_data(config, parameter='volt_bat')
-    charge_bat, data_lbls = glib.get_historic_data(config, parameter='charge_bat')
-    load_ups, data_lbls = glib.get_historic_data(config, parameter='load_ups')
-    runtime_bat, data_lbls = glib.get_historic_data(config, parameter='runtime_bat')
-    return data_lbls, volt_in, charge_bat, load_ups, runtime_bat, volt_bat
+    # config = glib.add_time_line({'grouping': '%m-%d %Hh',
+    #                              'period': hours_to_fetch,
+    #                              'timeframe': 'hour',
+    #                              'database': DATABASE,
+    #                              'table': 'ups'
+    #                              })
+    # volt_in, data_lbls = glib.get_historic_data(config, parameter='volt_in')
+    # volt_bat, data_lbls = glib.get_historic_data(config, parameter='volt_bat')
+    # charge_bat, data_lbls = glib.get_historic_data(config, parameter='charge_bat')
+    # load_ups, data_lbls = glib.get_historic_data(config, parameter='load_ups')
+    # runtime_bat, data_lbls = glib.get_historic_data(config, parameter='runtime_bat')
+    # return data_lbls, volt_in, charge_bat, load_ups, runtime_bat, volt_bat
+    where_condition = f" (sample_time >= datetime(\'now\', \'-{hours_to_fetch + 1} hours\'))"
+    with sqlite3.connect(DATABASE) as con:
+        df = pd.read_sql_query(f"SELECT * FROM ups WHERE {where_condition}",
+                            con,
+                            parse_dates='sample_time',
+                            index_col='sample_epoch')
+    # convert the data
+    for c in df.columns:
+        if c not in ['sample_time']:
+            df[c] = pd.to_numeric(df[c], errors='coerce')
+    df.index = pd.to_datetime(df.index, unit='s').tz_localize("UTC").tz_convert("Europe/Amsterdam")
+    # resample to monotonic timeline
+    df = df.resample('2min').mean()
+    df = df.interpolate(method='slinear')
+    df = df.reset_index(level=['sample_epoch'])
+    return df
 
 
 def plot_graph(output_file, data_tuple, plot_title):
@@ -284,7 +281,7 @@ def main():
                    )
     if OPTION.days:
         plot_graph(f'/tmp/{MYAPP}/site/img/pastmonth_',
-                   fetch_last_month(OPTION.days),
+                   fetch_last_day(OPTION.days * 24),
                    f"Trend afgelopen maand ({dt.now().strftime('%d-%m-%Y %H:%M:%S')})"
                    )
 

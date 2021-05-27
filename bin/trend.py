@@ -41,18 +41,6 @@ def fetch_last_day(hours_to_fetch):
     ...
     """
     global DATABASE
-    # config = glib.add_time_line({'grouping': '%m-%d %Hh',
-    #                              'period': hours_to_fetch,
-    #                              'timeframe': 'hour',
-    #                              'database': DATABASE,
-    #                              'table': 'ups'
-    #                              })
-    # volt_in, data_lbls = glib.get_historic_data(config, parameter='volt_in')
-    # volt_bat, data_lbls = glib.get_historic_data(config, parameter='volt_bat')
-    # charge_bat, data_lbls = glib.get_historic_data(config, parameter='charge_bat')
-    # load_ups, data_lbls = glib.get_historic_data(config, parameter='load_ups')
-    # runtime_bat, data_lbls = glib.get_historic_data(config, parameter='runtime_bat')
-    # return data_lbls, volt_in, charge_bat, load_ups, runtime_bat, volt_bat
     where_condition = f" (sample_time >= datetime(\'now\', \'-{hours_to_fetch + 1} hours\'))"
     with sqlite3.connect(DATABASE) as con:
         df = pd.read_sql_query(f"SELECT * FROM ups WHERE {where_condition}",

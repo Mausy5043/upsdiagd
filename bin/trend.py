@@ -31,7 +31,9 @@ NODE = os.uname()[1]
 iniconf = configparser.ConfigParser()
 iniconf.read(f"{MYROOT}/{MYAPP}/config.ini")
 DATABASE = iniconf.get('DEFAULT', 'databasefile')
-DATABASE = f'{MYROOT}/{DATABASE}'
+if DATABASE[0] not in ['/']:
+    # path is relative
+    DATABASE = f'{MYROOT}/{DATABASE}'
 
 
 def fetch_last_day(hours_to_fetch):

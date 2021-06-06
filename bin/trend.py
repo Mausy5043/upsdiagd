@@ -10,7 +10,6 @@ import warnings
 
 from datetime import datetime as dt
 
-import graphlib as glib
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -90,11 +89,9 @@ def plot_graph(output_file, data_frame, plot_title):
     fig_fontsize = 6.5
     ahpla = 0.6
 
-    """
     # ###############################
     # Create a line plot of load and line voltage
     # ###############################
-    """
     plt.rc('font', size=fig_fontsize)
     ax1 = data_frame.plot(x='sample_epoch',
                           y=['load_ups', 'volt_in'],
@@ -111,7 +108,7 @@ def plot_graph(output_file, data_frame, plot_title):
         plt.setp(l, alpha=alp[i], linewidth=lws[i])
     for i, l in enumerate(ax1.right_ax.lines):
         plt.setp(l, alpha=alpr[i], linewidth=lwsr[i])
-    ax1.set_ylim(y_ax_limits(data_frame['load_ups'], 2))
+    ax1.set_ylim(y_ax_limits(data_frame['load_ups'], 0.5))
     ax1.right_ax.set_ylim(y_ax_limits(data_frame['volt_in'], 20))
     ax1.set_ylabel("[%]")
     ax1.right_ax.set_ylabel("[V]")
@@ -123,11 +120,9 @@ def plot_graph(output_file, data_frame, plot_title):
     # plt.tight_layout()
     plt.savefig(fname=f'{output_file}V.png', format='png')
 
-    """
     # ###############################
     # Create a line plot of runtime
     # ###############################
-    """
     plt.rc('font', size=fig_fontsize)
     ax1 = data_frame.plot(x='sample_epoch',
                           y=['runtime_bat'],
@@ -147,11 +142,9 @@ def plot_graph(output_file, data_frame, plot_title):
     # plt.tight_layout()
     plt.savefig(fname=f'{output_file}RUN.png', format='png')
 
-    """
     # ###############################
     # Create a line plot of charge
     # ###############################
-    """
     plt.rc('font', size=fig_fontsize)
     ax1 = data_frame.plot(x='sample_epoch',
                           y=['charge_bat'],

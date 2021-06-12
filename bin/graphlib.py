@@ -42,7 +42,8 @@ def get_historic_data(dicti,
     parameter: str - columnname to be collected
     from_start_of_year: boolean - fetch data from start of year or not
     include_today: boolean - also fetch today's data
-    somma: boolean - return sum of grouped data (True) OR return avg of grouped data (False; default)
+    somma: boolean - return sum of grouped data (True)
+                     OR return avg of grouped data (False; default)
 
     :returns
     ret_data: numpy list int - data returned
@@ -81,7 +82,8 @@ def get_historic_data(dicti,
                 data = np.delete(data, i, 0)
 
     if interp:
-        # interpolate the data to monotonic 10minute intervals provided by dicti['timeline']
+        # interpolate the data to monotonic 10minute intervals
+        # provided by dicti['timeline']
         ret_epoch, ret_intdata = interplate(dicti['timeline'],
                                             np.array(data[:, 0], dtype=int),
                                             np.array(data[:, 1], dtype=int))
@@ -186,9 +188,12 @@ def wet_bulb_temperature(temperature, relative_humidity):
     Returns:
         float: in degC (wet bulb)
     """
-    wbt = temperature * np.arctan(0.151977 * np.sqrt(relative_humidity + 8.313659)) \
-          + np.arctan(temperature + relative_humidity) \
-          - np.arctan(relative_humidity - 1.676331) \
-          + 0.00391838 * np.power(relative_humidity, 1.5) * np.arctan(0.023101 * relative_humidity) \
-          - 4.686035
+    wbt = temperature * np.arctan(0.151977 * np.sqrt(relative_humidity
+                                                     + 8.313659)
+                                  ) \
+        + np.arctan(temperature + relative_humidity) \
+        - np.arctan(relative_humidity - 1.676331) \
+        + 0.00391838 * np.power(relative_humidity, 1.5) \
+                     * np.arctan(0.023101 * relative_humidity) \
+        - 4.686035
     return wbt

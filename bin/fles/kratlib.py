@@ -15,7 +15,8 @@ def initial_state():
     """
     defstate = dict()
     """OPERATOR :
-       -1 : MANUAL control; user directly controls the airco; the app does nothing.
+       -1 : MANUAL control; user directly controls the airco;
+                            the app does nothing.
         0 : SEMI-AUTO control; user controls the airco via the application
         1 : AUTO;
         2 : REMOTE control; the application is in control of the airco
@@ -59,7 +60,8 @@ class Fles:
         with db_con:
             db_cur = db_con.cursor()
             db_cur.execute(f"SELECT {fields} FROM ups \
-                             WHERE sample_epoch = (SELECT MAX(sample_epoch) FROM ups) \
+                             WHERE sample_epoch = (SELECT MAX(sample_epoch) \
+                                                   FROM ups) \
                              ;")
             db_data = db_cur.fetchall()
         return list(db_data[0])

@@ -63,7 +63,8 @@ def y_ax_limits(data_set, accuracy):
 
     Args:
         data_set (a single dataframe row): containing the data
-        accuracy (int): round the y-limit up or down to the closest multiple of this parameter
+        accuracy (int): round the y-limit up or down to the closest
+                        multiple of this parameter
 
     Returns:
         list: [lower limit, upper limit] as calculated

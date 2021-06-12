@@ -145,6 +145,16 @@ def fast_group_data(x_epochs, y_data, grouping, somma):
 
 
 def moisture(temperature, relative_humidity, pressure):
+    """Calculate moisture content of air given T, RH and P
+
+    Args:
+        temperature (float): in degC
+        relative_humidity (float): in %
+        pressure (float): in mbara or hPa
+
+    Returns:
+        moisture content (float): in kg/m3
+    """
     kelvin = temperature + 273.15
     pascal = pressure * 100
     rho = (287.04 * kelvin) / pascal
@@ -158,6 +168,15 @@ def moisture(temperature, relative_humidity, pressure):
 
 
 def wet_bulb_temperature(temperature, relative_humidity):
+    """Calculate the wet bulb temperature of the air given T and RH.
+
+    Args:
+        temperature (float): in degC
+        relative_humidity (float): in %
+
+    Returns:
+        float: in degC (wet bulb)
+    """
     wbt = temperature * np.arctan(0.151977 * np.sqrt(relative_humidity + 8.313659)) \
           + np.arctan(temperature + relative_humidity) \
           - np.arctan(relative_humidity - 1.676331) \

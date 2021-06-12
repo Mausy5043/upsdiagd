@@ -176,7 +176,8 @@ def do_work():
         # if var[0] == 'input.voltage':
         if var[0] == 'output.voltage':
             ups_data[0] = float(var[1])
-        if var[0] == 'battery.voltage':  # not available on Eaton Protection Station
+        # not available on Eaton Protection Station:
+        if var[0] == 'battery.voltage':
             ups_data[1] = float(var[1])
         if var[0] == 'battery.charge':
             ups_data[2] = float(var[1])
@@ -223,7 +224,8 @@ def do_add_to_database(result, fdatabase, sql_cmd):
 
 def create_db_connection(database_file):
     """
-    Create a database connection to the SQLite3 database specified by database_file.
+    Create a database connection to the SQLite3 database
+    specified by database_file.
     """
     consql = None
     mf.syslog_trace(f"Connecting to: {database_file}", False, DEBUG)

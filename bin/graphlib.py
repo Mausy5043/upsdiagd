@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 """Common functions for use by aircon*.py scripts"""
 
 import datetime as dt
@@ -20,13 +19,22 @@ def add_time_line(config):
         multi = 3600 * 24 * 31
     if config['timeframe'] is 'year':
         multi = 3600 * 24 * 366
-    start_epoch = int((final_epoch - (multi * config['period'])) / step_epoch) * step_epoch
-    config['timeline'] = np.arange(start_epoch, final_epoch, step_epoch, dtype='int')
+    start_epoch = int(
+        (final_epoch - (multi * config['period'])) / step_epoch) * step_epoch
+    config['timeline'] = np.arange(start_epoch,
+                                   final_epoch,
+                                   step_epoch,
+                                   dtype='int')
     return config
 
 
-def get_historic_data(dicti, parameter=None, from_start_of_year=False, include_today=True,
-                      somma=False, interp=True, extra_where=''):
+def get_historic_data(dicti,
+                      parameter=None,
+                      from_start_of_year=False,
+                      include_today=True,
+                      somma=False,
+                      interp=True,
+                      extra_where=''):
     """Fetch historic data from SQLITE3 database.
 
     :param
@@ -63,8 +71,7 @@ def get_historic_data(dicti, parameter=None, from_start_of_year=False, include_t
                        f"  {and_where_not_today} "
                        f"  {filter_where} "
                        f"ORDER BY sample_epoch ASC"
-                       f";"
-                       )
+                       f";")
         db_data = db_cur.fetchall()
 
     data = np.array(db_data)
@@ -77,15 +84,15 @@ def get_historic_data(dicti, parameter=None, from_start_of_year=False, include_t
         # interpolate the data to monotonic 10minute intervals provided by dicti['timeline']
         ret_epoch, ret_intdata = interplate(dicti['timeline'],
                                             np.array(data[:, 0], dtype=int),
-                                            np.array(data[:, 1], dtype=int)
-                                            )
+                                            np.array(data[:, 1], dtype=int))
     else:
         ret_epoch = np.array(data[:, 0], dtype=int)
         ret_intdata = np.array(data[:, 1], dtype=int)
 
     # group the data by dicti['grouping']
     if dicti['grouping'] is not '':
-        ret_lbls, ret_grpdata = fast_group_data(ret_epoch, ret_intdata, dicti['grouping'], somma)
+        ret_lbls, ret_grpdata = fast_group_data(ret_epoch, ret_intdata,
+                                                dicti['grouping'], somma)
         ret_data = ret_grpdata
     else:
         # return the raw data if no grouping is given
@@ -108,7 +115,9 @@ def fast_group_data(x_epochs, y_data, grouping, somma):
     # convert y-values to numpy array
     y_data = np.array(y_data)
     # convert epochs to text
-    x_texts = np.array([dt.datetime.fromtimestamp(i).strftime(grouping) for i in x_epochs], dtype='str')
+    x_texts = np.array(
+        [dt.datetime.fromtimestamp(i).strftime(grouping) for i in x_epochs],
+        dtype='str')
     """x_texts = ['12-31 20h' '12-31 21h' '12-31 21h' '12-31 21h' '12-31 21h' '12-31 21h'
                  '12-31 21h' '12-31 22h' '12-31 22h' '12-31 22h' '12-31 22h' '12-31 22h'
                  :

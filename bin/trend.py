@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 """Create trendbargraphs for various periods of data."""
 
 import argparse
@@ -43,14 +42,15 @@ def fetch_last_day(hours_to_fetch):
     where_condition = f" (sample_time >= datetime(\'now\', \'-{hours_to_fetch + 1} hours\'))"
     with sqlite3.connect(DATABASE) as con:
         df = pd.read_sql_query(f"SELECT * FROM ups WHERE {where_condition}",
-                            con,
-                            parse_dates='sample_time',
-                            index_col='sample_epoch')
+                               con,
+                               parse_dates='sample_time',
+                               index_col='sample_epoch')
     # convert the data
     for c in df.columns:
         if c not in ['sample_time']:
             df[c] = pd.to_numeric(df[c], errors='coerce')
-    df.index = pd.to_datetime(df.index, unit='s').tz_localize("UTC").tz_convert("Europe/Amsterdam")
+    df.index = pd.to_datetime(
+        df.index, unit='s').tz_localize("UTC").tz_convert("Europe/Amsterdam")
     # resample to monotonic timeline
     df = df.resample('2min').mean()
     df = df.interpolate(method='slinear')
@@ -68,8 +68,10 @@ def y_ax_limits(data_set, accuracy):
     Returns:
         list: [lower limit, upper limit] as calculated
     """
-    hi_limit = np.ceil(np.nanmax(data_set) / accuracy) * accuracy + (accuracy * 0.1)
-    lo_limit = np.floor(np.nanmin(data_set) / accuracy) * accuracy - (accuracy * 0.1)
+    hi_limit = np.ceil(np.nanmax(data_set) / accuracy) * accuracy + (accuracy *
+                                                                     0.1)
+    lo_limit = np.floor(np.nanmin(data_set) / accuracy) * accuracy - (
+        accuracy * 0.1)
     if np.isnan(lo_limit):
         lo_limit = 0
     if np.isnan(hi_limit):
@@ -98,8 +100,7 @@ def plot_graph(output_file, data_frame, plot_title):
                           kind='line',
                           figsize=(fig_x, fig_y),
                           style=['b-', 'r-'],
-                          secondary_y=['volt_in']
-                          )
+                          secondary_y=['volt_in'])
     lws = [1]
     lwsr = [1]
     alp = [ahpla]
@@ -128,8 +129,7 @@ def plot_graph(output_file, data_frame, plot_title):
                           y=['runtime_bat'],
                           kind='line',
                           figsize=(fig_x, fig_y),
-                          style=['g']
-                          )
+                          style=['g'])
     lws = [4]
     alp = [ahpla]
     for i, l in enumerate(ax1.lines):
@@ -150,8 +150,7 @@ def plot_graph(output_file, data_frame, plot_title):
                           y=['charge_bat'],
                           kind='line',
                           figsize=(fig_x, fig_y),
-                          style=['brown']
-                          )
+                          style=['brown'])
     lws = [4]
     alp = [ahpla]
     for i, l in enumerate(ax1.lines):
@@ -165,7 +164,6 @@ def plot_graph(output_file, data_frame, plot_title):
     plt.savefig(fname=f'{output_file}CHG.png', format='png')
 
 
-
 def main():
     """
       This is the main loop
@@ -173,21 +171,27 @@ def main():
     global MYAPP
     global OPTION
     if OPTION.hours:
-        plot_graph(f'/tmp/{MYAPP}/site/img/pastday_',
-                   fetch_last_day(OPTION.hours),
-                   f"Trend afgelopen uren ({dt.now().strftime('%d-%m-%Y %H:%M:%S')})"
-                   )
+        plot_graph(
+            f'/tmp/{MYAPP}/site/img/pastday_', fetch_last_day(OPTION.hours),
+            f"Trend afgelopen uren ({dt.now().strftime('%d-%m-%Y %H:%M:%S')})")
     if OPTION.days:
-        plot_graph(f'/tmp/{MYAPP}/site/img/pastmonth_',
-                   fetch_last_day(OPTION.days * 24),
-                   f"Trend afgelopen dagen ({dt.now().strftime('%d-%m-%Y %H:%M:%S')})"
-                   )
+        plot_graph(
+            f'/tmp/{MYAPP}/site/img/pastmonth_',
+            fetch_last_day(OPTION.days * 24),
+            f"Trend afgelopen dagen ({dt.now().strftime('%d-%m-%Y %H:%M:%S')})"
+        )
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Create a trendgraph")
-    parser.add_argument('-hr', '--hours', type=int, help='create an hour-trend of <HOURS>')
-    parser.add_argument('-d', '--days', type=int, help='create a day-trend of <DAYS>')
+    parser.add_argument('-hr',
+                        '--hours',
+                        type=int,
+                        help='create an hour-trend of <HOURS>')
+    parser.add_argument('-d',
+                        '--days',
+                        type=int,
+                        help='create a day-trend of <DAYS>')
     OPTION = parser.parse_args()
     if OPTION.hours == 0:
         OPTION.hours = 50

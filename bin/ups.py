@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 """
 Communicate with the UPS.
 
@@ -30,7 +29,6 @@ MYROOT = "/".join(HERE[0:-3])
 # host_name :
 NODE = os.uname()[1]
 
-
 # example values:
 # HERE: ['', 'home', 'pi', 'upsdiagdd', 'bin', 'ups.py']
 # MYID: 'ups.py
@@ -51,7 +49,8 @@ def main():
     report_time = iniconf.getint(MYID, 'reporttime')
     fdatabase = f"{MYROOT}/{iniconf.get('DEFAULT', 'databasefile')}"
     sqlcmd = iniconf.get(MYID, 'sqlcmd')
-    samples_averaged = iniconf.getint(MYID, 'samplespercycle') * iniconf.getint(MYID, 'cycles')
+    samples_averaged = iniconf.getint(
+        MYID, 'samplespercycle') * iniconf.getint(MYID, 'cycles')
     sample_time = report_time / iniconf.getint(MYID, 'samplespercycle')
     data = []
 
@@ -74,19 +73,22 @@ def main():
                 # not all entries should be float
                 # ['234.000', '13.700', '100.000', '20.000', '1447.000']
                 averages = [float(format(d / len(data), '.3f')) for d in somma]
-                mf.syslog_trace("Averages : {0}".format(averages), False, DEBUG)
+                mf.syslog_trace("Averages : {0}".format(averages), False,
+                                DEBUG)
                 do_add_to_database(averages, fdatabase, sqlcmd)
 
-            pause_time = (sample_time
-                          - (time.time() - start_time)
-                          - (start_time % sample_time)
-                          + time.time())
+            pause_time = (sample_time - (time.time() - start_time) -
+                          (start_time % sample_time) + time.time())
             if pause_time > 0:
-                mf.syslog_trace(f"Waiting  : {pause_time - time.time():.1f}s", False, DEBUG)
-                mf.syslog_trace("................................", False, DEBUG)
+                mf.syslog_trace(f"Waiting  : {pause_time - time.time():.1f}s",
+                                False, DEBUG)
+                mf.syslog_trace("................................", False,
+                                DEBUG)
             else:
-                mf.syslog_trace(f"Behind   : {pause_time - time.time():.1f}s", False, DEBUG)
-                mf.syslog_trace("................................", False, DEBUG)
+                mf.syslog_trace(f"Behind   : {pause_time - time.time():.1f}s",
+                                False, DEBUG)
+                mf.syslog_trace("................................", False,
+                                DEBUG)
         else:
             time.sleep(1.0)
 
@@ -144,23 +146,29 @@ def do_work():
     """
     # 5 datapoints gathered here
     try:
-        upsc = str(subprocess.check_output(['upsc', 'ups@localhost'],
-                                           stderr=subprocess.STDOUT),
-                   'utf-8').splitlines()
+        upsc = str(
+            subprocess.check_output(['upsc', 'ups@localhost'],
+                                    stderr=subprocess.STDOUT),
+            'utf-8').splitlines()
     except subprocess.CalledProcessError:
         syslog.syslog(syslog.LOG_ALERT, "Waiting 10s ...")
 
         time.sleep(10)  # wait to let the driver crash properly
-        mf.syslog_trace("*** RESTARTING nut-server.service ***", syslog.LOG_ALERT, DEBUG)
-        redo = str(subprocess.check_output(['sudo', 'systemctl', 'restart', 'nut-server.service']),
-                   'utf-8').splitlines()
+        mf.syslog_trace("*** RESTARTING nut-server.service ***",
+                        syslog.LOG_ALERT, DEBUG)
+        redo = str(
+            subprocess.check_output(
+                ['sudo', 'systemctl', 'restart', 'nut-server.service']),
+            'utf-8').splitlines()
         mf.syslog_trace("Returned : {0}".format(redo), False, DEBUG)
 
         time.sleep(15)
-        mf.syslog_trace("!!! Retrying communication with UPS !!!", syslog.LOG_ALERT, DEBUG)
-        upsc = str(subprocess.check_output(['upsc', 'ups@localhost'],
-                                           stderr=subprocess.STDOUT),
-                   'utf-8').splitlines()
+        mf.syslog_trace("!!! Retrying communication with UPS !!!",
+                        syslog.LOG_ALERT, DEBUG)
+        upsc = str(
+            subprocess.check_output(['upsc', 'ups@localhost'],
+                                    stderr=subprocess.STDOUT),
+            'utf-8').splitlines()
 
     ups_data = [-1.0, -1.0, -1.0, -1.0, -1.0]
     for element in upsc:
@@ -188,9 +196,8 @@ def do_add_to_database(result, fdatabase, sql_cmd):
     dt_format = '%Y-%m-%d %H:%M:%S'
     out_date = dt.datetime.now()  # time.strftime('%Y-%m-%dT%H:%M:%S')
     out_epoch = int(out_date.timestamp())
-    results = (out_date.strftime(dt_format), out_epoch,
-               result[0], result[1], result[2],
-               result[3], result[4])
+    results = (out_date.strftime(dt_format), out_epoch, result[0], result[1],
+               result[2], result[3], result[4])
     mf.syslog_trace(f"   @: {out_date.strftime(dt_format)}", False, DEBUG)
     mf.syslog_trace(f"    : {results}", False, DEBUG)
 
@@ -224,11 +231,13 @@ def create_db_connection(database_file):
         consql = sqlite3.connect(database_file, timeout=9000)
         return consql
     except sqlite3.Error:
-        mf.syslog_trace("Unexpected SQLite3 error when connecting to server.", syslog.LOG_CRIT, DEBUG)
+        mf.syslog_trace("Unexpected SQLite3 error when connecting to server.",
+                        syslog.LOG_CRIT, DEBUG)
         mf.syslog_trace(traceback.format_exc(), syslog.LOG_CRIT, DEBUG)
         if consql:  # attempt to close connection to SQLite3 server
             consql.close()
-            mf.syslog_trace(" ** Closed SQLite3 connection. **", syslog.LOG_CRIT, DEBUG)
+            mf.syslog_trace(" ** Closed SQLite3 connection. **",
+                            syslog.LOG_CRIT, DEBUG)
         raise
 
 
@@ -246,14 +255,16 @@ def test_db_connection(fdatabase):
         conn.close()
         syslog.syslog(syslog.LOG_INFO, f"Attached to SQLite3 server: {versql}")
     except sqlite3.Error:
-        mf.syslog_trace("Unexpected SQLite3 error during test.", syslog.LOG_CRIT, DEBUG)
+        mf.syslog_trace("Unexpected SQLite3 error during test.",
+                        syslog.LOG_CRIT, DEBUG)
         mf.syslog_trace(traceback.format_exc(), syslog.LOG_CRIT, DEBUG)
         raise
 
 
 if __name__ == "__main__":
     # initialise logging
-    syslog.openlog(ident=f'{MYAPP}.{MYID.split(".")[0]}', facility=syslog.LOG_LOCAL0)
+    syslog.openlog(ident=f'{MYAPP}.{MYID.split(".")[0]}',
+                   facility=syslog.LOG_LOCAL0)
 
     if len(sys.argv) == 2:
         if sys.argv[1] == 'start':

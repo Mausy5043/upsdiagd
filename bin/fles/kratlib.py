@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 """Common functions for Flask webUI"""
 
 import configparser
@@ -35,10 +34,13 @@ def initial_state():
 class Fles:
     def __init__(self):
         # app info :
-        self.HERE = os.path.realpath(__file__).split('/')  # path to this file as a list of elements
+        # path to this file as a list of elements
+        self.HERE = os.path.realpath(__file__).split('/')
         self.MYLEVEL = 4  # aircon =1, bin =2, fles =3
-        self.MYAPP = self.HERE[-self.MYLEVEL]  # element that contains the appname (given the location of this file)
-        self.MYROOT = "/".join(self.HERE[0:-self.MYLEVEL])  # absolute path to the app's root
+        # element that contains the appname (given the location of this file)
+        self.MYAPP = self.HERE[-self.MYLEVEL]
+        # absolute path to the app's root
+        self.MYROOT = "/".join(self.HERE[0:-self.MYLEVEL])
         self.NODE = os.uname()[1]  # name of the host
         self.ROOM_ID = self.NODE[-2:]  # inferred room-id
 
@@ -58,8 +60,7 @@ class Fles:
             db_cur = db_con.cursor()
             db_cur.execute(f"SELECT {fields} FROM ups \
                              WHERE sample_epoch = (SELECT MAX(sample_epoch) FROM ups) \
-                             ;"
-                           )
+                             ;")
             db_data = db_cur.fetchall()
         return list(db_data[0])
 
@@ -102,7 +103,8 @@ class Fles:
             json.dump(nosj_data, fp, sort_keys=True, indent=4)
 
     def load_state(self):
-        """Load the factory settings, then combine them with a local configurationfile (if exists)."""
+        """Load the factory settings, then combine them
+        with a local configurationfile (if exists)."""
         nosj_data = dict()
         defaults = initial_state()
         if os.path.isfile(self.CONFIG):

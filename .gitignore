@@ -5,6 +5,11 @@
 ### PyCharm ###
 .idea/
 
+### Visual Studio ###
+.vscode/
+
+.local
+
 ### Python ###
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -60,6 +65,9 @@ coverage.xml
 
 # Translations
 *.mo
+
+# Django stuff:
+*.log
 *.pot
 
 # Scrapy stuff:
@@ -113,3 +121,11 @@ dmypy.json
 # End of https://www.gitignore.io/api/python,pycharm
 .DS_Store
 
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/

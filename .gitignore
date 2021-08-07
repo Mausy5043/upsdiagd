@@ -3,7 +3,7 @@
 # Edit at https://www.gitignore.io/?templates=python,pycharm
 
 ### PyCharm ###
-.idea/
+**/.idea/
 
 ### Visual Studio ###
 .vscode/

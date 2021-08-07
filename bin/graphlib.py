@@ -93,8 +93,11 @@ def get_historic_data(dicti,
 
     # group the data by dicti['grouping']
     if dicti['grouping'] is not '':
-        ret_lbls, ret_grpdata = fast_group_data(ret_epoch, ret_intdata,
-                                                dicti['grouping'], somma)
+        ret_lbls, ret_grpdata = fast_group_data(ret_epoch,
+                                                ret_intdata,
+                                                dicti['grouping'],
+                                                somma
+                                                )
         ret_data = ret_grpdata
     else:
         # return the raw data if no grouping is given
@@ -117,9 +120,9 @@ def fast_group_data(x_epochs, y_data, grouping, somma):
     # convert y-values to numpy array
     y_data = np.array(y_data)
     # convert epochs to text
-    x_texts = np.array(
-        [dt.datetime.fromtimestamp(i).strftime(grouping) for i in x_epochs],
-        dtype='str')
+    x_texts = np.array([dt.datetime.fromtimestamp(i).strftime(grouping) for i in x_epochs],
+                       dtype='str'
+                       )
     """x_texts = ['12-31 20h' '12-31 21h' '12-31 21h' '12-31 21h' '12-31 21h' '12-31 21h'
                  '12-31 21h' '12-31 22h' '12-31 22h' '12-31 22h' '12-31 22h' '12-31 22h'
                  :
@@ -188,12 +191,13 @@ def wet_bulb_temperature(temperature, relative_humidity):
     Returns:
         float: in degC (wet bulb)
     """
-    wbt = temperature * np.arctan(0.151977 * np.sqrt(relative_humidity
-                                                     + 8.313659)
-                                  ) \
-        + np.arctan(temperature + relative_humidity) \
-        - np.arctan(relative_humidity - 1.676331) \
-        + 0.00391838 * np.power(relative_humidity, 1.5) \
-                     * np.arctan(0.023101 * relative_humidity) \
-        - 4.686035
+    wbt = temperature \
+          * np.arctan(0.151977
+                      * np.sqrt(relative_humidity + 8.313659)
+                      ) \
+          + np.arctan(temperature + relative_humidity) \
+          - np.arctan(relative_humidity - 1.676331) \
+          + 0.00391838 * np.power(relative_humidity, 1.5) \
+          * np.arctan(0.023101 * relative_humidity) \
+          - 4.686035
     return wbt

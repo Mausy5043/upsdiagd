@@ -6,7 +6,6 @@ import configparser
 import os
 import sqlite3
 import warnings
-
 from datetime import datetime as dt
 
 import matplotlib.pyplot as plt
@@ -49,8 +48,9 @@ def fetch_last_day(hours_to_fetch):
     for c in df.columns:
         if c not in ['sample_time']:
             df[c] = pd.to_numeric(df[c], errors='coerce')
-    df.index = pd.to_datetime(
-        df.index, unit='s').tz_localize("UTC").tz_convert("Europe/Amsterdam")
+    df.index = pd.to_datetime(df.index,
+                              unit='s'
+                              ).tz_localize("UTC").tz_convert("Europe/Amsterdam")
     # resample to monotonic timeline
     df = df.resample('2min').mean()
     df = df.interpolate(method='slinear')
@@ -69,10 +69,12 @@ def y_ax_limits(data_set, accuracy):
     Returns:
         list: [lower limit, upper limit] as calculated
     """
-    hi_limit = np.ceil(np.nanmax(data_set) / accuracy) * accuracy + (accuracy *
-                                                                     0.1)
-    lo_limit = np.floor(np.nanmin(data_set) / accuracy) * accuracy - (
-        accuracy * 0.1)
+    hi_limit = np.ceil(np.nanmax(data_set) / accuracy) \
+               * accuracy \
+               + (accuracy * 0.1)
+    lo_limit = np.floor(np.nanmin(data_set) / accuracy) \
+               * accuracy \
+               - (accuracy * 0.1)
     if np.isnan(lo_limit):
         lo_limit = 0
     if np.isnan(hi_limit):

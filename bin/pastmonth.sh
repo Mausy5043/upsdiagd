@@ -6,7 +6,7 @@ HERE=$(cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd)
 
 pushd "${HERE}" >/dev/null || exit 1
     # shellcheck disable=SC1091
-    source ../includes
+    source ./constants.sh
     ./trend.py --days 0
 
     CURRENT_EPOCH=$(date +'%s')

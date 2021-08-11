@@ -31,8 +31,8 @@ getfilefromserver() {
 HERE=$(cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd)
 # MINIT=$(echo $RANDOM/555 | bc)
 
-required_commonlibversion="0.7.0"
-commonlibbranch="v0_7"
+required_commonlibversion="1.0.0"
+commonlibbranch="v1_0"
 
 pushd "${HERE}" || exit 1
     # shellcheck disable=SC1091
@@ -65,7 +65,7 @@ install_package "libtiff5"
 install_package "sqlite3"
 
 # 'upsdiag' is a folder!
-getfilefromserver ".config/upsdiag.json" "0740"
+# getfilefromserver ".config/upsdiag.json" "0740"
 
 echo
 echo "*********************************************************"

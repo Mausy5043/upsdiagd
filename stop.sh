@@ -7,7 +7,7 @@ HERE=$(cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd)
 
 pushd "${HERE}" || exit 1
     # shellcheck disable=SC1091
-    source ./includes
+    source ./bin/constants.sh
 
     sudo systemctl stop upsdiag.fles.service &
 

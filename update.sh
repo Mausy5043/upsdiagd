@@ -11,7 +11,7 @@ pushd "${HERE}" || exit 1
     # sudo systemctl stop fles.service
 
     # shellcheck disable=SC1091
-    source ./includes
+    source ./bin/constants.sh
 
     # shellcheck disable=SC2154
     branch=$(<"${HOME}/.${app_name}.branch")

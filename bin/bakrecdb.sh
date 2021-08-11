@@ -53,7 +53,7 @@ create_database_file() {
 
 pushd "${HERE}" >/dev/null || exit 1
     # shellcheck disable=SC1091
-    source ../includes
+    source ./constants.sh
     # check commandline parameters
     for i in "$@"; do
         case $i in

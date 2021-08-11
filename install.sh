@@ -36,7 +36,7 @@ commonlibbranch="v0_7"
 
 pushd "${HERE}" || exit 1
     # shellcheck disable=SC1091
-    source ./includes
+    source ./bin/constants.sh
 popd || exit 1
 
 echo

@@ -15,8 +15,10 @@ import syslog
 import time
 import traceback
 
-import mausy5043funcs.fileops3 as mf  # noqa
-import mausy5043libs.libsignals3 as ml  # noqa
+import mausy5043funcs.fileops3 as mf
+import mausy5043libs.libsignals3 as ml
+
+import constants
 
 # constants
 DEBUG = False
@@ -47,12 +49,18 @@ def main():
     killer = ml.GracefulKiller()
     iniconf = configparser.ConfigParser()
     iniconf.read(f'{MYROOT}/{MYAPP}/config.ini')
-    report_time = iniconf.getint(MYID, 'reporttime')
-    fdatabase = f"{MYROOT}/{iniconf.get('DEFAULT', 'databasefile')}"
-    sqlcmd = iniconf.get(MYID, 'sqlcmd')
-    samples_averaged = iniconf.getint(MYID, 'samplespercycle') \
-                       * iniconf.getint(MYID, 'cycles')
-    sample_time = report_time / iniconf.getint(MYID, 'samplespercycle')
+    # report_time = iniconf.getint(MYID, 'reporttime')
+    report_time = constants.UPS['report_time']
+    # fdatabase = f"{MYROOT}/{iniconf.get('DEFAULT', 'databasefile')}"
+    fdatabase = constants.UPS['database']
+    # sqlcmd = iniconf.get(MYID, 'sqlcmd')
+    sqlcmd = constants.UPS['sql_command']
+    # samples_averaged = iniconf.getint(MYID, 'samplespercycle') \
+    #                   * iniconf.getint(MYID, 'cycles')
+    # sample_time = report_time / iniconf.getint(MYID, 'samplespercycle')
+    samples_averaged = int(constants.UPS['samplespercycle']) \
+                       * int(constants.UPS['cycles'])
+    sample_time = report_time / int(constants.UPS['samplespercycle'])
     data = []
 
     test_db_connection(fdatabase)

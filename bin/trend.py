@@ -2,7 +2,6 @@
 """Create trendbargraphs for various periods of data."""
 
 import argparse
-import configparser
 import os
 import sqlite3
 import warnings
@@ -11,6 +10,8 @@ from datetime import datetime as dt
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+
+import constants
 
 warnings.filterwarnings('ignore')
 
@@ -25,12 +26,7 @@ NODE = os.uname()[1]
 # example values:
 # HERE: ['', 'home', 'pi', 'upsdiagd', 'bin', 'ups.py']
 
-iniconf = configparser.ConfigParser()
-iniconf.read(f"{MYROOT}/{MYAPP}/config.ini")
-DATABASE = iniconf.get('DEFAULT', 'databasefile')
-if DATABASE[0] not in ['/']:
-    # path is relative
-    DATABASE = f'{MYROOT}/{DATABASE}'
+DATABASE = constants.UPS['database']
 
 
 def fetch_last_day(hours_to_fetch):

@@ -274,7 +274,7 @@ def test_db_connection(fdatabase):
         cursor.close()
         conn.commit()
         conn.close()
-        syslog.syslog(syslog.LOG_INFO, f"Attached to SQLite3 server: {versql}")
+        syslog.syslog(syslog.LOG_INFO, f"Attached to SQLite3 server: {versql} using {fdatabase}")
     except sqlite3.Error:
         mf.syslog_trace("Unexpected SQLite3 error during test.",
                         syslog.LOG_CRIT,

@@ -3,7 +3,7 @@
 import os
 
 _MYHOME = os.environ["HOME"]
-_DATABASE = '/srv/upsdata.sqlite3'
+_DATABASE = '/srv/data/upsdata.sqlite3'
 if not os.path.isfile(_DATABASE):
     _DATABASE = '/mnt/data/upsdata.sqlite3'
 if not os.path.isfile(_DATABASE):

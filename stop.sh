@@ -10,13 +10,9 @@ pushd "${HERE}" || exit 1
     source ./bin/constants.sh
 
     sudo systemctl stop upsdiag.fles.service &
-
     sudo systemctl stop upsdiag.ups.service &
 
-    sudo systemctl stop upsdiag.backupdb.timer &
     sudo systemctl stop upsdiag.trend.day.timer &
     sudo systemctl stop upsdiag.update.timer &
     wait
-
-    ./bin/bakrecdb.sh --backup
 popd || exit

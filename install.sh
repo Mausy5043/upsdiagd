@@ -97,23 +97,18 @@ pushd "${HERE}" || exit 1
     fi
     chmod -x ./services/*
 
-    # Recover the database from the server
-    ./bin/bakrecdb.sh --install
-
     # install services and timers
     sudo cp ./services/*.service /etc/systemd/system/
     sudo cp ./services/*.timer /etc/systemd/system/
     #
     sudo systemctl daemon-reload
     #
-    sudo systemctl enable upsdiag.backupdb.timer &
     sudo systemctl enable upsdiag.trend.day.timer &
     sudo systemctl enable upsdiag.update.timer &
 
     sudo systemctl enable upsdiag.ups.service &
     sudo systemctl enable upsdiag.fles.service &
     #
-    sudo systemctl start upsdiag.backupdb.timer &
     sudo systemctl start upsdiag.trend.day.timer &
     wait
     sudo systemctl start upsdiag.update.timer    # this will also start the daemon!

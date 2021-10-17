@@ -19,7 +19,6 @@ pushd "${HERE}" || exit 1
     sudo systemctl disable upsdiag.fles.service &
     sudo systemctl disable upsdiag.ups.service &
 
-    sudo systemctl disable upsdiag.backupdb.timer &
     sudo systemctl disable upsdiag.trend.day.timer &
     sudo systemctl disable upsdiag.update.timer &
     wait

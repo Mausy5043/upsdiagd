@@ -41,17 +41,13 @@ pushd "${HERE}" || exit 1
         if [[ "${fname:0:9}" == "services/" ]]; then
             changed_service=1
         fi
-       if [[ "${fname}" == "bin/ups.py" ]]; then
+        if [[ "${fname}" == "bin/ups.py" ]]; then
            changed_daemon=1
-       fi
-#        if [[ "${fname}" == "bin/upsdiagtrlrd.py" ]]; then
-#            changed_daemon=1
-#        fi
+        fi
         if [[ "${fname:${#fname}-6}" == "lib.py" ]]; then
             changed_lib=1
         fi
     done
-
     if [[ changed_service -eq 1 ]] || [[ changed_lib -eq 1 ]]; then
         echo "  ! Service or timer changed"
         echo "  o Reinstalling services"
@@ -59,15 +55,9 @@ pushd "${HERE}" || exit 1
         echo "  o Reinstalling timers"
         sudo cp ./services/*.timer /etc/systemd/system/
         sudo systemctl daemon-reload
-        sudo systemctl restart upsdiag.fles.service &
-        sudo systemctl restart upsdiag.ups.service &
     fi
-
-    if [[ changed_config -eq 1 ]] || [[ changed_daemon -eq 1 ]]; then
-        echo "  ! Daemon or configuration changed"
-        echo "  o Restarting daemon"
-        sudo systemctl restart upsdiag.ups.service &
-    fi
+    sudo systemctl restart upsdiag.fles.service &
+    sudo systemctl restart upsdiag.ups.service &
 
     if [[ "${1}" == "--systemd" ]]; then
         echo "" > /dev/null

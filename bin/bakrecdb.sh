@@ -17,6 +17,8 @@ backup_database_file() {
     # $1 : path to DB file
     # $2 : DB filename
     # $3 : remote path to DB file
+    echo "Backups are disabled for this version."
+    exit 1
     if [ -e "${1}/${2}" ]; then
         echo "Standby while making a backup of ${2} ..."
         sqlite3 "${1}/${2}" ".backup ${3}/${2}"
@@ -27,6 +29,8 @@ recover_database_file() {
     # $1 : path to DB file
     # $2 : DB filename
     # $3 : remote path to DB file
+    echo "Recovery is disabled for this version."
+    exit 1
     if [ -e "${3}/${2}" ]; then
         echo "Standby while recovering ${2} from backup ..."
         cp "${3}/${2}" "${1}/${2}"

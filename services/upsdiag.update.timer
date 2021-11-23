@@ -6,7 +6,7 @@ Description=daily upsdiag update
 Requires=upsdiag.update.service
 
 [Timer]
-OnCalendar=*-*-* *:00
+OnCalendar=*-*-* 03:03
 RandomizedDelaySec=3m
 
 [Install]

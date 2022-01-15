@@ -30,6 +30,11 @@ pushd "${HERE}" || exit 1
     git checkout "${branch}"
     git reset --hard "origin/${branch}" && git clean -f -d
     chmod -x ./services/*
+
+    sudo systemctl stop upsdiag.fles.service &
+    sudo systemctl stop upsdiag.ups.service &
+    echo "Please wait while services stop..."; wait
+
     changed_config=0
     changed_service=0
     changed_daemon=0
@@ -48,6 +53,7 @@ pushd "${HERE}" || exit 1
             changed_lib=1
         fi
     done
+
     if [[ changed_service -eq 1 ]] || [[ changed_lib -eq 1 ]]; then
         echo "  ! Service or timer changed"
         echo "  o Reinstalling services"
@@ -56,8 +62,6 @@ pushd "${HERE}" || exit 1
         sudo cp ./services/*.timer /etc/systemd/system/
         sudo systemctl daemon-reload
     fi
-    sudo systemctl restart upsdiag.fles.service &
-    sudo systemctl restart upsdiag.ups.service &
 
     if [[ "${1}" == "--systemd" ]]; then
         echo "" > /dev/null
@@ -67,5 +71,9 @@ pushd "${HERE}" || exit 1
         echo "Creating graphs [2]"
         bin/pastmonth.sh
     fi
+
+    sudo systemctl start upsdiag.fles.service &
+    sudo systemctl start upsdiag.ups.service &
     echo "Please wait while services start..."; wait
+
 popd || exit

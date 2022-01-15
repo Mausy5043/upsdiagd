@@ -62,8 +62,10 @@ pushd "${HERE}" || exit 1
     if [[ "${1}" == "--systemd" ]]; then
         echo "" > /dev/null
     else
-        echo "Updating trendgraph..."
-        sudo systemctl start upsdiag.trend.day.service &
+        echo "Creating graphs [1]"
+        bin/pastday.sh
+        echo "Creating graphs [2]"
+        bin/pastmonth.sh
     fi
     echo "Please wait while services start..."; wait
 popd || exit

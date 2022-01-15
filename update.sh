@@ -4,6 +4,7 @@
 # * It synchronises the local copy of ${app_name} with the current GitLab branch
 # * It checks the state of and (re-)starts daemons if they are not (yet) running.
 
+logger "Started upsdiag update."
 
 HERE=$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)
 
@@ -77,3 +78,5 @@ pushd "${HERE}" || exit 1
     echo "Please wait while services start..."; wait
 
 popd || exit
+
+logger "Finished upsdiag update."

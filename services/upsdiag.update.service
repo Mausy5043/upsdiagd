@@ -10,6 +10,7 @@ Wants=upsdiag.update.timer
 Type=oneshot
 User=pi
 ExecStart=/home/pi/upsdiagd/update.sh --systemd
+TimeoutSec=900
 
 # [Install]
 # WantedBy=multi-user.target

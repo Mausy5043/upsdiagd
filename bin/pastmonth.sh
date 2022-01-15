@@ -19,6 +19,6 @@ pushd "${HERE}" >/dev/null || exit 1
     # Keep upto 400 days of data
     PURGE_EPOCH=$(echo "${CURRENT_EPOCH} - (400 * 24 * 3600)" |bc)
     sqlite3 "${db_full_path}" \
-            "DELETE FROM upsdata WHERE sample_epoch < ${PURGE_EPOCH};"
+            "DELETE FROM ups WHERE sample_epoch < ${PURGE_EPOCH};"
 
 popd >/dev/null || exit

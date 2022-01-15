@@ -63,8 +63,8 @@ pushd "${HERE}" || exit 1
         sudo systemctl daemon-reload
     fi
 
-    if [[ "${1}" == "--systemd" ]]; then
-        echo "" > /dev/null
+    if [ ! "${1}" == "--systemd" ]; then
+        echo "Skipping graph creation"
     else
         echo "Creating graphs [1]"
         bin/pastday.sh

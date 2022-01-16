@@ -5,7 +5,7 @@ install_package() {
     package=$1
     echo "*********************************************************"
     echo "* Requesting ${package}"
-    status=$(dpkg-query -W -f='${Status} ${Version}\n' "${package}" 2>/dev/null | wc -l)
+    status=$(dpkg -l | grep -c "${package}")
     if [ "${status}" -eq 0 ]; then
         echo "* Installing ${package}"
         echo "*********************************************************"

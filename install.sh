@@ -5,7 +5,7 @@ install_package() {
     package=$1
     echo "*********************************************************"
     echo "* Requesting ${package}"
-    status=$(dpkg -l | grep -c "${package}")
+    status=$(dpkg -l | awk '{print $2}' | grep -c -e "^${package}$")
     if [ "${status}" -eq 0 ]; then
         echo "* Installing ${package}"
         echo "*********************************************************"
@@ -110,12 +110,12 @@ pushd "${HERE}" || exit 1
     sudo systemctl enable upsdiag.ups.service &
     sudo systemctl enable upsdiag.fles.service &
     wait
-    #
-    sudo systemctl start upsdiag.trend.day.timer
+#    #
+#    sudo systemctl start upsdiag.trend.day.timer
     sudo systemctl start upsdiag.update.timer    # this will also start the daemon!
-
-    sudo systemctl start upsdiag.ups.service &
-    sudo systemctl start upsdiag.fles.service &
+#
+#    sudo systemctl start upsdiag.ups.service &
+#    sudo systemctl start upsdiag.fles.service &
     wait
 
 popd || exit 1

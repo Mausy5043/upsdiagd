@@ -34,6 +34,8 @@ pushd "${HERE}" || exit 1
 
     sudo systemctl stop upsdiag.fles.service &
     sudo systemctl stop upsdiag.ups.service &
+    sudo systemctl stop upsdiag.trend.day.timer &
+    sudo systemctl stop upsdiag.update.timer &
     echo "Please wait while services stop..."; wait
 
     changed_config=0
@@ -75,6 +77,8 @@ pushd "${HERE}" || exit 1
 
     sudo systemctl start upsdiag.fles.service &
     sudo systemctl start upsdiag.ups.service &
+    sudo systemctl start upsdiag.trend.day.timer &
+    sudo systemctl start upsdiag.update.timer &
     echo "Please wait while services start..."; wait
 
 popd || exit

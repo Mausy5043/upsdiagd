@@ -22,7 +22,6 @@ import constants
 
 from hanging_threads import start_monitoring
 anti_freeze = constants.UPS['report_time'] * 2
-start_monitoring(seconds_frozen=anti_freeze, test_interval=1000)
 
 # constants
 DEBUG = False
@@ -51,6 +50,7 @@ def main():
     global MYID
     global MYROOT
     killer = ml.GracefulKiller()
+    start_monitoring(seconds_frozen=anti_freeze, test_interval=1000)
     iniconf = configparser.ConfigParser()
     iniconf.read(f'{MYROOT}/{MYAPP}/config.ini')
     # report_time = iniconf.getint(MYID, 'reporttime')

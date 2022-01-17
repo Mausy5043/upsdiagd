@@ -21,7 +21,8 @@ import mausy5043libs.libsignals3 as ml
 import constants
 
 from hanging_threads import start_monitoring
-start_monitoring(seconds_frozen=60, test_interval=1000)
+anti_freeze = constants.UPS['report_time'] * 2
+start_monitoring(seconds_frozen=anti_freeze, test_interval=1000)
 
 # constants
 DEBUG = False

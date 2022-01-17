@@ -20,6 +20,9 @@ import mausy5043libs.libsignals3 as ml
 
 import constants
 
+from hanging_threads import start_monitoring
+start_monitoring(seconds_frozen=60, test_interval=1000)
+
 # constants
 DEBUG = False
 HERE = os.path.realpath(__file__).split('/')

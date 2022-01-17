@@ -50,7 +50,7 @@ def main():
     global MYID
     global MYROOT
     killer = ml.GracefulKiller()
-    start_monitoring(seconds_frozen=anti_freeze, test_interval=1000)
+    start_monitoring(seconds_frozen=anti_freeze, test_interval=2000)
     iniconf = configparser.ConfigParser()
     iniconf.read(f'{MYROOT}/{MYAPP}/config.ini')
     # report_time = iniconf.getint(MYID, 'reporttime')

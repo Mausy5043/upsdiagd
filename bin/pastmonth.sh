@@ -22,9 +22,9 @@ pushd "${HERE}" >/dev/null || exit 1
         # shellcheck disable=SC2154
         cp "${db_full_path}" "${database_path}/backup/"
 
-        # Keep upto 180 days of data
+        # Keep upto 400 days of data
         echo "${db_full_path} vacuuming... "
-        PURGE_EPOCH=$(echo "${CURRENT_EPOCH} - (180 * 24 * 3600)" |bc)
+        PURGE_EPOCH=$(echo "${CURRENT_EPOCH} - (400 * 24 * 3600)" |bc)
         sqlite3 "${db_full_path}" \
                 "DELETE FROM ups WHERE sample_epoch < ${PURGE_EPOCH};"
     fi

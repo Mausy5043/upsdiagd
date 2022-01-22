@@ -21,6 +21,7 @@ import mausy5043libs.libsignals3 as ml
 import constants
 
 from hanging_threads import start_monitoring
+
 anti_freeze = constants.UPS['report_time'] * 2
 
 # constants
@@ -100,7 +101,7 @@ def main():
                 mf.syslog_trace(f"Behind   : {pause_time - time.time():.1f}s", False, DEBUG)
                 mf.syslog_trace("................................", False, DEBUG)
         else:
-            time.sleep(1.0)
+            time.sleep(1.1)
 
 
 def do_work():

@@ -101,7 +101,7 @@ def main():
                 mf.syslog_trace(f"Behind   : {pause_time - time.time():.1f}s", False, DEBUG)
                 mf.syslog_trace("................................", False, DEBUG)
         else:
-            time.sleep(1)
+            time.sleep(1.0)
 
 
 def do_work():

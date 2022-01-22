@@ -26,17 +26,9 @@ pushd "${HERE}" >/dev/null || exit 1
         echo "${db_full_path} vacuuming... "
         PURGE_EPOCH=$(echo "${CURRENT_EPOCH} - (180 * 24 * 3600)" |bc)
         sqlite3 "${db_full_path}" \
-                "DELETE FROM aircon WHERE sample_epoch < ${PURGE_EPOCH};"
+                "DELETE FROM ups WHERE sample_epoch < ${PURGE_EPOCH};"
     fi
 
     ./trend.py --days 0
-
-
-    sqlite3 "${db_full_path}" "REINDEX;"
-
-    # Keep upto 400 days of data
-    PURGE_EPOCH=$(echo "${CURRENT_EPOCH} - (400 * 24 * 3600)" |bc)
-    sqlite3 "${db_full_path}" \
-            "DELETE FROM ups WHERE sample_epoch < ${PURGE_EPOCH};"
 
 popd >/dev/null || exit

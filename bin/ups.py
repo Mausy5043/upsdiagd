@@ -51,7 +51,7 @@ def main():
     global MYID
     global MYROOT
     killer = ml.GracefulKiller()
-    start_monitoring(seconds_frozen=anti_freeze, test_interval=2000)
+    start_monitoring(seconds_frozen=anti_freeze, test_interval=1357)
     iniconf = configparser.ConfigParser()
     iniconf.read(f'{MYROOT}/{MYAPP}/config.ini')
     # report_time = iniconf.getint(MYID, 'reporttime')
@@ -101,7 +101,7 @@ def main():
                 mf.syslog_trace(f"Behind   : {pause_time - time.time():.1f}s", False, DEBUG)
                 mf.syslog_trace("................................", False, DEBUG)
         else:
-            time.sleep(1.1)
+            time.sleep(1)
 
 
 def do_work():

@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # update.sh is run periodically by a cronjob.
-# * It synchronises the local copy of upsdiagd with the current github BRANCH
+# * It synchronises the local copy of upsdiagd with the current GitLab BRANCH
 # * It checks the state of and (re-)starts daemons if they are not (yet) running.
 
-HOSTNAME=$(cat /etc/hostname)
-BRANCH=$(cat "$HOME/.upsdiagd.branch")
+HOSTNAME="$(hostname)"
+BRANCH="$(< "$HOME/.upsdiagd.branch")"
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Wait for the daemons to finish their job. Prevents stale locks when restarting.
@@ -50,11 +50,13 @@ pushd "${SCRIPT_DIR}" || exit 1
     if [[ "$fname" == "config.ini" ]]; then
       echo "  ! Configuration file changed"
       echo "  o Restarting all ups daemons"
+      # shellcheck disable=SC2154
       for daemon in $upslist; do
         echo "  +- Restart ups$daemon"
         eval "./daemons/ups${daemon}d.py restart"
       done
       echo "  o Restarting all service daemons"
+      # shellcheck disable=SC2154
       for daemon in $srvclist; do
         echo "  +- Restart ups$daemon"
         eval "./daemons/ups${daemon}d.py restart"
@@ -65,7 +67,7 @@ pushd "${SCRIPT_DIR}" || exit 1
   # Check if daemons are running
   for daemon in $upslist; do
     if [ -e "/tmp/upsdiagd/${daemon}.pid" ]; then
-      if ! kill -0 $(cat "/tmp/upsdiagd/${daemon}.pid")  > /dev/null 2>&1; then
+      if ! kill -0 "$(< "/tmp/upsdiagd/${daemon}.pid")"  > /dev/null 2>&1; then
         logger -p user.err -t upsdiagd "  * Stale daemon ${daemon} pid-file found."
         rm "/tmp/upsdiagd/${daemon}.pid"
           echo "  * Start DIAG ${daemon}"
@@ -81,7 +83,7 @@ pushd "${SCRIPT_DIR}" || exit 1
   # Check if SVC daemons are running
   for daemon in $srvclist; do
     if [ -e "/tmp/upsdiagd/${daemon}.pid" ]; then
-      if ! kill -0 $(cat "/tmp/upsdiagd/${daemon}.pid")  > /dev/null 2>&1; then
+      if ! kill -0 "$(< "/tmp/upsdiagd/${daemon}.pid")"  > /dev/null 2>&1; then
         logger -p user.err -t upsdiagd "  * Stale daemon ${daemon} pid-file found."
         rm "/tmp/upsdiagd/${daemon}.pid"
           echo "  * Start ups${daemon}"
@@ -93,4 +95,5 @@ pushd "${SCRIPT_DIR}" || exit 1
       eval "./daemons/ups${daemon}d.py start"
     fi
   done
+# shellcheck disable=SC2164
 popd

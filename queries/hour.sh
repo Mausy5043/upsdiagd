@@ -8,7 +8,7 @@ pushd "${SCRIPT_DIR}" >/dev/null || exit 1
   # shellcheck disable=SC1091
   source ./sql-includes || exit
 
-  time mysql -h sql --skip-column-names -e      \
+  time mysql --defaults-file="~/.my.ups.cnf" -h boson --skip-column-names -e      \
   "USE domotica;                                \
   SELECT MIN(sample_epoch),                     \
     MIN(volt_in),                               \
@@ -31,4 +31,5 @@ pushd "${SCRIPT_DIR}" >/dev/null || exit 1
   GROUP BY (sample_epoch DIV ${H_DIVIDER})      \
   ;"                                            \
   | sed 's/\t/;/g;s/\n//g' > "${DATASTORE}/upsh.csv"
+# shellcheck disable=SC2164
 popd >/dev/null

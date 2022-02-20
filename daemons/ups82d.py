@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# daemon82d.py creates an MD-file.
+"""creates an MD-file."""
 
 import configparser
 import os
@@ -26,90 +26,84 @@ NODE        = os.uname()[1]
 # initialise logging
 syslog.openlog(ident=MYAPP, facility=syslog.LOG_LOCAL0)
 
+
 class MyDaemon(Daemon):
-  """Definition of daemon."""
+  """Override Daemon-class run() function."""
+
   @staticmethod
   def run():
-    iniconf         = configparser.ConfigParser()
-    inisection      = MYID
-    s               = iniconf.read('/' + MYAPPDIR + '/config.ini')
-    mf.syslog_trace("Config file   : {0}".format(s), False, DEBUG)
-    mf.syslog_trace("Options       : {0}".format(iniconf.items(inisection)), False, DEBUG)
-    reporttime      = iniconf.getint(inisection, "reporttime")
-    # cycles          = iniconf.getint(inisection, "cycles")
-    samplespercycle = iniconf.getint(inisection, "samplespercycle")
-    flock           = iniconf.get(inisection, "lockfile")
-    fdata           = iniconf.get(inisection, "markdown")
-
-    # samples         = samplesperCycle * cycles          # total number of samples averaged
-    sampletime      = reporttime/samplespercycle        # time [s] between samples
-    # cycleTime       = samples * sampleTime              # time [s] per cycle
+    """Execute main loop."""
+    iniconf = configparser.ConfigParser()
+    iniconf.read('/' + MYAPPDIR + '/config.ini')
+    flock       = iniconf.get(MYID, "lockfile")
+    fdata       = iniconf.get(MYID, "markdown")
+    sample_time = iniconf.getint(MYID, "reporttime") / iniconf.getint(MYID, "samplespercycle")
 
     while True:
       try:
-        starttime   = time.time()
-
+        start_time = time.time()
         do_markdown(flock, fdata)
 
-        waittime    = sampletime - (time.time() - starttime) - (starttime % sampletime)
-        if (waittime > 0):
-          mf.syslog_trace("Waiting  : {0}s".format(waittime), False, DEBUG)
+        pause_time = sample_time - (time.time() - start_time) - (start_time % sample_time)
+        if pause_time > 0:
+          mf.syslog_trace("Waiting  : {0}s".format(pause_time), False, DEBUG)
           mf.syslog_trace("................................", False, DEBUG)
-          time.sleep(waittime)
+          time.sleep(pause_time)
       except Exception:
         mf.syslog_trace("Unexpected error in run()", syslog.LOG_CRIT, DEBUG)
         mf.syslog_trace(traceback.format_exc(), syslog.LOG_CRIT, DEBUG)
         raise
 
-def do_markdown(flock, fdata):
-  home              = os.path.expanduser('~')
-  uname             = os.uname()
 
-  fi = home + "/.upsdiagd.branch"
-  with open(fi, 'r') as f:
-    upsbranch  = f.read().strip('\n')
+def do_markdown(flock, fdata):
+  """Create a MarkDown file."""
+  uname = os.uname()
+
+  branch_file = os.environ['HOME'] + "/.upsdiagd.branch"
+  with open(branch_file, 'r') as file_handle:
+    upsbranch  = file_handle.read().strip('\n')
 
   mf.lock(flock)
   shutil.copyfile('/' + MYAPPDIR + '/default.md', fdata)
 
-  with open(fdata, 'a') as f:
+  with open(fdata, 'a') as file_handle:
     mf.syslog_trace("writing {0}".format(fdata), False, DEBUG)
 
     # ups13 and ups14 are disabled, because the current UPS (EATON) does not supply
     # usable data for these graphs
-    # f.write('![A GNUplot image should be here: ups13.png](img/ups13.png)\n')
-    # f.write('![A GNUplot image should be here: ups14.png](img/ups14.png)\n')
-    f.write('![A GNUplot image should be here: ups15.png](img/ups15.png)\n')
-    f.write('![A GNUplot image should be here: ups16.png](img/ups16.png)\n')
-    f.write('![A GNUplot image should be here: ups17.png](img/ups17.png)\n')
+    # file_handle.write('![A GNUplot image should be here: ups13.png](img/ups13.png)\n')
+    # file_handle.write('![A GNUplot image should be here: ups14.png](img/ups14.png)\n')
+    file_handle.write('![A GNUplot image should be here: ups16.png](img/ups16.png)\n')
+    file_handle.write('![A GNUplot image should be here: ups15.png](img/ups15.png)\n')
+    file_handle.write('![A GNUplot image should be here: ups17.png](img/ups17.png)\n')
 
     # System ID
-    f.write('!!! ')
-    f.write(uname[0] + ' ' + uname[2] + ' ' + uname[3] + ' ' + uname[4] + ' ' + platform.platform() + '  \n')
+    file_handle.write('!!! ')
+    file_handle.write(uname[0] + ' ' + uname[2] + ' ' + uname[3] + ' ' + uname[4] + ' ' + platform.platform() + '  \n')
 
     # branch
-    f.write('!!! upsdiagd   on: ' + upsbranch + '  \n')
-    f.write('!!! ' + time.strftime("%Y.%m.%d %H:%M") + '\n\n')
+    file_handle.write('!!! upsdiagd   on: ' + upsbranch + '  \n')
+    file_handle.write('!!! ' + time.strftime("%Y.%m.%d %H:%M") + '\n\n')
 
     # upsc ups@localhost 2>/dev/null |grep -v "serial"
     upsc = str(subprocess.check_output(["upsc", "ups@localhost"]), 'utf-8').splitlines()
-    f.write('### UPS detail information\n\n')
-    for u in upsc:
-      f.write(u + '  \n')
+    file_handle.write('### UPS detail information\n\n')
+    for ups_data in upsc:
+      file_handle.write(ups_data + '  \n')
 
   mf.unlock(flock)
 
 
 if __name__ == "__main__":
-  daemon = MyDaemon('/tmp/' + MYAPP + '/' + MYID + '.pid')
+  daemon = MyDaemon('/tmp/' + MYAPP + '/' + MYID + '.pid')  # pylint: disable=C0103
   if len(sys.argv) == 2:
-    if 'start' == sys.argv[1]:
+    if sys.argv[1] == 'start':
       daemon.start()
-    elif 'stop' == sys.argv[1]:
+    elif sys.argv[1] == 'stop':
       daemon.stop()
-    elif 'restart' == sys.argv[1]:
+    elif sys.argv[1] == 'restart':
       daemon.restart()
-    elif 'foreground' == sys.argv[1]:
+    elif sys.argv[1] == 'debug':
       # assist with debugging.
       print("Debug-mode started. Use <Ctrl>+C to stop.")
       DEBUG = True

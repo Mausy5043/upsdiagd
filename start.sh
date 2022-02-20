@@ -4,7 +4,6 @@
 # It checks the state of and (re-)starts daemons if they are not (yet) running.
 
 HOSTNAME=$(hostname)
-BRANCH=$(cat "$HOME/.upsdiagd.branch")
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # make sure working tree exists
@@ -23,9 +22,10 @@ pushd "${SCRIPT_DIR}" || exit 1
   source ./includes
 
   # Check if DIAG daemons are running
+  # shellcheck disable=SC2154
   for daemon in $upslist; do
     if [ -e "/tmp/upsdiagd/${daemon}.pid" ]; then
-      if ! kill -0 $(cat "/tmp/upsdiagd/${daemon}.pid")  > /dev/null 2>&1; then
+      if ! kill -0 "$(< "/tmp/upsdiagd/${daemon}.pid")"  > /dev/null 2>&1; then
         logger -p user.err -t upsdiagd-restarter "  * Stale daemon ${daemon} pid-file found."
         rm "/tmp/upsdiagd/${daemon}.pid"
           echo "  * Start DIAG ${daemon}"
@@ -39,9 +39,10 @@ pushd "${SCRIPT_DIR}" || exit 1
   done
 
   # Check if SVC daemons are running
+  # shellcheck disable=SC2154
   for daemon in $srvclist; do
     if [ -e "/tmp/upsdiagd/${daemon}.pid" ]; then
-      if ! kill -0 $(cat "/tmp/upsdiagd/${daemon}.pid")  > /dev/null 2>&1; then
+      if ! kill -0 "$(< "/tmp/upsdiagd/${daemon}.pid")"  > /dev/null 2>&1; then
         logger -p user.err -t upsdiagd-restarter "* Stale daemon ${daemon} pid-file found."
         rm "/tmp/upsdiagd/${daemon}.pid"
           echo "  * Start UPSVC ${daemon}"
@@ -53,4 +54,5 @@ pushd "${SCRIPT_DIR}" || exit 1
       eval "./daemons/ups${daemon}d.py restart"
     fi
   done
+# shellcheck disable=SC2164
 popd

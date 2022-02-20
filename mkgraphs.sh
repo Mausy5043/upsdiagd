@@ -11,7 +11,7 @@ UTCOFFSET=$((LOCALSECONDS - UTCSECONDS))
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 pushd "${SCRIPT_DIR}" >/dev/null || exit 1
-  if [ $(wc -l < /tmp/upsdiagd/mysql/upsd.csv) -gt 5 ]; then
+  if [ "$(wc -l < /tmp/upsdiagd/mysql/upsd.csv)" -gt 5 ]; then
     # ups13 and ups14 are disabled, because the current UPS (EATON) does not supply
     # usable data for these graphs
     #echo -n "UPS13"
@@ -25,4 +25,5 @@ pushd "${SCRIPT_DIR}" >/dev/null || exit 1
     echo -n "UPS17"
     time timeout 120s gnuplot -e "utc_offset='${UTCOFFSET}'" ./graphs/ups17.gp
   fi
+# shellcheck disable=SC2164
 popd >/dev/null

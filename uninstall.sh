@@ -4,11 +4,13 @@
 # a `*boot` repo.
 
 # The hostname is in /etc/hostname prior to running `install.sh` here!
-HOSTNAME=$(cat /etc/hostname)
+HOSTNAME=$(hostname)
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 echo -n "Started UNinstalling UPSDIAGd on "; date
 
-pushd "$HOME/upsdiagd"
+pushd "${SCRIPT_DIR}" || exit 1
+  # shellcheck disable=SC1091
  source ./includes
 
   # prevent restarts of daemons while the script is still running
@@ -16,13 +18,13 @@ pushd "$HOME/upsdiagd"
 
   echo "  Stopping all diagnostic daemons"
   for daemon in $upslist; do
-    echo "Stopping "$daemon
-    eval "./ups"$daemon"d.py stop"
+    echo "Stopping ${daemon}"
+    eval "./ups${daemon}d.py stop"
   done
   echo "  Stopping all service daemons"
   for daemon in $srvclist; do
-    echo "Stopping "$daemon
-    eval "./ups"$daemon"d.py stop"
+    echo "Stopping ${daemon}"
+    eval "./ups${daemon}d.py stop"
   done
 popd
 

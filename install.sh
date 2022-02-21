@@ -32,7 +32,7 @@ getfilefromserver() {
 HERE=$(cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd)
 # MINIT=$(echo $RANDOM/555 | bc)
 
-required_commonlibversion="1.0.0"
+required_commonlibversion="1.0.5"
 commonlibbranch="v1_0"
 
 pushd "${HERE}" || exit 1
@@ -94,7 +94,7 @@ pushd "${HERE}" || exit 1
     git config core.fileMode false
     # set the branch
     if [ ! -e "${HOME}/.${app_name}.branch" ]; then
-        echo "v4" >"${HOME}/.${app_name}.branch"
+        echo "master" >"${HOME}/.${app_name}.branch"
     fi
     chmod -x ./services/*
 

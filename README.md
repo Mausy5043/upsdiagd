@@ -2,8 +2,8 @@
 
 Scripts are supplied that allow you to 
 * interrogate a `usbhid-ups` compliant UPS
-* store specific data in a MySQL database (server not included; you'll need to set-up your own)
-* query the (not included) MySQL database for interesting data
+* store specific data in a sqlite3 database (server not included; you'll need to set-up your own)
+* query the (not included) sqlite3 database for interesting data
 * plot some graphs
 * push graphs to a website (webserver not included; you'll need to set-up your own)
 
@@ -12,7 +12,7 @@ Scripts are supplied that allow you to
 ```
 sudo su -
 cd /path/to/where/you/want/store/upsdiagd
-git clone https://gitlab.com/mausy5043-diagnostics/upsdiagd.git
+git clone https://github.com/Mausy5043/upsdiagd.git
 cd upsdiagd
 ./install.sh
 ./update.sh
@@ -20,7 +20,6 @@ cd upsdiagd
 
 ## Additional software:
 This repo assumes you have already installed and configured `nut`.  
-For an example of that, please refer to [these files](https://gitlab.com/mausy5043-installer/raspboot/tree/master/rbups)
 
 ## Hardware:
 Raspberry Pi 1B or better, connected to a UPS via USB cable.

@@ -7,6 +7,7 @@ pushd "${HERE}" || exit 1
     source ./bin/constants.sh
 
     echo
+    # shellcheck disable=SC2154
     echo -n "Started UNinstalling ${app_name} on "
     date
     echo

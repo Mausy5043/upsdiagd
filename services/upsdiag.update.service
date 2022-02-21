@@ -1,0 +1,16 @@
+# This service is for updating the repository clone
+
+[Unit]
+Description=upsdiagd update service
+After=multi-user.target
+Wants=multi-user.target
+Wants=upsdiag.update.timer
+
+[Service]
+Type=oneshot
+User=pi
+ExecStart=/home/pi/upsdiagd/update.sh --systemd
+TimeoutSec=900
+
+# [Install]
+# WantedBy=multi-user.target

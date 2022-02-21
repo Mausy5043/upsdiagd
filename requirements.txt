@@ -1,2 +1,9 @@
-mysqlclient
-pySMART
+Flask
+hanging_threads
+matplotlib
+numpy
+pandas
+python-dotenv
+requests
+scipy
+uwsgi

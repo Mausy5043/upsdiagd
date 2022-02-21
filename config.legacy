@@ -1,0 +1,14 @@
+## Configuration file for `upsdiagd` programs
+[DEFAULT]
+databasefile:     .sqlite3/upsdata.sqlite3
+
+[ups.py]
+reporttime:       60
+cycles:           3
+samplespercycle:  5
+sqlcmd:           INSERT INTO ups (sample_time, sample_epoch,
+                  volt_in, volt_bat, charge_bat,
+                  load_ups, runtime_bat)
+                  VALUES (?, ?,
+                  ?, ?, ?,
+                  ?, ?)

@@ -132,6 +132,7 @@ disable=print-statement,
         bad-continuation,
         bad-whitespace,
         duplicate-code,
+        global-statement,
         no-member
 
 # Enable the message, report, category or checker with the given id(s). You can
@@ -396,9 +397,11 @@ function-naming-style=snake_case
 #function-rgx=
 
 # Good variable names which should always be accepted, separated by a comma
-good-names=i,
+good-names=c,
+           i,
            j,
            k,
+           df,
            ex,
            Run,
            _

@@ -1,99 +1,84 @@
 #!/bin/bash
 
-# update.sh is run periodically by a cronjob.
-# * It synchronises the local copy of upsdiagd with the current GitLab BRANCH
+# update.sh is run periodically by a service.
+# * It synchronises the local copy of ${app_name} with the current GitLab branch
 # * It checks the state of and (re-)starts daemons if they are not (yet) running.
 
-HOSTNAME="$(hostname)"
-BRANCH="$(< "$HOME/.upsdiagd.branch")"
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+logger "Started upsdiag update."
 
-# Wait for the daemons to finish their job. Prevents stale locks when restarting.
-#echo "Waiting 30s..."
-#sleep 30
+HERE=$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)
 
-# make sure working tree exists
-if [ ! -d /tmp/upsdiagd/site/img ]; then
-  mkdir -p /tmp/upsdiagd/site/img
-  chmod -R 755 /tmp/upsdiagd
-fi
-# make sure working tree exists
-if [ ! -d /tmp/upsdiagd/mysql ]; then
-  mkdir -p /tmp/upsdiagd/mysql
-  chmod -R 755 /tmp/upsdiagd
-fi
+pushd "${HERE}" || exit 1
+    # sudo systemctl stop fles.service
 
-pushd "${SCRIPT_DIR}" || exit 1
-  # shellcheck disable=SC1091
-  source ./includes
-  git fetch origin
-  # Check which files have changed
-  DIFFLIST=$(git --no-pager diff --name-only "$BRANCH..origin/$BRANCH")
-  git pull
-  git fetch origin
-  git checkout "$BRANCH"
-  git reset --hard "origin/$BRANCH" && git clean -f -d
-  # Set permissions
-  chmod -R 744 ./*
+    # shellcheck disable=SC1091
+    source ./bin/constants.sh
 
-  for fname in $DIFFLIST; do
-    echo ">   $fname was updated from GIT"
-    f5l4="${fname:0:11}${fname:${#fname}-4}"
+    # shellcheck disable=SC2154
+    branch=$(<"${HOME}/.${app_name}.branch")
 
-    # Detect changes
-    if [[ "$f5l4" == "daemons/upsd.py" ]]; then
-      echo "  ! UPS daemon changed"
-      eval "./$fname stop"
+    # make sure working tree exists
+    if [ ! -d "/tmp/${app_name}/site/img" ]; then
+        mkdir -p "/tmp/${app_name}/site/img"
+        chmod -R 755 "/tmp/${app_name}"
     fi
 
-    #CONFIG.INI changed
-    if [[ "$fname" == "config.ini" ]]; then
-      echo "  ! Configuration file changed"
-      echo "  o Restarting all ups daemons"
-      # shellcheck disable=SC2154
-      for daemon in $upslist; do
-        echo "  +- Restart ups$daemon"
-        eval "./daemons/ups${daemon}d.py restart"
-      done
-      echo "  o Restarting all service daemons"
-      # shellcheck disable=SC2154
-      for daemon in $srvclist; do
-        echo "  +- Restart ups$daemon"
-        eval "./daemons/ups${daemon}d.py restart"
-      done
-    fi
-  done
+    git fetch origin || sleep 60; git fetch origin
+    # Check which files have changed
+    DIFFLIST=$(git --no-pager diff --name-only "${branch}..origin/${branch}")
+    git pull
+    git fetch origin
+    git checkout "${branch}"
+    git reset --hard "origin/${branch}" && git clean -f -d
+    chmod -x ./services/*
 
-  # Check if daemons are running
-  for daemon in $upslist; do
-    if [ -e "/tmp/upsdiagd/${daemon}.pid" ]; then
-      if ! kill -0 "$(< "/tmp/upsdiagd/${daemon}.pid")"  > /dev/null 2>&1; then
-        logger -p user.err -t upsdiagd "  * Stale daemon ${daemon} pid-file found."
-        rm "/tmp/upsdiagd/${daemon}.pid"
-          echo "  * Start DIAG ${daemon}"
-        eval "./daemons/ups${daemon}d.py start"
-      fi
+    sudo systemctl stop upsdiag.fles.service &
+    sudo systemctl stop upsdiag.ups.service &
+    sudo systemctl stop upsdiag.trend.day.timer &
+    echo "Please wait while services stop..."; wait
+
+    changed_config=0
+    changed_service=0
+    changed_daemon=0
+    changed_lib=0
+    for fname in $DIFFLIST; do
+        if [[ "${fname}" == "config.ini" ]]; then
+            changed_config=1
+        fi
+        if [[ "${fname:0:9}" == "services/" ]]; then
+            changed_service=1
+        fi
+        if [[ "${fname}" == "bin/ups.py" ]]; then
+           changed_daemon=1
+        fi
+        if [[ "${fname:${#fname}-6}" == "lib.py" ]]; then
+            changed_lib=1
+        fi
+    done
+
+    if [[ changed_service -eq 1 ]] || [[ changed_lib -eq 1 ]]; then
+        echo "  ! Service or timer changed"
+        echo "  o Reinstalling services"
+        sudo cp ./services/*.service /etc/systemd/system/
+        echo "  o Reinstalling timers"
+        sudo cp ./services/*.timer /etc/systemd/system/
+        sudo systemctl daemon-reload
+    fi
+
+    if [ ! "${1}" == "--systemd" ]; then
+        echo "Skipping graph creation"
     else
-      logger -p user.warn -t upsdiagd "Found ups${daemon} not running."
-        echo "  * Start ups${daemon}"
-      eval "./daemons/ups${daemon}d.py start"
+        echo "Creating graphs [1]"
+        bin/pastday.sh
+        echo "Creating graphs [2]"
+        bin/pastmonth.sh
     fi
-  done
 
-  # Check if SVC daemons are running
-  for daemon in $srvclist; do
-    if [ -e "/tmp/upsdiagd/${daemon}.pid" ]; then
-      if ! kill -0 "$(< "/tmp/upsdiagd/${daemon}.pid")"  > /dev/null 2>&1; then
-        logger -p user.err -t upsdiagd "  * Stale daemon ${daemon} pid-file found."
-        rm "/tmp/upsdiagd/${daemon}.pid"
-          echo "  * Start ups${daemon}"
-        eval "./daemons/ups${daemon}d.py start"
-      fi
-    else
-      logger -p user.warn -t upsdiagd "Found ups${daemon} not running."
-        echo "  * Start ups${daemon}"
-      eval "./daemons/ups${daemon}d.py start"
-    fi
-  done
-# shellcheck disable=SC2164
-popd
+    sudo systemctl start upsdiag.fles.service &
+    sudo systemctl start upsdiag.ups.service &
+    sudo systemctl start upsdiag.trend.day.timer &
+    echo "Please wait while services start..."; wait
+
+popd || exit
+
+logger "Finished upsdiag update."

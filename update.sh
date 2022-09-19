@@ -10,7 +10,6 @@ HERE=$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)
 
 
 pushd "${HERE}" || exit 1
-    # sudo systemctl stop fles.service
 
     # shellcheck disable=SC1091
     source ./bin/constants.sh
@@ -36,7 +35,6 @@ pushd "${HERE}" || exit 1
     git reset --hard "origin/${branch}" && git clean -f -d
     chmod -x ./services/*
 
-    sudo systemctl stop upsdiag.fles.service &
     sudo systemctl stop upsdiag.ups.service &
     sudo systemctl stop upsdiag.trend.day.timer &
     echo "Please wait while services stop..."; wait
@@ -78,7 +76,6 @@ pushd "${HERE}" || exit 1
         bin/pastmonth.sh
     fi
 
-    sudo systemctl start upsdiag.fles.service &
     sudo systemctl start upsdiag.ups.service &
     sudo systemctl start upsdiag.trend.day.timer &
     echo "Please wait while services start..."; wait

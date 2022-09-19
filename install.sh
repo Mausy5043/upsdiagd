@@ -112,14 +112,12 @@ pushd "${HERE}" || exit 1
     sudo systemctl enable upsdiag.update.timer &
 
     sudo systemctl enable upsdiag.ups.service &
-    sudo systemctl enable upsdiag.fles.service &
     wait
 #    #
 #    sudo systemctl start upsdiag.trend.day.timer
     sudo systemctl start upsdiag.update.timer    # this will also start the daemon!
 #
 #    sudo systemctl start upsdiag.ups.service &
-#    sudo systemctl start upsdiag.fles.service &
     wait
 
     # install a link to the website on /tmp/....

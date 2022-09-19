@@ -17,7 +17,6 @@ pushd "${HERE}" || exit 1
 
     ./stop.sh
 
-    sudo systemctl disable upsdiag.fles.service &
     sudo systemctl disable upsdiag.ups.service &
 
     sudo systemctl disable upsdiag.trend.day.timer &

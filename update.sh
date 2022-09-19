@@ -8,18 +8,22 @@ logger "Started upsdiag update."
 
 HERE=$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)
 
+
 pushd "${HERE}" || exit 1
     # sudo systemctl stop fles.service
 
     # shellcheck disable=SC1091
     source ./bin/constants.sh
 
+    website_dir="/tmp/${app_name}/site"
+    website_image_dir="${website_dir}/img"
+
     # shellcheck disable=SC2154
     branch=$(<"${HOME}/.${app_name}.branch")
 
     # make sure working tree exists
-    if [ ! -d "/tmp/${app_name}/site/img" ]; then
-        mkdir -p "/tmp/${app_name}/site/img"
+    if [ ! -d "${website_image_dir}" ]; then
+        mkdir -p "${website_image_dir}"
         chmod -R 755 "/tmp/${app_name}"
     fi
 
@@ -78,6 +82,9 @@ pushd "${HERE}" || exit 1
     sudo systemctl start upsdiag.ups.service &
     sudo systemctl start upsdiag.trend.day.timer &
     echo "Please wait while services start..."; wait
+
+    cp "./www/index.html" "${website_dir}"
+    cp "./www/favicon.ico" "${website_dir}"
 
 popd || exit
 

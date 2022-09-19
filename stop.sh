@@ -9,7 +9,6 @@ pushd "${HERE}" || exit 1
     # shellcheck disable=SC1091
     source ./bin/constants.sh
 
-    sudo systemctl stop upsdiag.fles.service &
     sudo systemctl stop upsdiag.ups.service &
 
     sudo systemctl stop upsdiag.trend.day.timer &

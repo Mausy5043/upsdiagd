@@ -1,9 +1,7 @@
-Flask
 hanging_threads
 matplotlib
 numpy
 pandas
-python-dotenv
+# python-dotenv
 requests
 scipy
-uwsgi

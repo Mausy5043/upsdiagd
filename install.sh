@@ -53,6 +53,7 @@ website_image_dir="${website_dir}/img"
 sudo apt-get update
 # LFTP package is needed for accessing the remote website.
 install_package "lftp"
+install_package "nut"
 # Python3 package and associates
 install_package "python3"
 install_package "build-essential"

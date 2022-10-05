@@ -32,9 +32,6 @@ getfilefromserver() {
 HERE=$(cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd)
 # MINIT=$(echo $RANDOM/555 | bc)
 
-required_commonlibversion="1.0.5"
-commonlibbranch="v1_0"
-
 pushd "${HERE}" || exit 1
     # shellcheck disable=SC1091
     source ./bin/constants.sh
@@ -81,18 +78,6 @@ pushd "${HERE}" || exit 1
   python3 -m pip install -r requirements.txt
 popd || exit 1
 
-commonlibversion=$(python3 -m pip freeze | grep mausy5043 | cut -c 26-)
-if [ "${commonlibversion}" != "${required_commonlibversion}" ]; then
-  echo
-  echo "*********************************************************"
-    echo "Install common python functions..."
-    python3 -m pip uninstall -y mausy5043-common-python
-    python3 -m pip install "git+https://gitlab.com/mausy5043-installer/mausy5043-common-python.git@${commonlibbranch}#egg=mausy5043-common-python"
-    echo
-    echo -n "Installed: "
-    python3 -m pip list | grep mausy5043
-  echo
-fi
 
 pushd "${HERE}" || exit 1
     # To suppress git detecting changes by chmod:
